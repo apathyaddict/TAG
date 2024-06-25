@@ -1,4 +1,6 @@
+import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
+import { db } from "../firebase";
 
 const inputFields = [
   {
@@ -42,11 +44,19 @@ const FormComponent = () => {
     });
   };
 
-  const handleSave = () => {
-    // Save form data to local storage
-    localStorage.setItem("formData", JSON.stringify(formData));
-    console.log("Form data saved to local storage:", formData);
-    setFormData("");
+  const handleSave = async () => {
+    // localStorage.setItem("formData", JSON.stringify(formData));
+
+    const newFiche = {
+      formData,
+    };
+    try {
+      await addDoc(collection(db, "fiches"), newFiche);
+      console.log(newFiche);
+    } catch (error) {
+      console.log(error);
+    }
+    // setFormData("");
   };
 
   return (
