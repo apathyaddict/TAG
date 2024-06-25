@@ -1,12 +1,18 @@
 import React from "react";
 import Navbar from "./components/NavBar";
-import CreateForm from "./components/CreateForm";
+
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import CreatePage from "./Pages/CreatePage";
 
 function App() {
   return (
     <>
-      <Navbar />
-      <CreateForm />
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/new" element={<CreatePage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

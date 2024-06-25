@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import { FaSearch, FaUserCircle } from "react-icons/fa";
+import { FaSearch, FaUserCircle, FaStore } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for dropdown menu
@@ -21,7 +22,7 @@ const Navbar = () => {
         {/* Right side - Search Bar, Create Restaurant, Avatar */}
         <div className="flex items-center space-x-4">
           {/* Search Bar with icon */}
-          <div className="relative">
+          {/* <div className="relative">
             <input
               type="text"
               placeholder="Recherche..."
@@ -30,13 +31,23 @@ const Navbar = () => {
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <FaSearch className="h-5 w-5 text-gray-400" />
             </div>
-          </div>
+          </div> */}
 
-          <button
-            type="button"
-            className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-amber-600 focus:text-amber-600">
-            <BiPlus className="h-8 w-8 text-zinc-800" />
-          </button>
+          <Link to="/new">
+            <button
+              type="button"
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-amber-600 focus:text-amber-600">
+              <BiPlus className="h-8 w-8 text-zinc-800 hover:text-amber-800" />
+            </button>
+          </Link>
+
+          <Link to="/list">
+            <button
+              type="button"
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200  focus:text-amber-600">
+              <FaStore className="h-8 w-8 text-zinc-800 hover:text-amber-800" />
+            </button>
+          </Link>
 
           {/* Avatar - dropdown menu on click */}
           <div className="relative">
@@ -53,12 +64,12 @@ const Navbar = () => {
                 <a
                   href="#"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Your Profile
+                  Profile
                 </a>
                 <a
                   href="#"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Settings
+                  Liste
                 </a>
                 <a
                   href="#"
