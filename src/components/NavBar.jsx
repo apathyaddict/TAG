@@ -15,7 +15,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
         {/* Company Name (Tag) */}
         <div className="flex items-center">
-          <span className="text-maroon text-lg font-semibold">Tag</span>
+          <span className="text-gray-800 text-lg font-semibold">Tag</span>
         </div>
 
         {/* Right side - Search Bar, Create Restaurant, Avatar */}
@@ -25,7 +25,7 @@ const Navbar = () => {
             <input
               type="text"
               placeholder="Recherche..."
-              className="pl-10 pr-3 py-2 text-gray-800 bg-white rounded-2xl focus:outline-none ring-1 ring-stone-200 focus:ring-2 focus:ring-maroon w-[300px]"
+              className="pl-10 pr-3 py-2 text-gray-800 bg-white rounded-2xl focus:outline-none ring-1 ring-stone-200 focus:ring-2 focus:ring-amber-700 w-[300px]"
             />
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <FaSearch className="h-5 w-5 text-gray-400" />
@@ -34,7 +34,7 @@ const Navbar = () => {
 
           <button
             type="button"
-            className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-maroon focus:text-maroon">
+            className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-amber-600 focus:text-amber-600">
             <BiPlus className="h-8 w-8 text-zinc-800" />
           </button>
 
@@ -43,7 +43,7 @@ const Navbar = () => {
             <button
               onClick={toggleDropdown}
               type="button"
-              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-maroon focus:text-maroon">
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-gray-800 focus:text-gray-800">
               <FaUserCircle className="h-8 w-8 text-zinc-800" />
             </button>
 
