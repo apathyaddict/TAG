@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
+//TODO: add toast
 
 const CreateForm = () => {
   const [restaurantData, setRestaurantData] = useState({
@@ -15,6 +16,7 @@ const CreateForm = () => {
     prices: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -63,8 +65,8 @@ const CreateForm = () => {
       return;
     }
 
-    // If all validations pass, proceed to add the document
     try {
+      setIsLoading(true);
       await addDoc(collection(db, "fiches"), restaurantData);
       console.log("SUCCES : Sent to Database", restaurantData);
 
@@ -80,8 +82,10 @@ const CreateForm = () => {
         menu: "",
         prices: "",
       });
-      setErrorMessage(""); // Clear any previous error messages
+      setErrorMessage("");
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.error("Error adding document: ", error);
     }
   };
@@ -238,8 +242,9 @@ const CreateForm = () => {
         <div className="flex justify-end items-end cursor-pointer">
           <button
             className="bg-white mt-2 px-12 py-2 text-slate-800 font-extrabold border border-slate-300 rounded-md hover:bg-slate-100 hover:text-slate-600 cursor-pointer"
-            onClick={handleSave}>
-            Ajouter
+            onClick={handleSave}
+            disabled={isLoading}>
+            {isLoading ? "En cours..." : "Ajouter"}
           </button>
         </div>
       </div>
