@@ -8,8 +8,9 @@ const RestaurantList = ({ restaurants }) => {
       <h1 className="mt-10 text-2xl font-bold mb-6 text-stone-600">
         Liste des Restaurants
       </h1>
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-full"> */}
-      <div className="flex flex-row gap-5 justify-evenly wrap max-w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-full">
+        {/* <div className="flex flex-row gap-5 justify-evenly wrap max-w-full"> */}
+        {/* <div className="mx-auto w-full max-w-screen-xl px-2.5 md:px-20 flex flex-1 flex-row"> */}
         {restaurants.map((restaurant) => (
           <RestaurantCard key={restaurant.id} restaurant={restaurant} />
         ))}

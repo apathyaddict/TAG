@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Toast from "./Toast";
 
 //TODO: add toast
 /* eslint-disable react/prop-types */
@@ -196,8 +195,6 @@ const CreateForm = ({
           </button>
         </div>
       </div>
-
-      <Toast id="toast-success" message="Restaurant ajouté avec succès." />
     </section>
   );
 };

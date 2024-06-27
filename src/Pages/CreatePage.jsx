@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CreateForm from "../components/CreateForm";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
+import Toast from "../components/Toast";
 
 const CreatePage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showToast, setShowToast] = useState(false); // State to manage Toast visibility
+  const [toastMessage, setToastMessage] = useState(""); // State to manage Toast message
 
   const [restaurantData, setRestaurantData] = useState({
     name: "",
@@ -18,6 +21,16 @@ const CreatePage = () => {
     menu: "",
     prices: "",
   });
+
+  useEffect(() => {
+    let timer;
+    if (showToast) {
+      timer = setTimeout(() => {
+        setShowToast(false);
+      }, 4000);
+    }
+    return () => clearTimeout(timer);
+  }, [showToast]);
 
   const handleSave = async () => {
     setErrorMessage("");
@@ -61,7 +74,9 @@ const CreatePage = () => {
       await addDoc(collection(db, "fiches"), restaurantData);
       console.log("SUCCES : Sent to Database", restaurantData);
 
-      // Clear form fields after successful submission
+      setShowToast(true); // Show the toast on successful submission
+      setToastMessage("Restaurant ajouté avec succès!");
+
       setRestaurantData({
         name: "",
         rue: "",
@@ -78,20 +93,30 @@ const CreatePage = () => {
     } catch (error) {
       setIsLoading(false);
       console.error("Error adding document: ", error);
+      setErrorMessage("Une erreur est survenue lors de l'envoi du formulaire.");
     }
   };
 
+  const handleCloseToast = () => {
+    setShowToast(false); // Hide the toast when the close button is clicked
+  };
+
   return (
-    <CreateForm
-      {...{
-        handleSave,
-        setErrorMessage,
-        errorMessage,
-        isLoading,
-        setRestaurantData,
-        restaurantData,
-      }}
-    />
+    <>
+      <CreateForm
+        {...{
+          handleSave,
+          setErrorMessage,
+          errorMessage,
+          isLoading,
+          setRestaurantData,
+          restaurantData,
+        }}
+      />
+      {showToast && (
+        <Toast id="toast" message={toastMessage} onClose={handleCloseToast} />
+      )}
+    </>
   );
 };
 
