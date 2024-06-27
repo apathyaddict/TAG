@@ -8,9 +8,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-/* eslint-disable react/prop-types */
-
-const RestaurantCard = ({ restaurant }) => {
+const RestaurantCard = ({ restaurant, editSelectedRestaurant }) => {
   const { name, rue, code_postal, ville, phone, website, id } = restaurant;
 
   // Function to format phone number with spaced pairs
@@ -19,6 +17,11 @@ const RestaurantCard = ({ restaurant }) => {
     const formatted = cleaned.replace(/(\d{2})(?=\d{2,})/g, "$1 ");
 
     return formatted;
+  };
+
+  const handleEdit = (restaurant) => {
+    editSelectedRestaurant(restaurant);
+    console.log(restaurant);
   };
 
   return (
@@ -55,7 +58,9 @@ const RestaurantCard = ({ restaurant }) => {
           </button>
         </Link>
         <Link to={`/edit-restaurant/${id}`}>
-          <button className="flex items-center gap-2 px-2 py-2 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20">
+          <button
+            className="flex items-center gap-2 px-2 py-2 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20"
+            onClick={() => handleEdit(restaurant)}>
             Modifier <FaEdit />
           </button>
         </Link>

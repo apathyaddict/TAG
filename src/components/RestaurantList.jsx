@@ -2,7 +2,7 @@ import React from "react";
 import RestaurantCard from "./RestaurantCard"; // Assuming RestaurantCard component is in a separate file
 /* eslint-disable react/prop-types */
 
-const RestaurantList = ({ restaurants }) => {
+const RestaurantList = ({ restaurants, editSelectedRestaurant }) => {
   return (
     // <div className="min-h-screen max-w-full flex-1 px-10">
     <div className="mx-auto flex flex-col px-10">
@@ -14,7 +14,11 @@ const RestaurantList = ({ restaurants }) => {
       {/* <div className="border flex-1  flex flex-row gap-6"> */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {restaurants.map((restaurant) => (
-          <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+          <RestaurantCard
+            key={restaurant.id}
+            restaurant={restaurant}
+            {...{ editSelectedRestaurant }}
+          />
         ))}
       </div>
     </div>

@@ -7,8 +7,9 @@ import { db } from "../firebase";
 import { FaUtensils } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import CreatePage from "./CreatePage";
 
-const EditForm = () => {
+const EditForm = ({ isEditing, isNew }) => {
   const { id } = useParams(); // Get the ID parameter from the URL
 
   const [restaurant, setRestaurant] = useState(null);
@@ -54,7 +55,7 @@ const EditForm = () => {
       </div>
     );
   }
-  return <CreateForm restaurant={restaurant} />;
+  return <CreatePage restaurantInfo={restaurant} {...{ isEditing, isNew }} />;
 };
 
 export default EditForm;

@@ -3,7 +3,7 @@ import RestaurantList from "../components/RestaurantList.jsx";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase.js";
 
-const ListPage = () => {
+const ListPage = ({ editSelectedRestaurant }) => {
   const [allRestaurants, setAllRestaurants] = useState([]);
 
   useEffect(() => {
@@ -26,7 +26,10 @@ const ListPage = () => {
 
   return (
     <div className="mx-auto">
-      <RestaurantList restaurants={allRestaurants} />
+      <RestaurantList
+        restaurants={allRestaurants}
+        {...{ editSelectedRestaurant }}
+      />
     </div>
   );
 };

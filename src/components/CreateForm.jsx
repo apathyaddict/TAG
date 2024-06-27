@@ -1,33 +1,18 @@
-import React, { useEffect } from "react";
-
 //TODO: add toast
-/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from "react";
 
 const CreateForm = ({
-  restaurant,
+  restaurantInfo,
   handleSave,
   setErrorMessage,
   errorMessage,
   isLoading,
   setRestaurantData,
   restaurantData,
+  handleEdit,
+  isNew,
+  isEditing,
 }) => {
-  useEffect(() => {
-    if (restaurant) {
-      setRestaurantData({
-        name: restaurant.name || "",
-        rue: restaurant.rue || "",
-        code_postal: restaurant.code_postal || "",
-        ville: restaurant.ville || "",
-        phone: restaurant.phone || "",
-        website: restaurant.website || "",
-        days_open: restaurant.days_open || "",
-        menu: restaurant.menu || "",
-        prices: restaurant.prices || "",
-      });
-    }
-  }, []);
-
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setRestaurantData({
@@ -41,7 +26,7 @@ const CreateForm = ({
   return (
     <section className="container">
       <div className="max-w-4xl mx-auto my-4 p-8">
-        {!restaurant || restaurant.length === 0 ? (
+        {!isEditing ? (
           <h1 className="text-2xl font-bold mb-6 text-stone-600">
             Ajouter un nouvel établissement:
           </h1>
@@ -189,9 +174,9 @@ const CreateForm = ({
         <div className="flex justify-end items-end ">
           <button
             className="cursor-pointer bg-white mt-2 px-12 py-2 text-slate-800 font-bold border border-slate-300 rounded-md hover:bg-slate-100 hover:text-slate-600 "
-            onClick={handleSave}
+            onClick={isEditing ? handleEdit : handleSave}
             disabled={isLoading}>
-            {isLoading ? "En cours..." : restaurant ? "Modifier" : "Ajouter"}
+            {isLoading ? "En cours..." : isEditing ? "Modifier" : "Ajouter"}
           </button>
         </div>
       </div>
