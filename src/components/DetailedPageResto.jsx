@@ -1,13 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import {
-  FaMapMarkerAlt,
-  FaPhoneAlt,
-  FaLink,
-  FaClock,
-  FaUtensils,
-  FaMoneyBillWave,
-} from "react-icons/fa";
+import { FaMapMarkerAlt, FaPhoneAlt, FaLink, FaUtensils } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 //TODO: add toast
+/* eslint-disable react/prop-types */
 
-const CreateForm = () => {
+const CreateForm = ({ restaurant }) => {
   const [restaurantData, setRestaurantData] = useState({
     name: "",
     rue: "",
@@ -16,7 +17,23 @@ const CreateForm = () => {
     prices: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false); // Loading state
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (restaurant) {
+      setRestaurantData({
+        name: restaurant.name || "",
+        rue: restaurant.rue || "",
+        code_postal: restaurant.code_postal || "",
+        ville: restaurant.ville || "",
+        phone: restaurant.phone || "",
+        website: restaurant.website || "",
+        days_open: restaurant.days_open || "",
+        menu: restaurant.menu || "",
+        prices: restaurant.prices || "",
+      });
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -93,9 +110,15 @@ const CreateForm = () => {
   return (
     <section className="container">
       <div className="max-w-4xl mx-auto my-4 p-8">
-        <h1 className="text-2xl font-bold mb-6 text-stone-600">
-          Ajouter un nouvel établissement:
-        </h1>
+        {!restaurant || restaurant.length === 0 ? (
+          <h1 className="text-2xl font-bold mb-6 text-stone-600">
+            Ajouter un nouvel établissement:
+          </h1>
+        ) : (
+          <h1 className="text-2xl font-bold mb-6 text-stone-600">
+            Modifier un nouvel établissement:
+          </h1>
+        )}
         <div className="mb-4">
           <label
             htmlFor="name"
@@ -142,7 +165,6 @@ const CreateForm = () => {
             />
           </div>
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="ville"
@@ -172,7 +194,6 @@ const CreateForm = () => {
             pattern="[0-9+-]*"
           />
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="website"
@@ -187,7 +208,6 @@ const CreateForm = () => {
             value={restaurantData.website}
           />
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="days_open"
@@ -202,7 +222,6 @@ const CreateForm = () => {
             value={restaurantData.days_open}
           />
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="menu"
@@ -217,7 +236,6 @@ const CreateForm = () => {
             value={restaurantData.menu}
           />
         </div>
-
         <div className="mb-4">
           <label
             htmlFor="prices"
@@ -232,19 +250,17 @@ const CreateForm = () => {
             value={restaurantData.prices}
           />
         </div>
-
         {errorMessage && (
           <div className="mb-4 mt-10 text-red-600 border border-red-600 px-4 py-2 rounded-md">
             {errorMessage}
           </div>
         )}
-
-        <div className="flex justify-end items-end cursor-pointer">
+        <div className="flex justify-end items-end ">
           <button
-            className="bg-white mt-2 px-12 py-2 text-slate-800 font-extrabold border border-slate-300 rounded-md hover:bg-slate-100 hover:text-slate-600 cursor-pointer"
+            className="cursor-pointer bg-white mt-2 px-12 py-2 text-slate-800 font-bold border border-slate-300 rounded-md hover:bg-slate-100 hover:text-slate-600 "
             onClick={handleSave}
             disabled={isLoading}>
-            {isLoading ? "En cours..." : "Ajouter"}
+            {isLoading ? "En cours..." : restaurant ? "Modifier" : "Ajouter"}
           </button>
         </div>
       </div>
