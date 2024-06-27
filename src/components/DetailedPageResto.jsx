@@ -64,7 +64,7 @@ const RestaurantDetails = () => {
 
   return (
     <div className="max-w-full mr-10 p-10">
-      <h5 className="block mb-5 font-sans text-xl font-semibold text-blue-gray-900">
+      <h5 className="block mb-5 font-sans text-xl font-semibold text-blue-stone-800">
         {name}
       </h5>
       <div className="flex flex-col gap-4">

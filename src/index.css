@@ -5,9 +5,14 @@
 root,
 #root,
 html,
+root,
 body {
   height: 100%;
   width: 100%;
+}
+
+body {
+
   background-color: #F8FAFE;
 }
 

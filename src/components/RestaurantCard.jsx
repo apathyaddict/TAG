@@ -22,7 +22,7 @@ const RestaurantCard = ({ restaurant }) => {
   };
 
   return (
-    <div className="max-w-full min-w-[300px] rounded-md shadow-lg bg-white p-4  ">
+    <div className="flex-1 rounded-md shadow-lg bg-white p-4 min-w-[300px]  ">
       <h5 className="block mb-5 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
         {name}
       </h5>
@@ -67,17 +67,15 @@ const RestaurantCard = ({ restaurant }) => {
             state: { restaurant },
           }}>
           <button
-            className="flex items-center gap-2 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
+            className="flex items-center px-2 gap-2 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none pointer-events-auto hover:bg-gray-900/10 active:bg-gray-900/20 cursor-pointer"
             type="button">
             Details <FaLongArrowAltRight />
           </button>
         </Link>
         <Link to={`/edit-restaurant/${id}`}>
           <button
-            className="flex items-center gap-2 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
-            type="button"
-            // onClick={onEdit}
-          >
+            className="flex items-center gap-2 py-2 px-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
+            type="button">
             Modifier <FaEdit />
           </button>
         </Link>
