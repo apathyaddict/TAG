@@ -10,9 +10,7 @@ import {
 /* eslint-disable react/prop-types */
 
 const RestaurantCard = ({ restaurant }) => {
-  const {
-    formData: { name, rue, code_postal, ville, phone, website },
-  } = restaurant;
+  const { name, rue, code_postal, ville, phone, website } = restaurant;
 
   // Function to format phone number with spaced pairs
   const formatPhoneNumber = (phoneNumber) => {
@@ -27,7 +25,7 @@ const RestaurantCard = ({ restaurant }) => {
       <h5 className="block mb-5 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
         {name}
       </h5>
-      <div className="flex flex-col items-start gap-4 border w-full">
+      <div className="flex flex-col items-start gap-4  w-full">
         {/* Address section */}
         <div className=" flex  flex-col items-start  w-full ">
           <div className="flex-1 font-medium">

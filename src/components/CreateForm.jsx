@@ -1,15 +1,26 @@
-import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from "react";
+import { addDoc, collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase";
 
 const CreateForm = () => {
-  const [formData, setFormData] = useState({});
+  const [restaurantData, setRestaurantData] = useState({
+    name: "",
+    rue: "",
+    code_postal: "",
+    ville: "",
+    phone: "",
+    website: "",
+    days_open: "",
+    menu: "",
+    prices: "",
+  });
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
+    const { id, value } = e.target;
+    setRestaurantData({
+      ...restaurantData,
+      [id]: value,
     });
 
     setErrorMessage("");
@@ -18,47 +29,58 @@ const CreateForm = () => {
   const handleSave = async () => {
     setErrorMessage("");
 
-    if (!formData.name) {
+    if (!restaurantData.name) {
       setErrorMessage("Le nom du Restaurant est requis.");
       return;
     }
+
     // Validate postal code format
-    if (formData.code_postal && !/^\d+$/.test(formData.code_postal)) {
+    if (
+      restaurantData.code_postal &&
+      !/^\d+$/.test(restaurantData.code_postal)
+    ) {
       setErrorMessage("Le code postal ne doit contenir que des chiffres.");
       return;
     }
 
     // Validate phone number format
-    if (formData.phone && !/^[0-9+-]+$/.test(formData.phone)) {
+    if (restaurantData.phone && !/^[0-9+-]+$/.test(restaurantData.phone)) {
       setErrorMessage(
         "Le numéro de téléphone ne doit contenir que des chiffres, plus (+) et des tirets (-)."
       );
       return;
     }
 
-    //TODO: add info that says case sentitive
+    // Check if restaurant with the same name already exists
     const q = query(
       collection(db, "fiches"),
-      where("name", "==", formData.name)
+      where("name", "==", restaurantData.name)
     );
     const querySnapshot = await getDocs(q);
 
-    console.log("q", q);
-    console.log("querySnapshot", querySnapshot);
     if (!querySnapshot.empty) {
       setErrorMessage("Un restaurant avec ce nom existe déjà.");
       return;
     }
 
-    const newFiche = { ...formData };
-
+    // If all validations pass, proceed to add the document
     try {
-      await addDoc(collection(db, "fiches"), newFiche);
-      console.log("SUCCES : Sent to Database", newFiche);
+      await addDoc(collection(db, "fiches"), restaurantData);
+      console.log("SUCCES : Sent to Database", restaurantData);
 
-      setErrorMessage("");
-      // Clear form after successful save if needed
-      // setFormData({});
+      // Clear form fields after successful submission
+      setRestaurantData({
+        name: "",
+        rue: "",
+        code_postal: "",
+        ville: "",
+        phone: "",
+        website: "",
+        days_open: "",
+        menu: "",
+        prices: "",
+      });
+      setErrorMessage(""); // Clear any previous error messages
     } catch (error) {
       console.error("Error adding document: ", error);
     }
@@ -81,13 +103,14 @@ const CreateForm = () => {
             id="name"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500 required:border-red-500"
             onChange={handleInputChange}
+            value={restaurantData.name}
           />
         </div>
         <div className="flex gap-3">
-          <div className="mb-4  flex-1 max-w-[500px]">
+          <div className="mb-4 flex-1 max-w-[500px]">
             <label
               htmlFor="rue"
-              className="block text-sm font-medium text-gray-500 ">
+              className="block text-sm font-medium text-gray-500">
               Rue et Numéro
             </label>
             <input
@@ -95,6 +118,7 @@ const CreateForm = () => {
               id="rue"
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
               onChange={handleInputChange}
+              value={restaurantData.rue}
             />
           </div>
 
@@ -109,6 +133,7 @@ const CreateForm = () => {
               id="code_postal"
               className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
               onChange={handleInputChange}
+              value={restaurantData.code_postal}
               pattern="[0-9]*"
             />
           </div>
@@ -125,6 +150,7 @@ const CreateForm = () => {
             id="ville"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
+            value={restaurantData.ville}
           />
         </div>
         <div className="mb-4">
@@ -138,6 +164,7 @@ const CreateForm = () => {
             id="phone"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
+            value={restaurantData.phone}
             pattern="[0-9+-]*"
           />
         </div>
@@ -153,6 +180,7 @@ const CreateForm = () => {
             id="website"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
+            value={restaurantData.website}
           />
         </div>
 
@@ -167,6 +195,7 @@ const CreateForm = () => {
             id="days_open"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
+            value={restaurantData.days_open}
           />
         </div>
 
@@ -181,6 +210,7 @@ const CreateForm = () => {
             id="menu"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
+            value={restaurantData.menu}
           />
         </div>
 
@@ -195,6 +225,7 @@ const CreateForm = () => {
             id="prices"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
+            value={restaurantData.prices}
           />
         </div>
 

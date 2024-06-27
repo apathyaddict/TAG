@@ -1,5 +1,6 @@
 import React from "react";
 import RestaurantCard from "./RestaurantCard"; // Assuming RestaurantCard component is in a separate file
+/* eslint-disable react/prop-types */
 
 const RestaurantList = ({ restaurants }) => {
   return (
