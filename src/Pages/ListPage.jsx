@@ -25,7 +25,7 @@ const ListPage = () => {
   }, []);
 
   return (
-    <div className=" container mx-auto justify-center min-w-full flex border p-2">
+    <div className="mx-auto">
       <RestaurantList restaurants={allRestaurants} />
     </div>
   );

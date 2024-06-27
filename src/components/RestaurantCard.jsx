@@ -4,7 +4,7 @@ import {
   FaEdit,
   FaPhoneAlt,
   FaLink,
-  FaMapMarkerAlt, // New icon for address
+  FaMapMarkerAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -22,34 +22,22 @@ const RestaurantCard = ({ restaurant }) => {
   };
 
   return (
-    <div className="flex-1 rounded-md shadow-lg bg-white p-4 min-w-[300px]  ">
-      <h5 className="block mb-5 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+    <div className="rounded-md shadow-lg bg-white p-4">
+      <h5 className="mb-5 text-xl font-semibold leading-snug text-blue-gray-900">
         {name}
       </h5>
-      <div className="flex flex-col items-start gap-4  w-full">
-        {/* Address section */}
-        <div className=" flex  flex-col items-start  w-full ">
-          <div className="flex-1 font-medium">
-            {/* <FaMapMarkerAlt className="text-stone-600" /> */}
-            <span className="block font-sans text-base antialiased  leading-relaxed text-inherit">
-              {rue}
-            </span>
-          </div>
-          <div className="flex-1 font-normal">
-            <p className="block font-sans text-base antialiased leading-relaxed text-inherit">
-              {code_postal}, {ville}
-            </p>
-          </div>
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
+          <span className="text-base">{rue}</span>
+          <span className="text-base">
+            {code_postal}, {ville}
+          </span>
         </div>
-        {/* Phone section */}
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-2">
           <FaPhoneAlt className="text-stone-600" />
-          <p className="text-gray-700 text-base gap-2 flex items-center">
-            {formatPhoneNumber(phone)}
-          </p>
+          <p className="text-gray-700">{formatPhoneNumber(phone)}</p>
         </div>
-        {/* Website section */}
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-2">
           <FaLink className="text-stone-600" />
           <a
             href={website}
@@ -61,21 +49,13 @@ const RestaurantCard = ({ restaurant }) => {
         </div>
       </div>
       <div className="flex justify-between mt-6">
-        <Link
-          to={{
-            pathname: `/restaurants/${id}`,
-            state: { restaurant },
-          }}>
-          <button
-            className="flex items-center px-2 gap-2 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none pointer-events-auto hover:bg-gray-900/10 active:bg-gray-900/20 cursor-pointer"
-            type="button">
+        <Link to={`/restaurants/${id}`}>
+          <button className="flex items-center gap-2 px-2 py-2 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20">
             Details <FaLongArrowAltRight />
           </button>
         </Link>
         <Link to={`/edit-restaurant/${id}`}>
-          <button
-            className="flex items-center gap-2 py-2 px-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
-            type="button">
+          <button className="flex items-center gap-2 px-2 py-2 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20">
             Modifier <FaEdit />
           </button>
         </Link>
