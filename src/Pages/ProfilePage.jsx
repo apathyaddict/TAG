@@ -1,25 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { FaUserCircle } from "react-icons/fa";
+import { auth, db } from "../firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 const ProfilePage = () => {
+  const [userDetails, setUserDetails] = useState(null);
+  const fetchUserData = async () => {
+    auth.onAuthStateChanged(async (user) => {
+      const docRef = doc(db, "Users", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setUserDetails(docSnap.data());
+      } else {
+        console.log("User not logged in");
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchUserData();
+
+    return () => {};
+  }, []);
+
   return (
-    <section className="h-screen flex items-center justify-center">
-      <div className="flex flex-col justify-center max-w-xs p-6 shadow-md rounded-xl sm:px-12 dark:bg-gray-50 dark:text-gray-800 bg-white">
-        {/* <img
+    <section className="h-screen flex items-center justify-center ">
+      {userDetails ? (
+        <>
+          <div className="flex flex-col justify-center max-w-xs p-6 shadow-md rounded-xl sm:px-12 dark:bg-gray-50 dark:text-gray-800 bg-white">
+            {/* <img
         src="https://source.unsplash.com/150x150/?portrait?3"
         alt=""
         className="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square"
       /> */}
-        <FaUserCircle className="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square" />
-        <div className="space-y-4 text-center divide-y dark:divide-gray-300">
-          <div className="my-2 space-y-1">
-            <h2 className="text-xl font-semibold sm:text-2xl">Leroy Jenkins</h2>
-            <p className="px-5 text-xs sm:text-base dark:text-gray-600">
-              Full-stack developer
-            </p>
-          </div>
-          {/* <div className="flex justify-center pt-2 space-x-4 align-center">
+            <FaUserCircle className="w-32 h-32 mx-auto rounded-full dark:bg-gray-500 aspect-square" />
+            <div className="space-y-4 text-center divide-y dark:divide-gray-300">
+              <div className="my-2 space-y-1">
+                <h2 className="text-xl font-semibold sm:text-2xl">
+                  {userDetails.firstName} {userDetails.lastName}
+                </h2>
+                <p className="px-5 text-xs sm:text-base dark:text-gray-600">
+                  {userDetails.email}
+                </p>
+              </div>
+              {/* <div className="flex justify-center pt-2 space-x-4 align-center">
           <a
             rel="noopener noreferrer"
             href="#"
@@ -69,8 +95,12 @@ const ProfilePage = () => {
             </svg>
           </a>
         </div> */}
-        </div>
-      </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div></div>
+      )}
     </section>
   );
 };
