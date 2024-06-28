@@ -8,6 +8,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import DetailedPageResto from "./components/DetailedPageResto";
 import EditRestaurantForm from "./Pages/EditRestaurantForm";
 import HomePage from "./Pages/HomePage";
+import RegisterComp from "./components/Auth/RegisterComp";
 
 function App() {
   const [isNew, setIsnew] = useState("");
@@ -36,6 +37,7 @@ function App() {
             path="/edit-restaurant/:id"
             element={<EditRestaurantForm {...{ isEditing, isNew }} />}
           />
+          <Route path="/register" element={<RegisterComp />} />
         </Routes>
       </BrowserRouter>
     </>

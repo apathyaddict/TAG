@@ -1,6 +1,8 @@
 import React from "react";
 
 const SignInComp = () => {
+  //register func
+
   return (
     <div className="flex items-center space-x-4 p-4 bg-white rounded-lg shadow-md">
       <div>
