@@ -15,9 +15,11 @@ const Navbar = () => {
     <nav className="bg-white shadow-md ">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
         {/* Company Name (Tag) */}
-        <div className="flex items-center">
-          <span className="text-gray-800 text-lg font-semibold">Tag</span>
-        </div>
+        <Link to="/">
+          <div className="flex items-center">
+            <span className="text-gray-800 text-lg font-semibold">Tag</span>
+          </div>
+        </Link>
 
         {/* Right side - Search Bar, Create Restaurant, Avatar */}
         <div className="flex items-center space-x-4">

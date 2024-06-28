@@ -7,6 +7,7 @@ import ListPage from "./Pages/ListPage";
 import "react-loading-skeleton/dist/skeleton.css";
 import DetailedPageResto from "./components/DetailedPageResto";
 import EditRestaurantForm from "./Pages/EditRestaurantForm";
+import HomePage from "./Pages/HomePage";
 
 function App() {
   const [isNew, setIsnew] = useState("");
@@ -24,6 +25,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/new" element={<CreatePage />} />
           <Route
             path="/list"
