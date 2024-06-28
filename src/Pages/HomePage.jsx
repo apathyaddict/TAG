@@ -1,20 +1,12 @@
 import React from "react";
 import TAG from "../assets/TAG.png";
-import SignInComp from "../components/Auth/SignInComp";
 
-const HomePage = ({ userDetails }) => {
+const HomePage = () => {
   return (
-    <section className=" flex flex-col items-center justify-center m-4 h-screen ">
-      {!userDetails ? (
-        <div className="absolute inset-0 z-50 flex items-center justify-center">
-          <div className="bg-gray-200 bg-opacity-90 p-6 rounded-lg shadow-md">
-            <SignInComp />
-          </div>
-        </div>
-      ) : null}
-      <div className="mx-auto w-screen flex flex-1 justify-center">
-        <div className="absolute md:max-h-full justify-center overflow-hidden">
-          <div className="text-4xl font-bold text-stone-700 opacity-50 ">
+    <section className="relative flex flex-col items-center justify-center my-12 ">
+      <div className="mx-auto w-full flex justify-center">
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+          <div className="text-4xl font-bold text-stone-700 opacity-70 ">
             tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
             tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
             tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
@@ -29,16 +21,13 @@ const HomePage = ({ userDetails }) => {
             tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
             tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
             tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
-            tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
-            tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
-            tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
-            tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag tag
+            tag tag
           </div>
         </div>
         <img
           src={TAG}
           alt="main image of a cup of wine"
-          className="max-w-[500px] md:max-w-[600px] rounded-full shadow-lg mb-4 z-10"
+          className="items-center align-middle mx-auto z-10  lg:max-w-[500px] sm:max-w-[350px] max-w-[200px] rounded-full shadow-lg"
         />
       </div>
     </section>

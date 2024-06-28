@@ -14,6 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ProfilePage from "./Pages/ProfilePage";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
+import Loginpage from "./Pages/Loginpage";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
 
 function App() {
   const [isNew, setIsnew] = useState("");
@@ -58,20 +60,48 @@ function App() {
         <Navbar {...{ handlelogout }} />
         <Routes>
           <Route path="/" element={<HomePage {...{ userDetails }} />} />
-          <Route path="/new" element={<CreatePage />} />
+          <Route path="/secret/register" element={<RegisterComp />} />
+          <Route path="/login" element={<Loginpage />} />
+          <Route
+            path="/new"
+            element={
+              <ProtectedRoute user={userDetails}>
+                <CreatePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/list"
-            element={<ListPage {...{ editSelectedRestaurant }} />}
+            element={
+              <ProtectedRoute user={userDetails}>
+                <ListPage {...{ editSelectedRestaurant }} />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/restaurants/:id" element={<DetailedPageResto />} />
+          <Route
+            path="/restaurants/:id"
+            element={
+              <ProtectedRoute user={userDetails}>
+                <DetailedPageResto />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/edit-restaurant/:id"
-            element={<EditRestaurantForm {...{ isEditing, isNew }} />}
+            element={
+              <ProtectedRoute user={userDetails}>
+                <EditRestaurantForm {...{ isEditing, isNew }} />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/register" element={<RegisterComp />} />
+
           <Route
             path="/profile"
-            element={<ProfilePage {...{ handlelogout, userDetails }} />}
+            element={
+              <ProtectedRoute user={userDetails}>
+                <ProfilePage {...{ handlelogout, userDetails }} />
+              </ProtectedRoute>
+            }
           />
         </Routes>
         <ToastContainer />
