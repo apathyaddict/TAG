@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 const RegisterComp = () => {
   const [firstName, setFirstName] = useState("");
@@ -14,9 +16,21 @@ const RegisterComp = () => {
       await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
       console.log(user);
+
+      if (user) {
+        await setDoc(doc(db, "Users", user.uid), {
+          email: user.email,
+          firstName: firstName,
+          lastName: lastName,
+        });
+      }
       console.log("Utilisateur enregistré avec succès");
+      toast.success("Utilisateur enregistré avec succès", {
+        position: "top-center",
+      });
     } catch (error) {
       console.log(error.message);
+      toast.error(error.message, { position: "bottom-center" });
     }
   };
 

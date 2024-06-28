@@ -9,6 +9,9 @@ import DetailedPageResto from "./components/DetailedPageResto";
 import EditRestaurantForm from "./Pages/EditRestaurantForm";
 import HomePage from "./Pages/HomePage";
 import RegisterComp from "./components/Auth/RegisterComp";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ProfilePage from "./Pages/ProfilePage";
 
 function App() {
   const [isNew, setIsnew] = useState("");
@@ -16,9 +19,7 @@ function App() {
 
   const editSelectedRestaurant = (restaurant) => {
     setisEditing(true);
-
     setIsnew(restaurant);
-    // setCreateBookValues(restaurant);
   };
 
   return (
@@ -38,7 +39,9 @@ function App() {
             element={<EditRestaurantForm {...{ isEditing, isNew }} />}
           />
           <Route path="/register" element={<RegisterComp />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Routes>
+        <ToastContainer />
       </BrowserRouter>
     </>
   );
