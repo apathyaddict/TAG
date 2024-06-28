@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import Toast from "../components/Toast";
+import { toast } from "react-toastify";
 
 const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -47,16 +48,6 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       });
     }
   }, [restaurantInfo, setRestaurantData]);
-
-  useEffect(() => {
-    let timer;
-    if (showToast) {
-      timer = setTimeout(() => {
-        setShowToast(false);
-      }, 4000);
-    }
-    return () => clearTimeout(timer);
-  }, [showToast]);
 
   const handleSave = async () => {
     setErrorMessage("");
@@ -102,8 +93,9 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       await addDoc(collection(db, "fiches"), newFiche);
       console.log("SUCCES : Sent to Database", newFiche);
 
-      setShowToast(true); // Show the toast on successful submission
-      setToastMessage("Restaurant ajouté avec succès!");
+      toast.success("Restaurant mis à jour avec succès!", {
+        position: "top-right",
+      });
 
       setRestaurantData({
         name: "",
@@ -158,9 +150,9 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
 
       await setDoc(doc(db, "fiches", isNew.id), updatedFiche);
 
-      console.log("inside edit", updatedFiche);
-      setToastMessage("Restaurant mis à jour avec succès!");
-      setShowToast(true); // Show the toast on successful submission
+      toast.success("Restaurant mis à jour avec succès!", {
+        position: "top-right",
+      });
 
       setRestaurantData({
         name: "",

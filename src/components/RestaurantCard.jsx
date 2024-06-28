@@ -40,7 +40,7 @@ const RestaurantCard = ({ restaurant, editSelectedRestaurant }) => {
           <FaPhoneAlt className="text-stone-600" />
           <p className="text-gray-700">{formatPhoneNumber(phone)}</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 overflow-hidden">
           <FaLink className="text-stone-600" />
           <a
             href={website}
