@@ -38,16 +38,17 @@ const Navbar = () => {
           <Link to="/new">
             <button
               type="button"
-              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-amber-600 focus:text-amber-600">
-              <BiPlus className="h-8 w-8 text-zinc-800 hover:text-amber-800" />
+              className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  hover:text-amber-800">
+              <BiPlus className="h-8 w-8 text-zinc-800 " />
             </button>
           </Link>
 
           <Link to="/list">
             <button
               type="button"
-              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200  focus:text-amber-600">
-              <FaStore className="h-8 w-8 text-zinc-800 hover:text-amber-800" />
+              className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  hover:text-amber-800">
+              {" "}
+              <FaStore className="h-8 w-8 text-zinc-800" />
             </button>
           </Link>
 

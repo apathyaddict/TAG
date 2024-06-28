@@ -13,7 +13,6 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import Toast from "../components/Toast";
-import { useParams } from "react-router-dom";
 
 const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
   const [errorMessage, setErrorMessage] = useState("");
