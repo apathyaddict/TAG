@@ -16,7 +16,7 @@ const SignInComp = () => {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("user logged in successfully");
       // Use Navigate component or other navigation method here
-      navigate("/profile");
+      navigate("/");
     } catch (error) {
       console.log(error.message);
       toast.error(error.message, { position: "bottom-center" });

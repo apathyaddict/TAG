@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { FaSearch, FaUserCircle, FaStore } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ handlelogout }) => {
   const [isOpen, setIsOpen] = useState(false); // State for dropdown menu
 
   // Function to toggle dropdown menu
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
+
+    // Automatically close dropdown after 3 seconds if it's still open
+    if (!isOpen) {
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 3000); // 3000 milliseconds = 3 seconds
+    }
   };
 
   return (
@@ -63,22 +70,29 @@ const Navbar = () => {
 
             {/* Dropdown menu */}
             {isOpen && (
-              <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <Link
-                  href="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Profile
-                </Link>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Liste
-                </a>
-                <a
-                  href="#"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Sign out
-                </a>
+              <div className="absolute right-0 mt-2 w-48 origin-top-right rounded-xl bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline- z-20">
+                <div className=" hover:bg-gray-100">
+                  <Link
+                    to="/profile"
+                    className="block px-4 py-2 text-sm text-gray-700">
+                    Profile
+                  </Link>
+                </div>
+                <div className=" hover:bg-gray-100">
+                  <a
+                    href="list"
+                    className="block px-4 py-2 text-sm text-gray-700">
+                    Fiches et listes
+                  </a>
+                </div>
+                <div className=" hover:bg-gray-100 font-bold">
+                  <button
+                    onClick={handlelogout}
+                    href="/"
+                    className="block px-4 py-2 text-sm text-gray-700">
+                    Déconnexion
+                  </button>
+                </div>
               </div>
             )}
           </div>
