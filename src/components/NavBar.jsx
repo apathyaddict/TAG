@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { FaSearch, FaUserCircle, FaStore } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Navbar = ({ handlelogout }) => {
+const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false); // State for dropdown menu
 
   // Function to toggle dropdown menu
@@ -17,6 +18,16 @@ const Navbar = ({ handlelogout }) => {
       }, 3000); // 3000 milliseconds = 3 seconds
     }
   };
+
+  async function handleLogout() {
+    try {
+      await auth.signOut();
+      navigate("/");
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
 
   return (
     <nav className="bg-white shadow-md ">
@@ -87,7 +98,7 @@ const Navbar = ({ handlelogout }) => {
                 </div>
                 <div className=" hover:bg-gray-100 font-bold">
                   <button
-                    onClick={handlelogout}
+                    onClick={handleLogout}
                     href="/"
                     className="block px-4 py-2 text-sm text-gray-700">
                     Déconnexion
