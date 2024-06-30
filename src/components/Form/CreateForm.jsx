@@ -12,6 +12,7 @@ const CreateForm = ({
   handleEdit,
   isNew,
   isEditing,
+  handlePhotoChange,
 }) => {
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -166,6 +167,8 @@ const CreateForm = ({
             value={restaurantData.prices}
           />
         </div>
+
+        {/* Error message */}
         {errorMessage && (
           <div className="mb-4 mt-10 text-red-600 border border-red-600 px-4 py-2 rounded-md">
             {errorMessage}

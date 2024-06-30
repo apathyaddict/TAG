@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import CreateForm from "../components/CreateForm";
+import CreateForm from "../components/Form/CreateForm";
 import {
   addDoc,
   collection,
@@ -12,15 +12,11 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import Toast from "../components/Toast";
 import { toast } from "react-toastify";
 
 const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false); // State to manage Toast visibility
-  const [toastMessage, setToastMessage] = useState(""); // State to manage Toast message
-
   const [restaurantData, setRestaurantData] = useState({
     name: "",
     rue: "",
@@ -47,7 +43,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
         prices: restaurantInfo.prices || "",
       });
     }
-  }, [restaurantInfo, setRestaurantData]);
+  }, [restaurantInfo]);
 
   const handleSave = async () => {
     setErrorMessage("");
@@ -57,7 +53,6 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       return;
     }
 
-    // Validate postal code format
     if (
       restaurantData.code_postal &&
       !/^\d+$/.test(restaurantData.code_postal)
@@ -66,7 +61,6 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       return;
     }
 
-    // Validate phone number format
     if (restaurantData.phone && !/^[0-9+-]+$/.test(restaurantData.phone)) {
       setErrorMessage(
         "Le numéro de téléphone ne doit contenir que des chiffres, plus (+) et des tirets (-)."
@@ -74,29 +68,13 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       return;
     }
 
-    // Check if restaurant with the same name already exists
-    const q = query(
-      collection(db, "fiches"),
-      where("name", "==", restaurantData.name)
-    );
-    const querySnapshot = await getDocs(q);
-
-    if (!querySnapshot.empty) {
-      setErrorMessage("Un restaurant avec ce nom existe déjà.");
-      return;
-    }
-
-    const newFiche = { ...restaurantData };
-
     try {
       setIsLoading(true);
+      const newFiche = { ...restaurantData };
       await addDoc(collection(db, "fiches"), newFiche);
-      console.log("SUCCES : Sent to Database", newFiche);
-
-      toast.success("Restaurant mis à jour avec succès!", {
+      toast.success("Restaurant ajouté avec succès!", {
         position: "top-right",
       });
-
       setRestaurantData({
         name: "",
         rue: "",
@@ -108,12 +86,11 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
         menu: "",
         prices: "",
       });
-      setErrorMessage("");
       setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       console.error("Error adding document: ", error);
       setErrorMessage("Une erreur est survenue lors de l'envoi du formulaire.");
+      setIsLoading(false);
     }
   };
 
@@ -140,20 +117,13 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       return;
     }
 
-    const updatedFiche = { ...restaurantData };
-
     try {
       setIsLoading(true);
-
-      console.log(updatedFiche, "updatedData inside the edit button");
-      console.log(isNew.id, "id check");
-
+      const updatedFiche = { ...restaurantData };
       await setDoc(doc(db, "fiches", isNew.id), updatedFiche);
-
       toast.success("Restaurant mis à jour avec succès!", {
         position: "top-right",
       });
-
       setRestaurantData({
         name: "",
         rue: "",
@@ -165,39 +135,29 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
         menu: "",
         prices: "",
       });
-      setErrorMessage("");
       setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       console.error("Error updating document: ", error);
       setErrorMessage(
         "Une erreur est survenue lors de la mise à jour du formulaire."
       );
+      setIsLoading(false);
     }
-  };
-
-  const handleCloseToast = () => {
-    setShowToast(false); // Hide the toast when the close button is clicked
   };
 
   return (
     <>
       <CreateForm
-        {...{
-          handleSave,
-          setErrorMessage,
-          errorMessage,
-          isLoading,
-          setRestaurantData,
-          restaurantData,
-          handleEdit,
-          isNew,
-          isEditing,
-        }}
+        handleSave={handleSave}
+        handleEdit={handleEdit}
+        setErrorMessage={setErrorMessage}
+        errorMessage={errorMessage}
+        isLoading={isLoading}
+        setRestaurantData={setRestaurantData}
+        restaurantData={restaurantData}
+        isNew={isNew}
+        isEditing={isEditing}
       />
-      {showToast && (
-        <Toast id="toast" message={toastMessage} onClose={handleCloseToast} />
-      )}
     </>
   );
 };
