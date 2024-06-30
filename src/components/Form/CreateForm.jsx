@@ -127,44 +127,30 @@ const CreateForm = ({
         </div>
         <div className="mb-4">
           <label
-            htmlFor="days_open"
+            htmlFor="manager_name"
             className="block text-sm font-medium text-gray-500">
-            Jours d'ouverture
+            Nom du gérant
           </label>
           <input
             type="text"
-            id="days_open"
+            id="manager_name"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
-            value={restaurantData.days_open}
+            value={restaurantData.manager_name}
           />
         </div>
         <div className="mb-4">
           <label
-            htmlFor="menu"
+            htmlFor="manager_phone"
             className="block text-sm font-medium text-gray-500">
-            Menu
+            Numero de portable du gérant
           </label>
           <input
-            type="text"
-            id="menu"
+            type="number"
+            id="manager_phone"
             className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
             onChange={handleInputChange}
-            value={restaurantData.menu}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="prices"
-            className="block text-sm font-medium text-gray-500">
-            Prix
-          </label>
-          <input
-            type="text"
-            id="prices"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
-            onChange={handleInputChange}
-            value={restaurantData.prices}
+            value={restaurantData.manager_phone}
           />
         </div>
 

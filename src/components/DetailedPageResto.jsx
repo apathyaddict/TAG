@@ -1,6 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { FaMapMarkerAlt, FaPhoneAlt, FaLink, FaUtensils } from "react-icons/fa";
+import {
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+  FaLink,
+  FaUtensils,
+  FaUserSecret,
+} from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
@@ -55,7 +61,16 @@ const RestaurantDetails = () => {
     );
   }
 
-  const { name, rue, code_postal, ville, phone, website } = restaurant;
+  const {
+    name,
+    rue,
+    code_postal,
+    ville,
+    phone,
+    website,
+    manager_phone,
+    manager_name,
+  } = restaurant;
 
   const formatPhoneNumber = (phoneNumber) => {
     const cleaned = ("" + phoneNumber).replace(/\D/g, "");
@@ -111,8 +126,21 @@ const RestaurantDetails = () => {
             {website}
           </a>
         </div>
+        <div className="flex items-center gap-2">
+          <FaUserSecret className="w-5 h-5 text-stone-600" />
+          <p className="font-medium text-base leading-relaxed text-blue-gray-900">
+            {manager_name}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <FaPhoneAlt className="w-5 h-5 text-stone-600" />
+          <p className="text-base leading-relaxed text-blue-gray-900">
+            {formatPhoneNumber(manager_phone)}
+          </p>
+        </div>
       </div>
-      <div className=" hover:text-red-700 cursor-auto my-4">
+      <div className=" hover:text-red-700 cursor-auto mt-40 my-4">
         <button
           onClick={handleDelete}
           type="button"

@@ -1,16 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import CreateForm from "../components/Form/CreateForm";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { toast } from "react-toastify";
 
@@ -24,9 +15,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
     ville: "",
     phone: "",
     website: "",
-    days_open: "",
-    menu: "",
-    prices: "",
+    manager_phone: "",
+    manager_name: "",
   });
 
   useEffect(() => {
@@ -38,9 +28,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
         ville: restaurantInfo.ville || "",
         phone: restaurantInfo.phone || "",
         website: restaurantInfo.website || "",
-        days_open: restaurantInfo.days_open || "",
-        menu: restaurantInfo.menu || "",
-        prices: restaurantInfo.prices || "",
+        manager_phone: restaurantInfo.manager_phone || "",
+        manager_name: restaurantInfo.manager_name || "",
       });
     }
   }, [restaurantInfo]);
@@ -61,31 +50,24 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       return;
     }
 
-    if (restaurantData.phone && !/^[0-9+-]+$/.test(restaurantData.phone)) {
+    if (
+      (restaurantData.phone && !/^[0-9+-]+$/.test(restaurantData.phone)) ||
+      (restaurantData.manager_phone &&
+        !/^[0-9+-]+$/.test(restaurantData.manager_phone))
+    ) {
       setErrorMessage(
-        "Le numéro de téléphone ne doit contenir que des chiffres, plus (+) et des tirets (-)."
+        "Les numéros de téléphone ne doivent contenir que des chiffres, plus (+) et des tirets (-)."
       );
       return;
     }
 
     try {
       setIsLoading(true);
-      const newFiche = { ...restaurantData };
-      await addDoc(collection(db, "fiches"), newFiche);
+      await FirestoreOperations.addRestaurant(restaurantData);
       toast.success("Restaurant ajouté avec succès!", {
         position: "top-right",
       });
-      setRestaurantData({
-        name: "",
-        rue: "",
-        code_postal: "",
-        ville: "",
-        phone: "",
-        website: "",
-        days_open: "",
-        menu: "",
-        prices: "",
-      });
+      clearRestaurantData();
       setIsLoading(false);
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -117,24 +99,23 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       return;
     }
 
+    if (
+      restaurantData.manager_phone &&
+      !/^[0-9+-]+$/.test(restaurantData.manager_phone)
+    ) {
+      setErrorMessage(
+        "Le numéro de portable du gérant ne doit contenir que des chiffres, plus (+) et des tirets (-)."
+      );
+      return;
+    }
+
     try {
       setIsLoading(true);
-      const updatedFiche = { ...restaurantData };
-      await setDoc(doc(db, "fiches", isNew.id), updatedFiche);
+      await FirestoreOperations.updateRestaurant(isNew.id, restaurantData);
       toast.success("Restaurant mis à jour avec succès!", {
         position: "top-right",
       });
-      setRestaurantData({
-        name: "",
-        rue: "",
-        code_postal: "",
-        ville: "",
-        phone: "",
-        website: "",
-        days_open: "",
-        menu: "",
-        prices: "",
-      });
+      clearRestaurantData();
       setIsLoading(false);
     } catch (error) {
       console.error("Error updating document: ", error);
@@ -143,6 +124,31 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       );
       setIsLoading(false);
     }
+  };
+
+  const clearRestaurantData = () => {
+    setRestaurantData({
+      name: "",
+      rue: "",
+      code_postal: "",
+      ville: "",
+      phone: "",
+      website: "",
+      manager_phone: "",
+      manager_name: "",
+    });
+  };
+
+  const FirestoreOperations = {
+    addRestaurant: async (data) => {
+      const newFiche = { ...data };
+      await addDoc(collection(db, "fiches"), newFiche);
+    },
+    updateRestaurant: async (id, data) => {
+      const updatedFiche = { ...data };
+      await setDoc(doc(db, "fiches", id), updatedFiche);
+    },
+    // You can define other Firestore operations as needed
   };
 
   return (

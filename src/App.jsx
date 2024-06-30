@@ -64,11 +64,7 @@ function App() {
         />
         <Route
           path="/restaurants/:id"
-          element={
-            <ProtectedRoute user={userDetails}>
-              <DetailedPageResto />
-            </ProtectedRoute>
-          }
+          element={<DetailedPageResto user={userDetails} />}
         />
         <Route
           path="/edit-restaurant/:id"
