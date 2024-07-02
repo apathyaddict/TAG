@@ -1,7 +1,7 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const SignInComp = () => {
@@ -15,7 +15,7 @@ const SignInComp = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("user logged in successfully");
-      // Use Navigate component or other navigation method here
+
       navigate("/");
     } catch (error) {
       console.log(error.message);
