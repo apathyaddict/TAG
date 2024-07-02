@@ -1,8 +1,8 @@
 //TODO: add toast
 import React, { useState, useEffect } from "react";
+import DropdownCat from "./DropdownCat";
 
 const CreateForm = ({
-  restaurantInfo,
   handleSave,
   setErrorMessage,
   errorMessage,
@@ -12,7 +12,6 @@ const CreateForm = ({
   handleEdit,
   isNew,
   isEditing,
-  handlePhotoChange,
 }) => {
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -95,6 +94,10 @@ const CreateForm = ({
             onChange={handleInputChange}
             value={restaurantData.ville}
           />
+        </div>
+
+        <div className="mb-4">
+          <DropdownCat />
         </div>
         <div className="mb-4">
           <label
