@@ -53,6 +53,7 @@ function App() {
 
     setIsnew(restaurant);
   };
+
   return (
     <BrowserRouter>
       <Navbar />
@@ -75,9 +76,7 @@ function App() {
               path="/edit-restaurant/:id"
               // element={<CreatePage />}
               element={
-                <EditForm
-                  {...{ selectedRestaurant, isEditing, setIsEditing, isNew }}
-                />
+                <EditForm {...{ selectedRestaurant, isNew, setIsEditing }} />
               }
             />
             <Route

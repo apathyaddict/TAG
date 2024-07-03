@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import CreateForm from "../components/Form/CreateForm";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { FaUtensils } from "react-icons/fa";
@@ -9,8 +9,11 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import CreatePage from "./CreatePage";
 
-const EditForm = ({ isEditing, isNew, setIsEditing }) => {
+const EditForm = ({ isNew, setIsEditing }) => {
   const { id } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const isEditing = queryParams.get("isEditing") === "true";
 
   const [restaurant, setRestaurant] = useState(null);
 

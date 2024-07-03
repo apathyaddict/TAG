@@ -1,7 +1,15 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
 import CreateForm from "../components/Form/CreateForm";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../firebase";
 import { toast } from "react-toastify";
 
@@ -18,6 +26,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
     manager_phone: "",
     manager_name: "",
     category: "",
+    date_added: new Date().toISOString(),
+    date_modified: null,
   });
 
   useEffect(() => {
@@ -31,7 +41,9 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
         website: restaurantInfo.website || "",
         manager_phone: restaurantInfo.manager_phone || "",
         manager_name: restaurantInfo.manager_name || "",
-        category: restaurantInfo.restaurantInfo || "",
+        category: restaurantInfo.category || "",
+        date_added: restaurantInfo.added || new Date().toISOString(),
+        date_modified: restaurantInfo.date_modified || null,
       });
     }
   }, [restaurantInfo]);
@@ -63,17 +75,19 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
       return;
     }
 
-    // const q = query(
-    //   collection(db, "fiches"),
-    //   where("name", "==", restaurantData.name)
-    // );
+    if (restaurantData.name) {
+      const q = query(
+        collection(db, "fiches"),
+        where("name", "==", restaurantData.name)
+      );
 
-    // const querySnapshot = await getDocs(q);
+      const querySnapshot = await getDocs(q);
 
-    // if (!querySnapshot.empty) {
-    //   setErrorMessage("Un restaurant avec ce nom existe déjà.");
-    //   return;
-    // }
+      if (!querySnapshot.empty) {
+        setErrorMessage("Un restaurant avec ce nom existe déjà.");
+        return;
+      }
+    }
 
     const newFiche = { ...restaurantData };
 
@@ -127,7 +141,10 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
       );
       return;
     }
-    const updatedFiche = { ...restaurantData };
+    const updatedFiche = {
+      ...restaurantData,
+      date_modified: new Date().toISOString(),
+    };
 
     console.log("setIsEditing", updatedFiche);
     console.log("isNew", isNew);
@@ -139,7 +156,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
       toast.success("Restaurant mis à jour avec succès!", {
         position: "top-right",
       });
-      clearRestaurantData();
+
       setIsLoading(false);
     } catch (error) {
       console.error("Error updating document: ", error);

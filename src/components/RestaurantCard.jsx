@@ -58,7 +58,7 @@ const RestaurantCard = ({ restaurant, setIsEditing, setIsnew, editFunc }) => {
             Details <FaLongArrowAltRight />
           </button>
         </Link>
-        <Link to={`/edit-restaurant/${id}`}>
+        <Link to={`/edit-restaurant/${id}?isEditing=true`}>
           <button
             className="flex items-center gap-2 px-2 py-2 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20"
             onClick={() => handleEdit(restaurant)}>

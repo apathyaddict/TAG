@@ -1,4 +1,3 @@
-//TODO: add toast
 import React, { useState, useEffect } from "react";
 import DropdownCat from "./DropdownCat";
 
@@ -13,7 +12,7 @@ const CreateForm = ({
   isNew,
   isEditing,
 }) => {
-  const [category, setCategory] = useState("AUTRE");
+  // const [category, setCategory] = useState("AUTRE");
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
