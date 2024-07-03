@@ -5,7 +5,7 @@ import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { toast } from "react-toastify";
 
-const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
+const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [restaurantData, setRestaurantData] = useState({
@@ -63,9 +63,25 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       return;
     }
 
+    // const q = query(
+    //   collection(db, "fiches"),
+    //   where("name", "==", restaurantData.name)
+    // );
+
+    // const querySnapshot = await getDocs(q);
+
+    // if (!querySnapshot.empty) {
+    //   setErrorMessage("Un restaurant avec ce nom existe déjà.");
+    //   return;
+    // }
+
+    const newFiche = { ...restaurantData };
+
     try {
       setIsLoading(true);
-      await FirestoreOperations.addRestaurant(restaurantData);
+      await addDoc(collection(db, "fiches"), newFiche);
+      console.log("SUCCES : Sent to Database", newFiche);
+
       toast.success("Restaurant ajouté avec succès!", {
         position: "top-right",
       });
@@ -80,6 +96,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
 
   const handleEdit = async () => {
     setErrorMessage("");
+    setIsEditing(true);
 
     if (!restaurantData.name) {
       setErrorMessage("Le nom du Restaurant est requis.");
@@ -110,10 +127,15 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       );
       return;
     }
+    const updatedFiche = { ...restaurantData };
+
+    console.log("setIsEditing", updatedFiche);
+    console.log("isNew", isNew);
 
     try {
       setIsLoading(true);
-      await FirestoreOperations.updateRestaurant(isNew.id, restaurantData);
+      await setDoc(doc(db, "fiches", isNew.id), updatedFiche);
+
       toast.success("Restaurant mis à jour avec succès!", {
         position: "top-right",
       });
@@ -142,29 +164,20 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
     });
   };
 
-  const FirestoreOperations = {
-    addRestaurant: async (data) => {
-      const newFiche = { ...data };
-      await addDoc(collection(db, "fiches"), newFiche);
-    },
-    updateRestaurant: async (id, data) => {
-      const updatedFiche = { ...data };
-      await setDoc(doc(db, "fiches", id), updatedFiche);
-    },
-  };
-
   return (
     <>
       <CreateForm
-        handleSave={handleSave}
-        handleEdit={handleEdit}
-        setErrorMessage={setErrorMessage}
-        errorMessage={errorMessage}
-        isLoading={isLoading}
-        setRestaurantData={setRestaurantData}
-        restaurantData={restaurantData}
-        isNew={isNew}
-        isEditing={isEditing}
+        {...{
+          handleSave,
+          setErrorMessage,
+          errorMessage,
+          isLoading,
+          setRestaurantData,
+          restaurantData,
+          handleEdit,
+          isNew,
+          isEditing,
+        }}
       />
     </>
   );

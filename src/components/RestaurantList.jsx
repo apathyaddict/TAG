@@ -2,7 +2,7 @@ import React from "react";
 import RestaurantCard from "./RestaurantCard"; // Assuming RestaurantCard component is in a separate file
 /* eslint-disable react/prop-types */
 
-const RestaurantList = ({ restaurants, editSelectedRestaurant }) => {
+const RestaurantList = ({ restaurants, setIsEditing, setIsnew, editFunc }) => {
   return (
     // <div className="min-h-screen max-w-full flex-1 px-10">
     <div className="mx-auto flex flex-col px-10">
@@ -17,7 +17,7 @@ const RestaurantList = ({ restaurants, editSelectedRestaurant }) => {
           <RestaurantCard
             key={restaurant.id}
             restaurant={restaurant}
-            {...{ editSelectedRestaurant }}
+            {...{ setIsEditing, setIsnew, editFunc }}
           />
         ))}
       </div>

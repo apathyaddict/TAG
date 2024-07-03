@@ -10,10 +10,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase.js";
 import { FaSpinner } from "react-icons/fa";
-// import Skeleton from "react-loading-skeleton";
-// import "react-loading-skeleton/dist/skeleton.css";
 
-const ListPage = ({ editSelectedRestaurant }) => {
+const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastVisible, setLastVisible] = useState(null);
@@ -102,7 +100,7 @@ const ListPage = ({ editSelectedRestaurant }) => {
     <div className="mx-auto">
       <RestaurantList
         restaurants={allRestaurants}
-        {...{ editSelectedRestaurant }}
+        {...{ setIsEditing, setIsnew, editFunc }}
       />
 
       <div className="text-center my-10 capitalize">

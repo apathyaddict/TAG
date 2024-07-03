@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const RestaurantCard = ({ restaurant, editSelectedRestaurant }) => {
+const RestaurantCard = ({ restaurant, setIsEditing, setIsnew, editFunc }) => {
   const { name, rue, code_postal, ville, phone, website, id } = restaurant;
 
   // Function to format phone number with spaced pairs
@@ -20,8 +20,9 @@ const RestaurantCard = ({ restaurant, editSelectedRestaurant }) => {
   };
 
   const handleEdit = (restaurant) => {
-    editSelectedRestaurant(restaurant);
-    console.log(restaurant);
+    editFunc(restaurant);
+    // setIsEditing(true);
+    // setIsnew(restaurant);
   };
 
   return (

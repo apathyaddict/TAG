@@ -4,7 +4,7 @@ import Navbar from "./components/NavBar";
 import CreatePage from "./Pages/CreatePage";
 import ListPage from "./Pages/ListPage";
 import DetailedPageResto from "./components/DetailedPageResto";
-import EditRestaurantForm from "./Pages/EditRestaurantForm";
+
 import HomePage from "./Pages/HomePage";
 import RegisterComp from "./components/Auth/RegisterComp";
 import ProfilePage from "./Pages/ProfilePage";
@@ -13,10 +13,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
+import EditForm from "./Pages/EditForm";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
+  const [isNew, setIsnew] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,6 +48,11 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  const editFunc = (restaurant) => {
+    setIsEditing(true);
+
+    setIsnew(restaurant);
+  };
   return (
     <BrowserRouter>
       <Navbar />
@@ -54,14 +63,22 @@ function App() {
         {userDetails ? (
           <>
             <Route path="/new" element={<CreatePage />} />
-            <Route path="/list" element={<ListPage />} />
+            <Route
+              path="/list"
+              element={<ListPage {...{ setIsEditing, setIsnew, editFunc }} />}
+            />
             <Route
               path="/restaurants/:id"
               element={<DetailedPageResto user={userDetails} />}
             />
             <Route
               path="/edit-restaurant/:id"
-              element={<EditRestaurantForm />}
+              // element={<CreatePage />}
+              element={
+                <EditForm
+                  {...{ selectedRestaurant, isEditing, setIsEditing, isNew }}
+                />
+              }
             />
             <Route
               path="/profile"

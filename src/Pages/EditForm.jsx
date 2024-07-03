@@ -9,10 +9,11 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import CreatePage from "./CreatePage";
 
-const EditForm = ({ isEditing, isNew }) => {
-  const { id } = useParams(); // Get the ID parameter from the URL
+const EditForm = ({ isEditing, isNew, setIsEditing }) => {
+  const { id } = useParams();
 
   const [restaurant, setRestaurant] = useState(null);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,7 +56,12 @@ const EditForm = ({ isEditing, isNew }) => {
       </div>
     );
   }
-  return <CreatePage restaurantInfo={restaurant} {...{ isEditing, isNew }} />;
+  return (
+    <CreatePage
+      restaurantInfo={restaurant}
+      {...{ isEditing, isNew, setIsEditing }}
+    />
+  );
 };
 
 export default EditForm;
