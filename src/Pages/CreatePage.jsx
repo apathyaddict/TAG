@@ -17,6 +17,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
     website: "",
     manager_phone: "",
     manager_name: "",
+    category: "",
   });
 
   useEffect(() => {
@@ -30,6 +31,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
         website: restaurantInfo.website || "",
         manager_phone: restaurantInfo.manager_phone || "",
         manager_name: restaurantInfo.manager_name || "",
+        category: restaurantInfo.restaurantInfo || "",
       });
     }
   }, [restaurantInfo]);
@@ -136,6 +138,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       website: "",
       manager_phone: "",
       manager_name: "",
+      category: "",
     });
   };
 
@@ -148,7 +151,6 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew }) => {
       const updatedFiche = { ...data };
       await setDoc(doc(db, "fiches", id), updatedFiche);
     },
-    // You can define other Firestore operations as needed
   };
 
   return (

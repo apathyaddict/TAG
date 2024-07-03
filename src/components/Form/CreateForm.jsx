@@ -13,12 +13,14 @@ const CreateForm = ({
   isNew,
   isEditing,
 }) => {
+  const [category, setCategory] = useState("AUTRE");
+
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setRestaurantData({
-      ...restaurantData,
+    setRestaurantData((prevState) => ({
+      ...prevState,
       [id]: value,
-    });
+    }));
 
     setErrorMessage("");
   };
@@ -97,7 +99,11 @@ const CreateForm = ({
         </div>
 
         <div className="mb-4">
-          <DropdownCat />
+          <DropdownCat
+            category={restaurantData.category}
+            setRestaurantData={setRestaurantData}
+            restaurantData={restaurantData}
+          />
         </div>
         <div className="mb-4">
           <label
