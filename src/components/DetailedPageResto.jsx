@@ -7,15 +7,15 @@ import {
   FaUtensils,
   FaUserSecret,
 } from "react-icons/fa";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { BiEraser } from "react-icons/bi";
+import { BiEdit, BiEraser } from "react-icons/bi";
 import { format } from "date-fns";
 
-const RestaurantDetails = () => {
+const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -45,13 +45,13 @@ const RestaurantDetails = () => {
     fetchRestaurant();
   }, [id]);
 
-  // if (loading) {
-  //   return (
-  //     <div className="max-w-full mr-10 p-10">
-  //       <Skeleton height={100} className="my-2" count={3} />
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="max-w-full mr-10 p-10">
+        <Skeleton height={100} className="my-2" count={3} />
+      </div>
+    );
+  }
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
     return (
@@ -62,6 +62,10 @@ const RestaurantDetails = () => {
       </div>
     );
   }
+
+  const handleEdit = (restaurant) => {
+    editFunc(restaurant);
+  };
 
   const {
     name,
@@ -101,13 +105,13 @@ const RestaurantDetails = () => {
   };
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
-      <div className="bg-white  flex-1 mx-auto p-8 rounded-lg shadow-md ">
+      <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">
         <h5 className="block mb-10 text-3xl font-semibold text-blue-800 uppercase">
           {name}
         </h5>
         <ul className="flex flex-col gap-4  ">
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[300px]  px-4 text-slate-400 ">Addresse</div>
+            <div className=" w-[350px]  px-4 text-slate-400 ">Addresse</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
               <p className=" ">{rue} , </p>{" "}
               <span className="font-semibold">{code_postal} , </span>
@@ -115,7 +119,7 @@ const RestaurantDetails = () => {
             </div>
           </li>
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[300px]  px-4 text-slate-400 ">
+            <div className=" w-[350px]  px-4 text-slate-400 ">
               Numéro de téléphone
             </div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
@@ -123,7 +127,7 @@ const RestaurantDetails = () => {
             </div>
           </li>
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[300px]  px-4 text-slate-400 ">Mail</div>
+            <div className=" w-[350px]  px-4 text-slate-400 ">Mail</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
               <a
                 href={`mailto:${email}`}
@@ -134,7 +138,7 @@ const RestaurantDetails = () => {
             </div>
           </li>
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[300px]  px-4 text-slate-400 ">Site web</div>
+            <div className=" w-[350px]  px-4 text-slate-400 ">Site web</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
               <a
                 href={website}
@@ -146,7 +150,7 @@ const RestaurantDetails = () => {
             </div>
           </li>
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[300px]  px-4 text-slate-400 ">
+            <div className=" w-[350px]  px-4 text-slate-400 ">
               Nom du gérant
             </div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
@@ -154,7 +158,7 @@ const RestaurantDetails = () => {
             </div>
           </li>
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[300px]  px-4 text-slate-400 ">
+            <div className=" w-[350px]  px-4 text-slate-400 ">
               Numéro du gérant
             </div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
@@ -162,7 +166,7 @@ const RestaurantDetails = () => {
             </div>
           </li>
           <li className="flex gap-5 pb-4font-normal text-md  py-2">
-            <div className=" w-[300px]  px-4 text-slate-400 ">Catégorie</div>
+            <div className=" w-[350px]  px-4 text-slate-400 ">Catégorie</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
               <p className=""> {category}</p>
             </div>
@@ -181,11 +185,21 @@ const RestaurantDetails = () => {
         </div>
       </div>
 
-      <div className="flex justify-end  hover:text-red-700 cursor-auto mb-10">
+      <div className="flex justify-end cursor-auto mb-10 gap-4 ">
+        <Link to={`/edit-restaurant/${id}?isEditing=true`}>
+          <button
+            onClick={() => handleEdit(restaurant)}
+            type="button"
+            className="flex items-center justify-center font-semibold rounded-lg border border-solid  cursor-pointer pointer-events-auto shadow-md hover:bg-emerald-600 bg-emerald-400 px-6 py-2 text-white border-green-500 text-sm gap-2">
+            <BiEdit className="h-6 w-6 text-white " />
+            <p className="uppercase">Modifier</p>
+          </button>
+        </Link>
         <button
           onClick={handleDelete}
           type="button"
-          className="flex items-center justify-center font-semibold rounded-lg border border-solid  cursor-pointer pointer-events-auto hover:bg-red-600 bg-red-400 px-4 py-2 text-white border-pink-500 text-sm gap-2">
+          className="flex items-center justify-center font-semibold rounded-lg border border-solid  cursor-pointer pointer-events-auto 
+          shadow-md hover:bg-red-600 bg-red-400 px-4 py-2 text-white border-pink-500 text-sm gap-2">
           <BiEraser className="h-6 w-6 text-white " />
           <p className="uppercase">Supprimer</p>
         </button>

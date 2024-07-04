@@ -86,7 +86,9 @@ function App() {
             />
             <Route
               path="/restaurants/:id"
-              element={<DetailedPageResto user={userDetails} />}
+              element={
+                <DetailedPageResto user={userDetails} {...{ editFunc }} />
+              }
             />
             <Route
               path="/edit-restaurant/:id"

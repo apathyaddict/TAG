@@ -20,7 +20,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
     return formatted;
   };
 
-  const handleEdit = (restaurant) => {
+  const handleEdit2 = (restaurant) => {
     editFunc(restaurant);
   };
 
@@ -64,7 +64,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
         <Link to={`/edit-restaurant/${id}?isEditing=true`}>
           <button
             className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase border text-slate-700 transition-all rounded-lg hover:bg-slate-500/10 active:bg-gray-900/20 hover:text-slate-800"
-            onClick={() => handleEdit(restaurant)}>
+            onClick={() => handleEdit2(restaurant)}>
             Modifier <FaEdit className=" h-4 w-4 font-bold" />
           </button>
         </Link>

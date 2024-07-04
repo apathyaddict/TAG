@@ -13,7 +13,7 @@ import {
 import { db } from "../firebase";
 import { toast } from "react-toastify";
 
-const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
+const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [restaurantData, setRestaurantData] = useState({
@@ -45,7 +45,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
         category: restaurantInfo.category || "",
         date_added: restaurantInfo.added || new Date().toISOString(),
         date_modified: restaurantInfo.date_modified || null,
-        email: restaurantData.email || "",
+        email: restaurantInfo.email || "",
       });
     }
   }, [restaurantInfo]);
@@ -153,7 +153,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing }) => {
 
     try {
       setIsLoading(true);
-      await setDoc(doc(db, "fiches", isNew.id), updatedFiche);
+      await setDoc(doc(db, "fiches", id), updatedFiche);
 
       toast.success("Restaurant mis à jour avec succès!", {
         position: "top-right",

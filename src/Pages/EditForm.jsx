@@ -62,7 +62,7 @@ const EditForm = ({ isNew, setIsEditing }) => {
   return (
     <CreatePage
       restaurantInfo={restaurant}
-      {...{ isEditing, isNew, setIsEditing }}
+      {...{ isEditing, isNew, setIsEditing, id }}
     />
   );
 };

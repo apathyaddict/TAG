@@ -24,6 +24,8 @@ const CreateForm = ({
     setErrorMessage("");
   };
 
+  console.log(restaurantData);
+
   return (
     <section className="container">
       <div className="max-w-4xl mx-auto my-4 p-8">
