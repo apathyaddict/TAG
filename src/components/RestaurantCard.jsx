@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { BiPlus } from "react-icons/bi";
 import {
   FaLongArrowAltRight,
   FaEdit,
@@ -8,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const RestaurantCard = ({ restaurant, setIsEditing, setIsnew, editFunc }) => {
+const RestaurantCard = ({ restaurant, editFunc }) => {
   const { name, rue, code_postal, ville, phone, website, id } = restaurant;
 
   // Function to format phone number with spaced pairs
@@ -21,15 +22,14 @@ const RestaurantCard = ({ restaurant, setIsEditing, setIsnew, editFunc }) => {
 
   const handleEdit = (restaurant) => {
     editFunc(restaurant);
-    // setIsEditing(true);
-    // setIsnew(restaurant);
   };
 
   return (
-    <div className="rounded-md shadow-lg bg-white p-4">
-      <h5 className="mb-5 text-xl font-semibold leading-snug text-blue-gray-900">
+    <div className="flex flex-col justify-between rounded-lg shadow-lg bg-white p-4  border-l-8 border-blue-600 ">
+      <h5 className="mb-2 text-2xl uppercase wrap font-bold leading-snug text-sky ">
         {name}
       </h5>
+      <div className=" border mb-4 border-1  border-gray-200"></div>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <span className="text-base">{rue}</span>
@@ -38,31 +38,34 @@ const RestaurantCard = ({ restaurant, setIsEditing, setIsnew, editFunc }) => {
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <FaPhoneAlt className="text-stone-600" />
+          <FaPhoneAlt className="text-blue-400" />
           <p className="text-gray-700">{formatPhoneNumber(phone)}</p>
         </div>
         <div className="flex items-center gap-2 overflow-hidden">
-          <FaLink className="text-stone-600" />
+          <FaLink className="text-blue-400" />
           <a
             href={website}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline">
+            className="text-blue-800 hover:underline">
             {website}
           </a>
         </div>
       </div>
-      <div className="flex justify-between mt-6">
+
+      {/* buttons */}
+      <div className="flex justify-between mt-4 gap-2">
         <Link to={`/restaurants/${id}`}>
-          <button className="flex items-center gap-2 px-2 py-2 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20">
-            Details <FaLongArrowAltRight />
+          <button className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase border text-slate-700 transition-all rounded-lg hover:bg-slate-500/10 active:bg-gray-900/20 hover:text-slate-800">
+            Détails
+            <BiPlus className=" h-4 w-4 font-bold" />
           </button>
         </Link>
         <Link to={`/edit-restaurant/${id}?isEditing=true`}>
           <button
-            className="flex items-center gap-2 px-2 py-2 text-xs font-bold uppercase text-gray-900 transition-all rounded-lg hover:bg-gray-900/10 active:bg-gray-900/20"
+            className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase border text-slate-700 transition-all rounded-lg hover:bg-slate-500/10 active:bg-gray-900/20 hover:text-slate-800"
             onClick={() => handleEdit(restaurant)}>
-            Modifier <FaEdit />
+            Modifier <FaEdit className=" h-4 w-4 font-bold" />
           </button>
         </Link>
       </div>

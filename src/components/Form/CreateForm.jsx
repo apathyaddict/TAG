@@ -28,11 +28,11 @@ const CreateForm = ({
     <section className="container">
       <div className="max-w-4xl mx-auto my-4 p-8">
         {!isEditing ? (
-          <h1 className="text-2xl font-bold mb-6 text-stone-600">
+          <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
             Ajouter un nouvel établissement:
           </h1>
         ) : (
-          <h1 className="text-2xl font-bold mb-6 text-stone-600">
+          <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
             Modifier un nouvel établissement:
           </h1>
         )}
@@ -45,7 +45,7 @@ const CreateForm = ({
           <input
             type="text"
             id="name"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500 required:border-red-500"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 required:border-red-500"
             onChange={handleInputChange}
             value={restaurantData.name}
           />
@@ -60,7 +60,7 @@ const CreateForm = ({
             <input
               type="text"
               id="rue"
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               onChange={handleInputChange}
               value={restaurantData.rue}
             />
@@ -73,9 +73,9 @@ const CreateForm = ({
               Code Postal
             </label>
             <input
-              type="text"
+              type="number"
               id="code_postal"
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
               onChange={handleInputChange}
               value={restaurantData.code_postal}
               pattern="[0-9]*"
@@ -91,7 +91,7 @@ const CreateForm = ({
           <input
             type="text"
             id="ville"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             onChange={handleInputChange}
             value={restaurantData.ville}
           />
@@ -113,7 +113,7 @@ const CreateForm = ({
           <input
             type="tel"
             id="phone"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             onChange={handleInputChange}
             value={restaurantData.phone}
             pattern="[0-9+-]*"
@@ -128,7 +128,7 @@ const CreateForm = ({
           <input
             type="url"
             id="website"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             onChange={handleInputChange}
             value={restaurantData.website}
           />
@@ -142,7 +142,7 @@ const CreateForm = ({
           <input
             type="text"
             id="manager_name"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             onChange={handleInputChange}
             value={restaurantData.manager_name}
           />
@@ -154,9 +154,9 @@ const CreateForm = ({
             Numero de portable du gérant
           </label>
           <input
-            type="number"
+            type="tel"
             id="manager_phone"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-stone-500"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             onChange={handleInputChange}
             value={restaurantData.manager_phone}
           />
@@ -168,9 +168,9 @@ const CreateForm = ({
             {errorMessage}
           </div>
         )}
-        <div className="flex justify-end items-end ">
+        <div className="flex justify-end items-end  mt-8">
           <button
-            className="cursor-pointer bg-white mt-2 px-12 py-2 text-slate-800 font-bold border border-slate-300 rounded-md hover:bg-slate-100 hover:text-slate-600 "
+            className="cursor-pointer bg-white mt-2 px-12 py-2 text-blue-600 font-bold border border-slate-300 rounded-lg hover:bg-slate-800 hover:text-blue-100 uppercase"
             onClick={isEditing ? handleEdit : handleSave}
             disabled={isLoading}>
             {isLoading ? "En cours..." : isEditing ? "Modifier" : "Ajouter"}

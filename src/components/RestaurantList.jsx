@@ -1,26 +1,34 @@
-import React from "react";
-import RestaurantCard from "./RestaurantCard"; // Assuming RestaurantCard component is in a separate file
-/* eslint-disable react/prop-types */
+import React, { useEffect, useState } from "react";
+import RestaurantCard from "./RestaurantCard"; //
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const RestaurantList = ({ restaurants, setIsEditing, setIsnew, editFunc }) => {
-  return (
-    // <div className="min-h-screen max-w-full flex-1 px-10">
-    <div className="mx-auto flex flex-col px-10">
-      <h1 className="mt-10 text-2xl font-bold mb-6 text-stone-600">
-        Liste des Restaurants
-      </h1>
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-full"> */}
-      {/* <div className="flex flex-row gap-5 justify-evenly wrap max-w-full"> */}
-      {/* <div className="border flex-1  flex flex-row gap-6"> */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {restaurants.map((restaurant) => (
-          <RestaurantCard
-            key={restaurant.id}
-            restaurant={restaurant}
-            {...{ setIsEditing, setIsnew, editFunc }}
-          />
-        ))}
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (restaurants && restaurants.length > 0) {
+      setLoading(false);
+    }
+  }, [restaurants]);
+
+  if (loading) {
+    return (
+      <div className="max-w-full mr-10 p-10">
+        <Skeleton height={10} className="my-2" count={6} />
       </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {restaurants.map((restaurant) => (
+        <RestaurantCard
+          key={restaurant.id}
+          restaurant={restaurant}
+          {...{ setIsEditing, setIsnew, editFunc }}
+        />
+      ))}
     </div>
   );
 };

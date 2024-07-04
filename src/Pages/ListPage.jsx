@@ -23,7 +23,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
       try {
         const first = query(
           collection(db, "fiches"),
-          orderBy("name"),
+          orderBy("date_added"),
           limit(4)
         );
 
@@ -98,18 +98,24 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   return (
     <div className="mx-auto">
-      <RestaurantList
-        restaurants={allRestaurants}
-        {...{ setIsEditing, setIsnew, editFunc }}
-      />
+      <div className="mx-auto flex flex-col px-10">
+        <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
+          Banque de données
+        </h1>
+        <RestaurantList
+          restaurants={allRestaurants}
+          {...{ setIsEditing, setIsnew, editFunc }}
+        />
 
-      <div className="text-center my-10 capitalize">
-        <button
-          onClick={fetchMoreRestaurants}
-          className="px-10 py-2 bg-white text-stone-800 border-stone-200 hover:text-gray-600 focus:text-gray-800 font-bold border uppercase rounded-md disabled:text-stone-300 hover:cursor-auto"
-          disabled={moreLoading || !lastVisible}>
-          {moreLoading ? "Chargement..." : "Charger plus"}
-        </button>
+        <div className="text-center my-10 capitalize">
+          <button
+            onClick={fetchMoreRestaurants}
+            className="px-10 py-2 hover:bg-white text-slate-600 transition-all  border-slate-200 
+            hover:text-slate-900 rounded-lg focus:text-gray-800 font-bold border uppercase disabled:text-slate-300 hover:cursor-pointer"
+            disabled={moreLoading || !lastVisible}>
+            {moreLoading ? "Chargement..." : "Charger plus"}
+          </button>
+        </div>
       </div>
     </div>
   );

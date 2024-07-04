@@ -32,10 +32,11 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-md ">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
-        {/* Company Name (Tag) */}
         <Link to="/">
           <div className="flex items-center">
-            <span className="text-gray-800 text-lg font-semibold">Tag</span>
+            <span className="text-slate-700 text-lg font-semibold hover:text-blue-800">
+              Tag
+            </span>
           </div>
         </Link>
 
@@ -56,17 +57,17 @@ const Navbar = () => {
           <Link to="/new">
             <button
               type="button"
-              className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  hover:text-amber-800">
-              <BiPlus className="h-8 w-8 text-zinc-800 " />
+              className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  ">
+              <BiPlus className="h-8 w-8 text-slate-700 hover:text-blue-600 " />
             </button>
           </Link>
 
           <Link to="/list">
             <button
               type="button"
-              className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  hover:text-amber-800">
+              className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  ">
               {" "}
-              <FaStore className="h-8 w-8 text-zinc-800" />
+              <FaStore className="h-8 w-8 text-slate-700 hover:text-blue-600" />
             </button>
           </Link>
 
@@ -75,8 +76,8 @@ const Navbar = () => {
             <button
               onClick={toggleDropdown}
               type="button"
-              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 hover:text-gray-800 focus:text-gray-800">
-              <FaUserCircle className="h-8 w-8 text-zinc-800" />
+              className="flex items-center justify-center h-12 w-12 rounded-2xl bg-transparent border border-solid shadow-none cursor-pointer text-stone-500 border-stone-200 ">
+              <FaUserCircle className="h-8 w-8 text-slate-700 hover:text-blue-600 " />
             </button>
 
             {/* Dropdown menu */}
