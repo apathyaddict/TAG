@@ -24,7 +24,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         const first = query(
           collection(db, "fiches"),
           orderBy("date_added", "desc"),
-          limit(4)
+          limit(8)
         );
 
         const documentSnapshots = await getDocs(first);
