@@ -21,7 +21,8 @@ const RestaurantList = ({ restaurants, setIsEditing, setIsnew, editFunc }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    // <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-flow-col-4 gap-4">
+    <div className="flex flex-col md:flex-row flex-wrap gap-4 max-w-full overflow-x-hidden justify-center p-4">
       {restaurants.map((restaurant) => (
         <RestaurantCard
           key={restaurant.id}

@@ -19,7 +19,7 @@ const Navbar = ({ handleLogout }) => {
   };
 
   return (
-    <nav className="bg-white shadow-md ">
+    <nav className="bg-white shadow-md sticky w-full z-10 ">
       <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-16">
         <Link to="/">
           <div className="flex items-center">

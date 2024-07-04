@@ -20,6 +20,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 import EditForm from "./Pages/EditForm";
+import SidebarSearch from "./components/SidebarSearch";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -101,6 +102,7 @@ function App() {
               path="/profile"
               element={<ProfilePage {...{ userDetails, handleLogout }} />}
             />
+            <Route path="/test" element={<SidebarSearch />} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/login" />} />
