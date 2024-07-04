@@ -23,7 +23,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
       try {
         const first = query(
           collection(db, "fiches"),
-          orderBy("date_added"),
+          orderBy("date_added", "desc"),
           limit(4)
         );
 
@@ -56,9 +56,10 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     try {
       const next = query(
         collection(db, "fiches"),
-        orderBy("name"),
+        orderBy("date_added", "desc"),
+
         startAfter(lastVisible),
-        limit(4)
+        limit(8)
       );
 
       const documentSnapshots = await getDocs(next);

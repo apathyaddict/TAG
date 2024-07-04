@@ -26,7 +26,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
 
   return (
     <div className="flex flex-col justify-between rounded-lg shadow-lg bg-white p-4  border-l-8 border-blue-600 ">
-      <h5 className="mb-2 text-2xl uppercase wrap font-bold leading-snug text-sky ">
+      <h5 className="mb-2 text-xl uppercase wrap font-bold leading-snug text-sky ">
         {name}
       </h5>
       <div className=" border mb-4 border-1  border-gray-200"></div>

@@ -48,7 +48,7 @@ const RestaurantDetails = ({ editFunc }) => {
   if (loading) {
     return (
       <div className="max-w-full mr-10 p-10">
-        <Skeleton height={100} className="my-2" count={3} />
+        <Skeleton height={30} className="my-2" count={3} />
       </div>
     );
   }
@@ -176,7 +176,9 @@ const RestaurantDetails = ({ editFunc }) => {
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-between ">
         <div className="mt-2 text-left">
-          <p className="text-sm text-slate-500">Derniere mise a jour:</p>
+          <p className="text-sm text-slate-500">
+            Ajouté à la banque de donnée::
+          </p>
           {format(new Date(date_added), "dd / MM / yyyy")}
         </div>
         <div className="mt-2 text-right">
