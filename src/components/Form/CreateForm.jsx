@@ -12,14 +12,23 @@ const CreateForm = ({
   isNew,
   isEditing,
 }) => {
-  // const [category, setCategory] = useState("AUTRE");
-
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    setRestaurantData((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
+
+    // split names into part so that we can search them later
+    if (id === "name") {
+      const nameSubstrings = value.toLowerCase().split(/\s+/);
+      setRestaurantData((prevState) => ({
+        ...prevState,
+        [id]: value,
+        nameSubstrings: nameSubstrings,
+      }));
+    } else {
+      setRestaurantData((prevState) => ({
+        ...prevState,
+        [id]: value,
+      }));
+    }
 
     setErrorMessage("");
   };

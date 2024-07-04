@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const SidebarSearch = () => {
+const SidebarSearch = ({ setSearchTerm, searchTerm }) => {
   const categories = [
     "RESTAURANT",
     "RESTAURANT & HÔTEL",
@@ -13,17 +13,6 @@ const SidebarSearch = () => {
     "TRAITEUR",
     "AUTRE",
   ];
-
-  const [searchTerm, setSearchTerm] = useState("");
-
-  //   useEffect(() => {
-  //     const filtered = items.filter((item) =>
-  //       item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //     );
-  //     onFilteredItemsChange(filtered);
-
-  //     console.log(searchTerm);
-  //   }, [searchTerm]);
 
   return (
     <div className=" sm:h-screen bg-white text-slate-700 p-4 shadow-md ">
