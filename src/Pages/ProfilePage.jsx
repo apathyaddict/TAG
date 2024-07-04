@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 
-const ProfilePage = ({ handlelogout, userDetails }) => {
+const ProfilePage = ({ handleLogout, userDetails }) => {
   return (
     <section className="h-screen flex items-center justify-center">
       {userDetails ? (
@@ -18,7 +18,7 @@ const ProfilePage = ({ handlelogout, userDetails }) => {
             </div>
             <div className="flex justify-center pt-10 space-x-4 align-center">
               <button
-                onClick={handlelogout}
+                onClick={handleLogout}
                 className="px-4 py-2 font-medium text-white bg-red-600 rounded-lg shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 uppercase">
                 Déconnexion
               </button>

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+  redirect,
+} from "react-router-dom";
 import Navbar from "./components/NavBar";
 import CreatePage from "./Pages/CreatePage";
 import ListPage from "./Pages/ListPage";
@@ -54,9 +60,19 @@ function App() {
     setIsnew(restaurant);
   };
 
+  async function handleLogout() {
+    try {
+      await auth.signOut();
+      redirect("/login");
+      console.log("Logout successful");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  }
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar {...{ handleLogout }} />
       <Routes>
         <Route path="/" element={<HomePage userDetails={userDetails} />} />
         <Route path="/secret/register" element={<RegisterComp />} />
@@ -81,7 +97,7 @@ function App() {
             />
             <Route
               path="/profile"
-              element={<ProfilePage {...{ userDetails }} />}
+              element={<ProfilePage {...{ userDetails, handleLogout }} />}
             />
           </>
         ) : (
