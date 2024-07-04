@@ -13,9 +13,11 @@ import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { BiEraser } from "react-icons/bi";
+import { format } from "date-fns";
 
 const RestaurantDetails = () => {
-  const { id } = useParams(); // Get the ID parameter from the URL
+  const { id } = useParams();
+
   const navigate = useNavigate();
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -43,13 +45,13 @@ const RestaurantDetails = () => {
     fetchRestaurant();
   }, [id]);
 
-  if (loading) {
-    return (
-      <div className="max-w-full mr-10 p-10">
-        <Skeleton height={100} className="my-2" count={3} />
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div className="max-w-full mr-10 p-10">
+  //       <Skeleton height={100} className="my-2" count={3} />
+  //     </div>
+  //   );
+  // }
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
     return (
@@ -70,6 +72,10 @@ const RestaurantDetails = () => {
     website,
     manager_phone,
     manager_name,
+    category,
+    date_modified,
+    date_added,
+    email,
   } = restaurant;
 
   const formatPhoneNumber = (phoneNumber) => {
@@ -94,59 +100,94 @@ const RestaurantDetails = () => {
       }
   };
   return (
-    <div className="max-w-full mr-10 p-10">
-      <h5 className="block mb-5 font-sans text-xl font-semibold text-blue-stone-800">
-        {name}
-      </h5>
-      <div className="flex flex-col gap-4">
-        <div className="flex items-start gap-2">
-          <FaMapMarkerAlt className="text-stone-600" />
-          <div>
-            <p className="font-medium text-base leading-relaxed text-blue-gray-900">
-              {rue}
-            </p>
-            <p className="text-base leading-relaxed text-blue-gray-600">
-              {code_postal} {ville}
-            </p>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <FaPhoneAlt className="text-stone-600" />
-          <p className="text-base leading-relaxed text-blue-gray-900">
-            {formatPhoneNumber(phone)}
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <FaLink className="text-stone-600" />
-          <a
-            href={website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline">
-            {website}
-          </a>
-        </div>
-        <div className="flex items-center gap-2">
-          <FaUserSecret className="w-5 h-5 text-stone-600" />
-          <p className="font-medium text-base leading-relaxed text-blue-gray-900">
-            {manager_name}
-          </p>
-        </div>
+    <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
+      <div className="bg-white  flex-1 mx-auto p-8 rounded-lg shadow-md ">
+        <h5 className="block mb-10 text-3xl font-semibold text-blue-800 uppercase">
+          {name}
+        </h5>
+        <ul className="flex flex-col gap-4  ">
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[300px]  px-4 text-slate-400 ">Addresse</div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=" ">{rue} , </p>{" "}
+              <span className="font-semibold">{code_postal} , </span>
+              <p className="gap-4"> {ville}</p>
+            </div>
+          </li>
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[300px]  px-4 text-slate-400 ">
+              Numéro de téléphone
+            </div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=""> {formatPhoneNumber(phone)}</p>
+            </div>
+          </li>
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[300px]  px-4 text-slate-400 ">Mail</div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <a
+                href={`mailto:${email}`}
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline">
+                <p className=""> {email}</p>
+              </a>
+            </div>
+          </li>
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[300px]  px-4 text-slate-400 ">Site web</div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <a
+                href={website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline">
+                <p className=""> {website}</p>
+              </a>
+            </div>
+          </li>
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[300px]  px-4 text-slate-400 ">
+              Nom du gérant
+            </div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=""> {manager_name}</p>
+            </div>
+          </li>
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[300px]  px-4 text-slate-400 ">
+              Numéro du gérant
+            </div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=""> {formatPhoneNumber(manager_phone)}</p>
+            </div>
+          </li>
+          <li className="flex gap-5 pb-4font-normal text-md  py-2">
+            <div className=" w-[300px]  px-4 text-slate-400 ">Catégorie</div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=""> {category}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
 
-        <div className="flex items-center gap-2">
-          <FaPhoneAlt className="w-5 h-5 text-stone-600" />
-          <p className="text-base leading-relaxed text-blue-gray-900">
-            {formatPhoneNumber(manager_phone)}
-          </p>
+      <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-between ">
+        <div className="mt-2 text-left">
+          <p className="text-sm text-slate-500">Derniere mise a jour:</p>
+          {format(new Date(date_added), "dd / MM / yyyy")}
+        </div>
+        <div className="mt-2 text-right">
+          <p className="text-sm text-slate-500">Dernière mise à jour:</p>
+          {format(new Date(date_modified), "dd / MM / yyyy")}
         </div>
       </div>
-      <div className=" hover:text-red-700 cursor-auto mt-40 my-4">
+
+      <div className="flex justify-end  hover:text-red-700 cursor-auto mb-10">
         <button
           onClick={handleDelete}
           type="button"
-          className="flex items-center justify-center font-semibold rounded-sm border border-solid  cursor-pointer pointer-events-auto hover:bg-pink-100 bg-white px-8 py-2 text-red-600 border-stone-200  ">
-          <BiEraser className="h-6 w-6 text-red-600 " />
-          <p className="capitalize">EFFACER</p>
+          className="flex items-center justify-center font-semibold rounded-lg border border-solid  cursor-pointer pointer-events-auto hover:bg-red-600 bg-red-400 px-4 py-2 text-white border-pink-500 text-sm gap-2">
+          <BiEraser className="h-6 w-6 text-white " />
+          <p className="uppercase">Supprimer</p>
         </button>
       </div>
     </div>
