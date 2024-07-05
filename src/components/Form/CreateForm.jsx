@@ -15,20 +15,19 @@ const CreateForm = ({
   const handleInputChange = (e) => {
     const { id, value } = e.target;
 
-    // split names into part so that we can search them later
+    setRestaurantData((prevState) => ({
+      ...prevState,
+      [id]: value.toLowerCase(),
+    }));
+
     if (id === "name") {
+      // Split names into parts and save the whole name in lowercase for searching later
       const nameSubstrings = value.toLowerCase().split(/\s+/);
       nameSubstrings.push(value.toLowerCase());
 
       setRestaurantData((prevState) => ({
         ...prevState,
-        [id]: value,
         nameSubstrings: nameSubstrings,
-      }));
-    } else {
-      setRestaurantData((prevState) => ({
-        ...prevState,
-        [id]: value,
       }));
     }
 

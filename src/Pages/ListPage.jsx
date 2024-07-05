@@ -71,11 +71,11 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     } else {
       setSearchResults([]);
     }
+  }, [searchTerm]);
 
-    if (citySearchTerm) {
-      getCity();
-    }
-  }, [searchTerm, citySearchTerm]);
+  useEffect(() => {
+    searchCityData();
+  }, [citySearchTerm]);
 
   if (loading && allRestaurants.length === 0) {
     return (
@@ -110,30 +110,27 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     }
   };
 
-  const getCity = async () => {
-    console.log(citySearchTerm);
-    try {
+  const searchCityData = async () => {
+    if (citySearchTerm) {
       const qCity = query(
         collection(db, "fiches"),
-        where("name", "array-contains", citySearchTerm)
-        // where("ville", "<=", citySearchTerm + "\uf8ff")
+        where("ville", "==", citySearchTerm)
       );
 
-      console.log(qCity);
+      try {
+        const queryCitySnapshot = await getDocs(qCity);
 
-      const querySnapshotCity = await getDocs(qCity);
+        const results = queryCitySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
 
-      const results = querySnapshotCity.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      console.log(results);
-
-      setSearchResults(results);
-      console.log("inseide", searchResults);
-    } catch (error) {
-      console.error("Error searching for restaurants: ", error);
+        setSearchResults(results);
+      } catch (error) {
+        console.error("Error searching for restaurants: ", error);
+      }
     }
+    return;
   };
 
   return (
@@ -148,7 +145,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
           <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl">
             Banque de données
           </h1>
-          {searchTerm || (citySearchTerm && searchResults) ? (
+          {(searchTerm || citySearchTerm) && searchResults ? (
             <RestaurantList
               restaurants={searchResults}
               {...{ setIsEditing, setIsnew, editFunc }}
