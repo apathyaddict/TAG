@@ -26,7 +26,9 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [managerSearchTerm, setManagerSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const debouncedSearchValue = useDebounce(searchTerm, 1000);
+  const debouncedSearchTerm = useDebounce(searchTerm, 1000);
+  const debouncedCitySearchTerm = useDebounce(citySearchTerm, 1000);
+  const debouncedManagerSearchTerm = useDebounce(managerSearchTerm, 1000);
 
   const fetchRestaurants = useCallback(
     async (isInitial = false) => {
@@ -70,33 +72,27 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   }, []);
 
   useEffect(() => {
-    if (debouncedSearchValue) {
-      performSearch("nameSubstrings", debouncedSearchValue);
-    } else {
-      setSearchResults([]);
+    if (debouncedSearchTerm) {
+      performSearch("nameSubstrings", debouncedSearchTerm);
     }
-  }, [debouncedSearchValue]);
+  }, [searchTerm]);
 
   useEffect(() => {
-    if (citySearchTerm) {
-      performSearch("ville", citySearchTerm);
+    if (debouncedCitySearchTerm) {
+      performSearch("ville", debouncedCitySearchTerm);
     }
-  }, [citySearchTerm]);
+  }, [debouncedCitySearchTerm]);
 
   useEffect(() => {
-    if (managerSearchTerm) {
-      performSearch("manager_name", managerSearchTerm);
-    } else {
-      setSearchResults([]);
+    if (debouncedManagerSearchTerm) {
+      performSearch("manager_name", debouncedManagerSearchTerm);
     }
-  }, [managerSearchTerm]);
+  }, [debouncedManagerSearchTerm]);
 
   const performSearch = async (field, value) => {
+    setSearchResults([]);
     try {
       let querySnapshot;
-
-      console.log(value);
-      console.log(field);
 
       if (field === "nameSubstrings") {
         const lowercaseSearchTerm = value.toLowerCase();
@@ -106,7 +102,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
           where(field, "array-contains", lowercaseSearchTerm)
         );
         querySnapshot = await getDocs(qSubstrings);
-        console.log("querySnapshot", querySnapshot);
       } else {
         const qField = query(
           collection(db, "fiches"),
