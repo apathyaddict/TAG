@@ -18,6 +18,8 @@ const CreateForm = ({
     // split names into part so that we can search them later
     if (id === "name") {
       const nameSubstrings = value.toLowerCase().split(/\s+/);
+      nameSubstrings.push(value.toLowerCase());
+
       setRestaurantData((prevState) => ({
         ...prevState,
         [id]: value,

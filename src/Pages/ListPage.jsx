@@ -22,6 +22,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [lastVisible, setLastVisible] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [citySearchTerm, setcitySearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [debouncedText] = useDebounce(searchTerm, 1000);
 
@@ -53,8 +54,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         setAllRestaurants((prev) =>
           isInitial ? newRestaurants : [...prev, ...newRestaurants]
         );
-
-        console.log("all", allRestaurants);
       } catch (error) {
         console.error("Error fetching documents: ", error);
       } finally {
@@ -72,7 +71,11 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     } else {
       setSearchResults([]);
     }
-  }, [searchTerm]);
+
+    if (citySearchTerm) {
+      getCity();
+    }
+  }, [searchTerm, citySearchTerm]);
 
   if (loading && allRestaurants.length === 0) {
     return (
@@ -87,47 +90,47 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const searchData = async () => {
     const lowercaseSearchTerm = searchTerm.toLowerCase();
 
-    // Query for exact match on name
-    const qExact = query(
-      collection(db, "fiches"),
-      where("name", ">=", searchTerm),
-      where("name", "<=", searchTerm + "\uf8ff")
-    );
-
-    // Query for partial match on nameSubstrings
     const qSubstrings = query(
       collection(db, "fiches"),
       where("nameSubstrings", "array-contains", lowercaseSearchTerm)
     );
 
     try {
-      // Execute both queries concurrently
-      const [querySnapshotExact, querySnapshotSubstrings] = await Promise.all([
-        getDocs(qExact),
-        getDocs(qSubstrings),
-      ]);
+      const querySnapshot = await getDocs(qSubstrings);
 
-      let results = [];
-
-      // Combine results from both queries
-      querySnapshotExact.forEach((doc) => {
-        results.push({
-          id: doc.id,
-          ...doc.data(),
-        });
-      });
-
-      querySnapshotSubstrings.forEach((doc) => {
-        // Avoid duplicates
-        if (!results.some((result) => result.id === doc.id)) {
-          results.push({
-            id: doc.id,
-            ...doc.data(),
-          });
-        }
-      });
+      const results = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(results);
 
       setSearchResults(results);
+    } catch (error) {
+      console.error("Error searching for restaurants: ", error);
+    }
+  };
+
+  const getCity = async () => {
+    console.log(citySearchTerm);
+    try {
+      const qCity = query(
+        collection(db, "fiches"),
+        where("name", "array-contains", citySearchTerm)
+        // where("ville", "<=", citySearchTerm + "\uf8ff")
+      );
+
+      console.log(qCity);
+
+      const querySnapshotCity = await getDocs(qCity);
+
+      const results = querySnapshotCity.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log(results);
+
+      setSearchResults(results);
+      console.log("inseide", searchResults);
     } catch (error) {
       console.error("Error searching for restaurants: ", error);
     }
@@ -136,14 +139,16 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   return (
     <div className="mx-auto flex flex-col sm:flex-row justify-normal">
       <div className="w-full sm:w-64 sm:flex-shrink-0">
-        <SidebarSearch {...{ setSearchTerm, searchTerm }} />
+        <SidebarSearch
+          {...{ setSearchTerm, searchTerm, citySearchTerm, setcitySearchTerm }}
+        />
       </div>
       <section className="flex-grow">
         <div className="mx-auto flex flex-col px-10">
           <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl">
             Banque de données
           </h1>
-          {searchTerm && searchResults ? (
+          {searchTerm || (citySearchTerm && searchResults) ? (
             <RestaurantList
               restaurants={searchResults}
               {...{ setIsEditing, setIsnew, editFunc }}

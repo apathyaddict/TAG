@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-const SidebarSearch = ({ setSearchTerm, searchTerm }) => {
+const SidebarSearch = ({
+  setSearchTerm,
+  searchTerm,
+  citySearchTerm,
+  setcitySearchTerm,
+}) => {
   const categories = [
     "RESTAURANT",
     "RESTAURANT & HÔTEL",
@@ -15,7 +20,7 @@ const SidebarSearch = ({ setSearchTerm, searchTerm }) => {
   ];
 
   return (
-    <div className=" sm:h-screen bg-white text-slate-700 p-4 shadow-md ">
+    <div className=" sm:h-screen  bg-white text-slate-700 p-4 shadow-md ">
       <h2 className="text-2xl font-bold mb-4 text-slate-700">
         Filtrer les résultats
       </h2>
@@ -48,6 +53,8 @@ const SidebarSearch = ({ setSearchTerm, searchTerm }) => {
           id="city"
           type="text"
           className="w-full p-2 text-slate-700 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={citySearchTerm}
+          onChange={(e) => setcitySearchTerm(e.target.value)}
         />
       </div>
 
