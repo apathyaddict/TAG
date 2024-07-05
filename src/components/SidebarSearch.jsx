@@ -6,6 +6,8 @@ const SidebarSearch = ({
   searchTerm,
   citySearchTerm,
   setcitySearchTerm,
+  managerSearchTerm,
+  setManagerSearchTerm,
 }) => {
   const categories = [
     "RESTAURANT",
@@ -92,6 +94,8 @@ const SidebarSearch = ({
           id="ceo"
           type="text"
           className="w-full p-2 text-black rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={managerSearchTerm}
+          onChange={(e) => setManagerSearchTerm(e.target.value)}
         />
       </div>
     </div>

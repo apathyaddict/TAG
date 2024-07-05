@@ -23,6 +23,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [hasMore, setHasMore] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [citySearchTerm, setcitySearchTerm] = useState("");
+  const [managerSearchTerm, setManagerSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [debouncedText] = useDebounce(searchTerm, 1000);
 
@@ -75,7 +76,11 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   useEffect(() => {
     searchCityData();
-  }, [citySearchTerm]);
+  }, [citySearchTerm, managerSearchTerm]);
+
+  useEffect(() => {
+    searchManagerName();
+  }, [managerSearchTerm]);
 
   if (loading && allRestaurants.length === 0) {
     return (
@@ -133,11 +138,44 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     return;
   };
 
+  const searchManagerName = async () => {
+   managerSearchTerm);
+    if (managerSearchTerm) {
+      const qManager = query(
+        collection(db, "fiches"),
+
+        where("manager_name", ">=", managerSearchTerm),
+        where("manager_name", "<=", managerSearchTerm + "\uf8ff")
+      );
+
+      try {
+        const queryManagerSnapshot = await getDocs(qManager);
+
+        const results = queryManagerSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        setSearchResults(results);
+      } catch (error) {
+        console.error("Error searching for restaurants: ", error);
+      }
+    }
+    return;
+  };
+
   return (
     <div className="mx-auto flex flex-col sm:flex-row justify-normal">
       <div className="w-full sm:w-64 sm:flex-shrink-0">
         <SidebarSearch
-          {...{ setSearchTerm, searchTerm, citySearchTerm, setcitySearchTerm }}
+          {...{
+            setSearchTerm,
+            searchTerm,
+            citySearchTerm,
+            setcitySearchTerm,
+            managerSearchTerm,
+            setManagerSearchTerm,
+          }}
         />
       </div>
       <section className="flex-grow">
@@ -145,7 +183,8 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
           <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl">
             Banque de données
           </h1>
-          {(searchTerm || citySearchTerm) && searchResults ? (
+          {(searchTerm || citySearchTerm || managerSearchTerm) &&
+          searchResults ? (
             <RestaurantList
               restaurants={searchResults}
               {...{ setIsEditing, setIsnew, editFunc }}
