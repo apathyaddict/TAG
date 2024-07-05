@@ -12,7 +12,7 @@ import {
 import { db } from "../firebase.js";
 import { FaSpinner } from "react-icons/fa";
 import SidebarSearch from "../components/SidebarSearch.jsx";
-import { useDebounce } from "use-debounce";
+import useDebounce from "../hooks/useDebounce.jsx";
 
 const RESTAURANTS_PER_PAGE = 9;
 
@@ -25,7 +25,8 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [citySearchTerm, setcitySearchTerm] = useState("");
   const [managerSearchTerm, setManagerSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState([]);
-  const [debouncedText] = useDebounce(searchTerm, 1000);
+
+  const debouncedSearchValue = useDebounce(searchTerm, 1000);
 
   const fetchRestaurants = useCallback(
     async (isInitial = false) => {
@@ -66,21 +67,65 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   useEffect(() => {
     fetchRestaurants(true);
+  }, []);
 
-    if (searchTerm) {
-      searchData();
+  useEffect(() => {
+    if (debouncedSearchValue) {
+      performSearch("nameSubstrings", debouncedSearchValue);
     } else {
       setSearchResults([]);
     }
-  }, [searchTerm]);
+  }, [debouncedSearchValue]);
 
   useEffect(() => {
-    searchCityData();
-  }, [citySearchTerm, managerSearchTerm]);
+    if (citySearchTerm) {
+      performSearch("ville", citySearchTerm);
+    }
+  }, [citySearchTerm]);
 
   useEffect(() => {
-    searchManagerName();
+    if (managerSearchTerm) {
+      performSearch("manager_name", managerSearchTerm);
+    } else {
+      setSearchResults([]);
+    }
   }, [managerSearchTerm]);
+
+  const performSearch = async (field, value) => {
+    try {
+      let querySnapshot;
+
+      console.log(value);
+      console.log(field);
+
+      if (field === "nameSubstrings") {
+        const lowercaseSearchTerm = value.toLowerCase();
+
+        const qSubstrings = query(
+          collection(db, "fiches"),
+          where(field, "array-contains", lowercaseSearchTerm)
+        );
+        querySnapshot = await getDocs(qSubstrings);
+        console.log("querySnapshot", querySnapshot);
+      } else {
+        const qField = query(
+          collection(db, "fiches"),
+          where(field, "==", value)
+        );
+        querySnapshot = await getDocs(qField);
+      }
+
+      const results = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      console.log("results", results);
+      setSearchResults(results);
+    } catch (error) {
+      console.error(`Error searching for ${field}: `, error);
+    }
+  };
 
   if (loading && allRestaurants.length === 0) {
     return (
@@ -89,80 +134,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
       </div>
     );
   }
-
-  // search functionality
-
-  const searchData = async () => {
-    const lowercaseSearchTerm = searchTerm.toLowerCase();
-
-    const qSubstrings = query(
-      collection(db, "fiches"),
-      where("nameSubstrings", "array-contains", lowercaseSearchTerm)
-    );
-
-    try {
-      const querySnapshot = await getDocs(qSubstrings);
-
-      const results = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      console.log(results);
-
-      setSearchResults(results);
-    } catch (error) {
-      console.error("Error searching for restaurants: ", error);
-    }
-  };
-
-  const searchCityData = async () => {
-    if (citySearchTerm) {
-      const qCity = query(
-        collection(db, "fiches"),
-        where("ville", "==", citySearchTerm)
-      );
-
-      try {
-        const queryCitySnapshot = await getDocs(qCity);
-
-        const results = queryCitySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setSearchResults(results);
-      } catch (error) {
-        console.error("Error searching for restaurants: ", error);
-      }
-    }
-    return;
-  };
-
-  const searchManagerName = async () => {
-   managerSearchTerm);
-    if (managerSearchTerm) {
-      const qManager = query(
-        collection(db, "fiches"),
-
-        where("manager_name", ">=", managerSearchTerm),
-        where("manager_name", "<=", managerSearchTerm + "\uf8ff")
-      );
-
-      try {
-        const queryManagerSnapshot = await getDocs(qManager);
-
-        const results = queryManagerSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
-        setSearchResults(results);
-      } catch (error) {
-        console.error("Error searching for restaurants: ", error);
-      }
-    }
-    return;
-  };
 
   return (
     <div className="mx-auto flex flex-col sm:flex-row justify-normal">
@@ -184,7 +155,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
             Banque de données
           </h1>
           {(searchTerm || citySearchTerm || managerSearchTerm) &&
-          searchResults ? (
+          searchResults.length > 0 ? (
             <RestaurantList
               restaurants={searchResults}
               {...{ setIsEditing, setIsnew, editFunc }}
