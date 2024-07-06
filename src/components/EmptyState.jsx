@@ -1,18 +1,17 @@
 import React from "react";
-
-import { GrHost } from "react-icons/gr";
+import { FaGhost } from "react-icons/fa";
 
 const EmptyState = ({ title, search }) => {
   return (
-    <section className="flex-center size-full flex-col gap-3">
-      <GrHost />
-      <div className="flex-center w-full max-w-[254px] flex-col gap-3">
-        <h1 className="text-16 text-center font-medium text-white-1">
+    <section className="flex justify-center items-center flex-col my-10 gap-8 ">
+      <FaGhost className="text-blue-400 h-16 w-16 opacity-50" />
+      <div className="flex-center w-full flex-col gap-3 text-slate-400">
+        <h1 className="text-lg text-center font-medium text-white-1">
           {title}
         </h1>
         {search && (
-          <p className="text-16 text-center font-medium text-white-2">
-            Il y a rien ici.
+          <p className=" text-center text-sm text-white-2 mt-6">
+            Il y a rien qui correspond à votre recherche.
           </p>
         )}
       </div>
@@ -21,11 +20,3 @@ const EmptyState = ({ title, search }) => {
 };
 
 export default EmptyState;
-
-{
-  /* <EmptyState
-title="No similar podcasts found"
-buttonLink="/discover"
-buttonText="Discover more podcasts"
-/> */
-}

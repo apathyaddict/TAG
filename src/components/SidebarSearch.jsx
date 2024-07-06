@@ -22,7 +22,7 @@ const SidebarSearch = ({
   ];
 
   return (
-    <div className=" sm:h-screen  bg-white text-slate-700 p-4 shadow-md ">
+    <div className=" sm:min-h-screen sm:max-h-screen  bg-white text-slate-700 p-4 shadow-md ">
       <h2 className="text-2xl font-bold mb-4 text-slate-700">
         Filtrer les résultats
       </h2>

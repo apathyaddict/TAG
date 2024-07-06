@@ -12,7 +12,10 @@ import {
 import { db } from "../firebase.js";
 import { FaSpinner } from "react-icons/fa";
 import SidebarSearch from "../components/SidebarSearch.jsx";
+import EmptyState from "../components/EmptyState.jsx";
 import useDebounce from "../hooks/useDebounce.jsx";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const RESTAURANTS_PER_PAGE = 9;
 
@@ -58,9 +61,10 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         setAllRestaurants((prev) =>
           isInitial ? newRestaurants : [...prev, ...newRestaurants]
         );
+
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching documents: ", error);
-      } finally {
         setLoading(false);
       }
     },
@@ -75,7 +79,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     if (debouncedSearchTerm) {
       performSearch("nameSubstrings", debouncedSearchTerm);
     }
-  }, [searchTerm]);
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     if (debouncedCitySearchTerm) {
@@ -91,6 +95,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   const performSearch = async (field, value) => {
     setSearchResults([]);
+    setLoading(true);
     try {
       let querySnapshot;
 
@@ -117,18 +122,12 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
       console.log("results", results);
       setSearchResults(results);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       console.error(`Error searching for ${field}: `, error);
     }
   };
-
-  if (loading && allRestaurants.length === 0) {
-    return (
-      <div className="flex justify-center align-middle mx-auto mr-10 p-10">
-        <FaSpinner className="animate-spin h-16 w-16" />
-      </div>
-    );
-  }
 
   return (
     <div className="mx-auto flex flex-col sm:flex-row justify-normal">
@@ -144,32 +143,47 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
           }}
         />
       </div>
+
       <section className="flex-grow">
         <div className="mx-auto flex flex-col px-10">
           <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl">
             Banque de données
           </h1>
-          {(searchTerm || citySearchTerm || managerSearchTerm) &&
-          searchResults.length > 0 ? (
-            <RestaurantList
-              restaurants={searchResults}
-              {...{ setIsEditing, setIsnew, editFunc }}
-            />
+
+          {loading ? (
+            <div className="max-w-full mr-10 p-10">
+              <Skeleton height={30} className="my-2" count={3} />
+            </div>
           ) : (
-            <RestaurantList
-              restaurants={allRestaurants}
-              {...{ setIsEditing, setIsnew, editFunc }}
-            />
-          )}
-          {hasMore && (
-            <div className="text-center my-10 capitalize">
-              <button
-                onClick={() => fetchRestaurants(false)}
-                className="px-10 py-2 hover:bg-white text-slate-600 transition-all border-slate-200 
+            <div>
+              {(searchTerm || citySearchTerm || managerSearchTerm) &&
+              searchResults.length > 0 ? (
+                <RestaurantList
+                  restaurants={searchResults}
+                  {...{ setIsEditing, setIsnew, editFunc }}
+                />
+              ) : !searchTerm && !citySearchTerm && !managerSearchTerm ? (
+                <RestaurantList
+                  restaurants={allRestaurants}
+                  {...{ setIsEditing, setIsnew, editFunc }}
+                />
+              ) : (
+                <EmptyState
+                  title="Erreur. Essayez d'autres critères de recherche"
+                  search={true}
+                />
+              )}
+              {hasMore && (
+                <div className="text-center my-10 capitalize">
+                  <button
+                    onClick={() => fetchRestaurants(false)}
+                    className="px-10 py-2 hover:bg-white text-slate-600 transition-all border-slate-200 
                 hover:text-slate-900 rounded-lg focus:text-gray-800 font-bold border uppercase disabled:text-slate-300 hover:cursor-pointer"
-                disabled={loading}>
-                {loading ? "Chargement..." : "Charger plus"}
-              </button>
+                    disabled={loading}>
+                    {loading ? "Chargement..." : "Charger plus"}
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>
