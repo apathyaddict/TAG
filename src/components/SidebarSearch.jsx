@@ -8,6 +8,8 @@ const SidebarSearch = ({
   setcitySearchTerm,
   managerSearchTerm,
   setManagerSearchTerm,
+  setCategorySearch,
+  categorySearch,
 }) => {
   const categories = [
     "RESTAURANT",
@@ -20,6 +22,16 @@ const SidebarSearch = ({
     "TRAITEUR",
     "AUTRE",
   ];
+
+  const handleCategoryChange = (category) => {
+    let updatedCategories;
+    if (categorySearch.includes(category)) {
+      updatedCategories = categorySearch.filter((cat) => cat !== category);
+    } else {
+      updatedCategories = [...categorySearch, category];
+    }
+    setCategorySearch(updatedCategories);
+  };
 
   return (
     <div className=" sm:min-h-screen sm:max-h-screen  bg-white text-slate-700 p-4 shadow-md ">
@@ -74,6 +86,8 @@ const SidebarSearch = ({
                 name="category"
                 value={category}
                 className="mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                checked={categorySearch.includes(category)}
+                onChange={() => handleCategoryChange(category)}
               />
               <label htmlFor={category} className="text-sm text-gray-800">
                 {category}

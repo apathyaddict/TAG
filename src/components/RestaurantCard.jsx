@@ -10,7 +10,18 @@ import {
 import { Link } from "react-router-dom";
 
 const RestaurantCard = ({ restaurant, editFunc }) => {
-  const { name, rue, code_postal, ville, phone, website, id } = restaurant;
+  const {
+    name,
+    rue,
+    code_postal,
+    ville,
+    phone,
+    manager_name,
+    manager_phone,
+    category,
+    website,
+    id,
+  } = restaurant;
 
   // Function to format phone number with spaced pairs
   const formatPhoneNumber = (phoneNumber) => {
@@ -26,22 +37,26 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
 
   return (
     <div className="flex flex-col justify-between rounded-lg shadow-md bg-white p-4  border-l-8 border-blue-600 max-w-[500px]">
-      <h5 className="mb-2 text-xl uppercase wrap font-bold leading-snug text-sky ">
+      <h5 className="mb-2 text-xl uppercase wrap font-bold leading-snug text-sky border-b ">
         {name}
       </h5>
-      <div className=" border mb-4 border-1  border-gray-200"></div>
+      {/* <div className=" border mb-2 border-1  border-gray-200"></div> */}
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col">
+        <div className="flex justify-end item-right gap-2 ">
+          <p className="text-red-900 font-bold">{category}</p>
+        </div>
+        <div className="flex flex-col w-full">
           <span className="text-base">{rue}</span>
           <span className="text-base">
             {code_postal}, {ville}
           </span>
         </div>
+
         <div className="flex items-center gap-2">
           <FaPhoneAlt className="text-blue-400" />
-          <p className="text-gray-700">{formatPhoneNumber(phone)}</p>
+          <p className="text-gray-700">{manager_name}</p>
         </div>
-        <div className="flex items-center gap-2 overflow-hidden">
+        {/* <div className="flex items-center gap-2 overflow-hidden">
           <FaLink className="text-blue-400" />
           <a
             href={website}
@@ -50,7 +65,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
             className="text-blue-800 hover:underline">
             {website}
           </a>
-        </div>
+        </div> */}
       </div>
 
       {/* buttons */}

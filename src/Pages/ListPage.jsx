@@ -26,11 +26,13 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [citySearchTerm, setcitySearchTerm] = useState("");
   const [managerSearchTerm, setManagerSearchTerm] = useState("");
+  const [categorySearch, setCategorySearch] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const debouncedCitySearchTerm = useDebounce(citySearchTerm, 1000);
   const debouncedManagerSearchTerm = useDebounce(managerSearchTerm, 1000);
+  const debouncedCategorySearch = useDebounce(categorySearch, 0);
 
   const fetchRestaurants = useCallback(
     async (isInitial = false) => {
@@ -98,15 +100,21 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     }
   }, [debouncedManagerSearchTerm]);
 
+  useEffect(() => {
+    if (debouncedCategorySearch.length > 0) {
+      performCategorySearch(debouncedCategorySearch);
+    } else {
+      setSearchResults([]);
+    }
+  }, [debouncedCategorySearch]);
+
   const performSearch = async (field, value) => {
-    setSearchResults([]);
     setLoading(true);
     try {
       let querySnapshot;
 
       if (field === "nameSubstrings") {
         const lowercaseSearchTerm = value.toLowerCase();
-
         const qSubstrings = query(
           collection(db, "fiches"),
           where(field, "array-contains", lowercaseSearchTerm)
@@ -134,6 +142,31 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     }
   };
 
+  const performCategorySearch = async (categories) => {
+    setLoading(true);
+    console.log(categories);
+    try {
+      const queries = categories.map((category) =>
+        query(collection(db, "fiches"), where("category", "==", category))
+      );
+
+      const querySnapshots = await Promise.all(queries.map(getDocs));
+      const results = querySnapshots.flatMap((snapshot) =>
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+      );
+
+      console.log("category results", results);
+      setSearchResults(results);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.error("Error searching for categories: ", error);
+    }
+  };
+
   return (
     <div className="mx-auto flex flex-col sm:flex-row justify-normal">
       <div className="w-full sm:w-64 sm:flex-shrink-0">
@@ -145,6 +178,8 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
             setcitySearchTerm,
             managerSearchTerm,
             setManagerSearchTerm,
+            setCategorySearch,
+            categorySearch,
           }}
         />
       </div>
@@ -163,7 +198,10 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
             </div>
           ) : (
             <div>
-              {searchTerm || citySearchTerm || managerSearchTerm ? (
+              {searchTerm ||
+              citySearchTerm ||
+              managerSearchTerm ||
+              categorySearch.length > 0 ? (
                 searchResults.length > 0 ? (
                   <RestaurantList
                     restaurants={searchResults}
