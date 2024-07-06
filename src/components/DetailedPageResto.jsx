@@ -1,12 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import {
-  FaMapMarkerAlt,
-  FaPhoneAlt,
-  FaLink,
-  FaUtensils,
-  FaUserSecret,
-} from "react-icons/fa";
+import { FaUtensils } from "react-icons/fa";
+
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
@@ -14,6 +9,8 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { BiEdit, BiEraser } from "react-icons/bi";
 import { format } from "date-fns";
+
+import UploadImage from "./Form/UploadImage";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -181,6 +178,8 @@ const RestaurantDetails = ({ editFunc }) => {
           <p className="text-sm font-normal">{text_review}</p>
         </div>
       </div>
+
+      <UploadImage />
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-between ">
         <div className="mt-2 text-left">

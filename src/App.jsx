@@ -21,6 +21,7 @@ import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 import EditForm from "./Pages/EditForm";
 import SidebarSearch from "./components/SidebarSearch";
+import UploadImage from "./components/Form/UploadImage";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -102,7 +103,7 @@ function App() {
               path="/profile"
               element={<ProfilePage {...{ userDetails, handleLogout }} />}
             />
-            <Route path="/test" element={<SidebarSearch />} />
+            <Route path="/test" element={<UploadImage />} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/login" />} />
