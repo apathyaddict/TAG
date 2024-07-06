@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,6 +32,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     email: "",
     text_review: "",
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (restaurantInfo) {
@@ -161,6 +163,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         position: "top-right",
       });
 
+      navigate(`/restaurants/${id}`);
       setIsLoading(false);
     } catch (error) {
       console.error("Error updating document: ", error);
