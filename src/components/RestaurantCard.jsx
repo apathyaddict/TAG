@@ -36,8 +36,8 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-lg shadow-md bg-white p-4  border-l-8 border-blue-600 max-w-[500px]">
-      <h5 className="mb-2 text-xl uppercase wrap font-bold leading-snug text-sky border-b ">
+    <div className="flex flex-col justify-between rounded-lg shadow-md bg-white p-4  border-l-8 border-blue-600 overflow-x-hidden w-2/5">
+      <h5 className="mb-2 text-xl uppercase  font-bold leading-snug text-sky border-b  ">
         {name}
       </h5>
       {/* <div className=" border mb-2 border-1  border-gray-200"></div> */}
@@ -69,7 +69,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
       </div>
 
       {/* buttons */}
-      <div className="flex justify-between mt-4 gap-2">
+      <div className="flex justify-end mt-8 gap-2">
         <Link to={`/restaurants/${id}`}>
           <button className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase border text-slate-700 transition-all rounded-lg hover:bg-slate-500/10 active:bg-gray-900/20 hover:text-slate-800">
             Détails et Modifications

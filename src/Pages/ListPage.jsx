@@ -16,6 +16,8 @@ import useDebounce from "../hooks/useDebounce.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+//TODO: check chaining queries
+
 const RESTAURANTS_PER_PAGE = 9;
 
 const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
@@ -30,7 +32,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [searchResults, setSearchResults] = useState([]);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
-  const debouncedCitySearchTerm = useDebounce(citySearchTerm, 1000);
+  const debouncedCitySearchTerm = useDebounce(citySearchTerm, 500);
   const debouncedManagerSearchTerm = useDebounce(managerSearchTerm, 1000);
   const debouncedCategorySearch = useDebounce(categorySearch, 0);
 
@@ -123,7 +125,8 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
       } else {
         const qField = query(
           collection(db, "fiches"),
-          where(field, "==", value)
+          where(field, "==", value),
+          where(field, "<=", value + "\uf8ff")
         );
         querySnapshot = await getDocs(qField);
       }
@@ -133,7 +136,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         ...doc.data(),
       }));
 
-      console.log("results", results);
+      // console.log("results", results);
       setSearchResults(results);
       setLoading(false);
     } catch (error) {

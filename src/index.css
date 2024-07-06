@@ -36,3 +36,23 @@ link {
   background-size: 0.7rem;
   background-position: right 0.7rem center;
 }
+
+.truncate {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.custom-select {
+  position: relative;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: rgb(51 65 85);
+
+}
+
+.select-selected {
+  background-color: white;
+  border-color: rgb(33, 33, 232);
+}

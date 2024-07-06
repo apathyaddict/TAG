@@ -54,6 +54,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     }
   }, [restaurantInfo]);
 
+  //TODO: trim spaces
+
   const handleSave = async () => {
     setErrorMessage("");
 
