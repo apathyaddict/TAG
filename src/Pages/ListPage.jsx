@@ -10,7 +10,6 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebase.js";
-import { FaSpinner } from "react-icons/fa";
 import SidebarSearch from "../components/SidebarSearch.jsx";
 import EmptyState from "../components/EmptyState.jsx";
 import useDebounce from "../hooks/useDebounce.jsx";
@@ -78,18 +77,24 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   useEffect(() => {
     if (debouncedSearchTerm) {
       performSearch("nameSubstrings", debouncedSearchTerm);
+    } else {
+      setSearchResults([]);
     }
   }, [debouncedSearchTerm]);
 
   useEffect(() => {
     if (debouncedCitySearchTerm) {
       performSearch("ville", debouncedCitySearchTerm);
+    } else {
+      setSearchResults([]);
     }
   }, [debouncedCitySearchTerm]);
 
   useEffect(() => {
     if (debouncedManagerSearchTerm) {
       performSearch("manager_name", debouncedManagerSearchTerm);
+    } else {
+      setSearchResults([]);
     }
   }, [debouncedManagerSearchTerm]);
 
@@ -152,28 +157,31 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
           {loading ? (
             <div className="max-w-full mr-10 p-10">
-              <Skeleton height={30} className="my-2" count={3} />
+              <Skeleton height={20} className="my-2 w-[200px]" count={3} />{" "}
+              <Skeleton height={20} className="my-2 w-[300px]" count={3} />
+              <Skeleton height={20} className="my-2" count={3} />
             </div>
           ) : (
             <div>
-              {(searchTerm || citySearchTerm || managerSearchTerm) &&
-              searchResults.length > 0 ? (
-                <RestaurantList
-                  restaurants={searchResults}
-                  {...{ setIsEditing, setIsnew, editFunc }}
-                />
-              ) : !searchTerm && !citySearchTerm && !managerSearchTerm ? (
+              {searchTerm || citySearchTerm || managerSearchTerm ? (
+                searchResults.length > 0 ? (
+                  <RestaurantList
+                    restaurants={searchResults}
+                    {...{ setIsEditing, setIsnew, editFunc }}
+                  />
+                ) : (
+                  <EmptyState
+                    title="Erreur. Essayez d'autres critères de recherche"
+                    search={true}
+                  />
+                )
+              ) : (
                 <RestaurantList
                   restaurants={allRestaurants}
                   {...{ setIsEditing, setIsnew, editFunc }}
                 />
-              ) : (
-                <EmptyState
-                  title="Erreur. Essayez d'autres critères de recherche"
-                  search={true}
-                />
               )}
-              {hasMore && (
+              {hasMore && !loading && (
                 <div className="text-center my-10 capitalize">
                   <button
                     onClick={() => fetchRestaurants(false)}

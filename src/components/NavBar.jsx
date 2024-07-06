@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { BiPlus } from "react-icons/bi";
-import { FaSearch, FaUserCircle, FaStore } from "react-icons/fa";
+import { FaSearch, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
 
 const Navbar = ({ handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false); // State for dropdown menu
@@ -56,7 +57,7 @@ const Navbar = ({ handleLogout }) => {
               type="button"
               className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  ">
               {" "}
-              <FaStore className="h-8 w-8 text-slate-700 hover:text-blue-600" />
+              <FiSearch className="h-8 w-8 text-slate-700 hover:text-blue-600" />
             </button>
           </Link>
 
