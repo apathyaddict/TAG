@@ -72,17 +72,18 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
       <div className="flex justify-between mt-4 gap-2">
         <Link to={`/restaurants/${id}`}>
           <button className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase border text-slate-700 transition-all rounded-lg hover:bg-slate-500/10 active:bg-gray-900/20 hover:text-slate-800">
-            Détails
-            <BiPlus className=" h-4 w-4 font-bold" />
+            Détails et Modifications
+            <FaEdit className=" h-4 w-4" />
           </button>
         </Link>
-        <Link to={`/edit-restaurant/${id}?isEditing=true`}>
+        {/* removed for now, first go to details page */}
+        {/* <Link to={`/edit-restaurant/${id}?isEditing=true`}>
           <button
             className="flex items-center gap-2 px-4 py-2 text-xs font-bold uppercase border text-slate-700 transition-all rounded-lg hover:bg-slate-500/10 active:bg-gray-900/20 hover:text-slate-800"
             onClick={() => handleEdit2(restaurant)}>
             Modifier <FaEdit className=" h-4 w-4 font-bold" />
           </button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

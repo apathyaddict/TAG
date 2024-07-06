@@ -29,6 +29,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     date_added: new Date().toISOString(),
     date_modified: null,
     email: "",
+    text_review: "",
   });
 
   useEffect(() => {
@@ -46,6 +47,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         date_added: restaurantInfo.added || new Date().toISOString(),
         date_modified: restaurantInfo.date_modified || null,
         email: restaurantInfo.email || "",
+        text_review: restaurantInfo.text_review || "",
       });
     }
   }, [restaurantInfo]);
@@ -181,6 +183,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       manager_name: "",
       category: "",
       email: "",
+      text_review: "",
     });
   };
 

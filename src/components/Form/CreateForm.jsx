@@ -60,6 +60,13 @@ const CreateForm = ({
             value={restaurantData.name}
           />
         </div>
+        <div className="mb-4">
+          <DropdownCat
+            category={restaurantData.category}
+            setRestaurantData={setRestaurantData}
+            restaurantData={restaurantData}
+          />
+        </div>
         <div className="flex gap-3">
           <div className="mb-4 flex-1 max-w-[500px]">
             <label
@@ -108,13 +115,6 @@ const CreateForm = ({
         </div>
 
         <div className="mb-4">
-          <DropdownCat
-            category={restaurantData.category}
-            setRestaurantData={setRestaurantData}
-            restaurantData={restaurantData}
-          />
-        </div>
-        <div className="mb-4">
           <label
             htmlFor="phone"
             className="block text-sm font-medium text-gray-500">
@@ -145,6 +145,20 @@ const CreateForm = ({
         </div>
         <div className="mb-4">
           <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-500">
+            Mail
+          </label>
+          <input
+            type="email"
+            id="email"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+            onChange={handleInputChange}
+            value={restaurantData.email}
+          />
+        </div>
+        <div className="mb-4">
+          <label
             htmlFor="manager_name"
             className="block text-sm font-medium text-gray-500">
             Nom du gérant
@@ -171,18 +185,19 @@ const CreateForm = ({
             value={restaurantData.manager_phone}
           />
         </div>
-        <div>
+
+        <div className="mb-4">
           <label
-            htmlFor="email"
+            htmlFor="text_review"
             className="block text-sm font-medium text-gray-500">
-            Mail
+            Texte
           </label>
-          <input
-            type="email"
-            id="email"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+          <textarea
+            type="text"
+            id="text_review"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
             onChange={handleInputChange}
-            value={restaurantData.email}
+            value={restaurantData.text_review}
           />
         </div>
 

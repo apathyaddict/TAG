@@ -80,6 +80,7 @@ const RestaurantDetails = ({ editFunc }) => {
     date_modified,
     date_added,
     email,
+    text_review,
   } = restaurant;
 
   const formatPhoneNumber = (phoneNumber) => {
@@ -106,10 +107,16 @@ const RestaurantDetails = ({ editFunc }) => {
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">
-        <h5 className="block mb-10 text-3xl font-semibold text-blue-800 uppercase">
+        <h5 className="block mb-6 text-3xl font-semibold text-blue-800 uppercase">
           {name}
         </h5>
         <ul className="flex flex-col gap-4  ">
+          <li className="flex gap-5 pb-4font-normal text-md  py-2 border-b pb-4 border-gray-300">
+            <div className=" w-[350px]  px-4 text-slate-400 ">Catégorie</div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=""> {category}</p>
+            </div>
+          </li>
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
             <div className=" w-[350px]  px-4 text-slate-400 ">Addresse</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
@@ -157,7 +164,7 @@ const RestaurantDetails = ({ editFunc }) => {
               <p className=""> {manager_name}</p>
             </div>
           </li>
-          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+          <li className="flex gap-5  font-normal text-md  py-2">
             <div className=" w-[350px]  px-4 text-slate-400 ">
               Numéro du gérant
             </div>
@@ -165,13 +172,14 @@ const RestaurantDetails = ({ editFunc }) => {
               <p className=""> {formatPhoneNumber(manager_phone)}</p>
             </div>
           </li>
-          <li className="flex gap-5 pb-4font-normal text-md  py-2">
-            <div className=" w-[350px]  px-4 text-slate-400 ">Catégorie</div>
-            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-              <p className=""> {category}</p>
-            </div>
-          </li>
         </ul>
+      </div>
+
+      <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-start ">
+        <div className=" w-[150px]  px-4 text-slate-400 ">Texte:</div>
+        <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+          <p className="text-sm font-normal">{text_review}</p>
+        </div>
       </div>
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-between ">
