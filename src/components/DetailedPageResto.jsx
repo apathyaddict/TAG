@@ -78,6 +78,7 @@ const RestaurantDetails = ({ editFunc }) => {
     date_added,
     email,
     text_review,
+    imagesUrl,
   } = restaurant;
 
   const formatPhoneNumber = (phoneNumber) => {
@@ -179,7 +180,7 @@ const RestaurantDetails = ({ editFunc }) => {
         </div>
       </div>
 
-      <UploadImage />
+      <UploadImage {...{ id, imagesUrl }} />
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-between ">
         <div className="mt-2 text-left">

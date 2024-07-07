@@ -1,14 +1,24 @@
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { MdSaveAlt } from "react-icons/md";
 import { RiImageAddFill, RiDeleteBinFill } from "react-icons/ri";
-import { storage } from "../../firebase";
+import { db, storage } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
+import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore";
+import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
 
-const UploadImage = () => {
+const UploadImage = ({ imagesUrl }) => {
   const [images, setImages] = useState([]);
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (imagesUrl && imagesUrl.length > 0) {
+      setImages(imagesUrl || []);
+    }
+  }, [imagesUrl]);
+
   const [imageFiles, setImageFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
   const maxImages = 2;
@@ -21,6 +31,8 @@ const UploadImage = () => {
         setImages([...images, newImage]);
         setImageFiles([...imageFiles, file]);
       }
+    } else {
+      toast.warn(`Vous ne pouvez télécharger que jusqu'à ${maxImages} photos.`);
     }
   };
 
@@ -30,7 +42,6 @@ const UploadImage = () => {
     setImages(updatedImages);
     setImageFiles(updatedImageFiles);
   };
-
   const handleDrop = (e) => {
     e.preventDefault();
     if (images.length < maxImages) {
@@ -40,6 +51,8 @@ const UploadImage = () => {
         setImages([...images, newImage]);
         setImageFiles([...imageFiles, file]);
       }
+    } else {
+      toast.warn(`Vous ne pouvez télécharger que jusqu'à ${maxImages} photos.`);
     }
   };
 
@@ -48,24 +61,46 @@ const UploadImage = () => {
   };
 
   const handleSave = async () => {
+    console.log("2", id);
     setIsUploading(true);
     const uploadPromises = imageFiles.map(async (file) => {
       const imgRef = ref(storage, `files/${uuidv4()}`);
       const snapshot = await uploadBytes(imgRef, file);
       const url = await getDownloadURL(snapshot.ref);
-      console.log("url", url);
+      await saveUrl(url, id);
       return url;
     });
 
     try {
       const urls = await Promise.all(uploadPromises);
-      toast.success("Images sauvergarder avec succés!");
+      toast.success("Images sauvegarder avec succès!");
       console.log("Uploaded image URLs: ", urls);
       setIsUploading(false);
     } catch (error) {
       toast.error("Erreur lors de la sauvegarde", error);
       console.error("Error uploading images: ", error);
       setIsUploading(false);
+    }
+  };
+
+  const saveUrl = async (url, id) => {
+    try {
+      const ficheRef = doc(db, "fiches", id);
+      const ficheSnap = await getDoc(ficheRef);
+      const currentData = ficheSnap.exists() ? ficheSnap.data() : {};
+
+      const updatedFiches = {
+        ...currentData,
+        imagesUrl: [...(currentData.imagesUrl || []), url],
+        // imagesUrl: [url],
+      };
+
+      await setDoc(ficheRef, updatedFiches, { merge: true });
+
+      console.log("URL saved successfully!");
+    } catch (error) {
+      console.error("Error saving URL: ", error);
+      return;
     }
   };
 
@@ -119,8 +154,10 @@ const UploadImage = () => {
 
       <div className="flex justify-end w-full">
         <button
-          className="uppercase flex items-center font-semibold rounded-lg border border-solid cursor-pointer text-white bg-blue-400 border-blue-500 hover:bg-blue-600 px-4 py-2 text-sm"
-          disabled={isUploading || images.length >= maxImages}
+          className="uppercase flex items-center font-semibold rounded-lg border border-solid cursor-pointer text-white bg-blue-400 border-blue-500 hover:bg-blue-600 px-4 py-2 text-sm disabled:cursor-auto disabled:border-blue-100 disabled:bg-blue-200"
+          disabled={
+            isUploading || images.length > maxImages || images.length === 0
+          }
           onClick={handleSave}>
           <MdSaveAlt className="h-6 w-6 pr-2 text-white" />
           {isUploading ? "Téléchargement..." : "Sauvegarder"}

@@ -31,6 +31,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     date_modified: null,
     email: "",
     text_review: "",
+    imagesUrl: [],
   });
   const navigate = useNavigate();
 
