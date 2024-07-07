@@ -1,4 +1,9 @@
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import React, { useState, useEffect } from "react";
 import { MdSaveAlt } from "react-icons/md";
 import { RiImageAddFill, RiDeleteBinFill } from "react-icons/ri";
@@ -8,6 +13,7 @@ import { toast } from "react-toastify";
 import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
+import { refFromURL } from "firebase/database";
 
 const UploadImage = ({ imagesUrl }) => {
   const [images, setImages] = useState([]);
@@ -36,12 +42,33 @@ const UploadImage = ({ imagesUrl }) => {
     }
   };
 
-  const handleDeleteImage = (index) => {
+  const handleDeleteImage = async (index) => {
     const updatedImages = images.filter((_, i) => i !== index);
     const updatedImageFiles = imageFiles.filter((_, i) => i !== index);
     setImages(updatedImages);
     setImageFiles(updatedImageFiles);
+
+    try {
+      // Get the URL of the image to be deleted from Firestore
+      const ficheRef = doc(db, "fiches", id);
+      const ficheSnap = await getDoc(ficheRef);
+      const currentData = ficheSnap.exists() ? ficheSnap.data() : {};
+      const imageUrlToDelete = currentData.imagesUrl[index];
+
+      // Delete from Firestore
+      const updatedUrls = currentData.imagesUrl.filter((_, i) => i !== index);
+      await setDoc(ficheRef, { ...currentData, imagesUrl: updatedUrls });
+
+      // Delete from Storage
+      const imageRef = ref(storage, imageUrlToDelete);
+      await deleteObject(imageRef);
+
+      console.log("Image deleted successfully from storage and Firestore.");
+    } catch (error) {
+      console.error("Error deleting image: ", error);
+    }
   };
+
   const handleDrop = (e) => {
     e.preventDefault();
     if (images.length < maxImages) {
