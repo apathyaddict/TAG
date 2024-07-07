@@ -217,7 +217,9 @@ const RestaurantDetails = ({ editFunc }) => {
         </div>
         <div className="mt-2 text-right">
           <p className="text-sm text-slate-500">Dernière mise à jour:</p>
-          {format(new Date(date_modified), "dd / MM / yyyy")}
+          {date_modified
+            ? format(new Date(date_modified), "dd / MM / yyyy")
+            : "-- / -- / --"}
         </div>
       </div>
 

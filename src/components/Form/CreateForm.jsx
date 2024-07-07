@@ -15,10 +15,21 @@ const CreateForm = ({
   const handleInputChange = (e) => {
     const { id, value } = e.target;
 
+    // Always convert to lowercase except for "text_review"
+    const lowercaseValue = id === "text_review" ? value : value.toLowerCase();
+
     setRestaurantData((prevState) => ({
       ...prevState,
-      [id]: value.toLowerCase(),
+      [id]: lowercaseValue,
     }));
+
+    if (id === "phone" || id === "manager_phone") {
+      const trimPhoneNumber = value.replace(/\s/g, "");
+      setRestaurantData((prevState) => ({
+        ...prevState,
+        [id]: trimPhoneNumber,
+      }));
+    }
 
     if (id === "name") {
       // Split names into parts and save the whole name in lowercase for searching later
