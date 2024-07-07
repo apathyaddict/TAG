@@ -12,6 +12,7 @@ import { format } from "date-fns";
 
 import UploadImage from "./Form/UploadImage";
 import { MdTableRestaurant } from "react-icons/md";
+import { GiKnifeFork } from "react-icons/gi";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -70,6 +71,7 @@ const RestaurantDetails = ({ editFunc }) => {
     text_review,
     imagesUrl,
     table_grade,
+    table_service,
   } = restaurant;
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
@@ -148,6 +150,27 @@ const RestaurantDetails = ({ editFunc }) => {
       ));
   };
 
+  const getForks = (grade) => {
+    switch (grade) {
+      case "service et cadre simple":
+        return 1;
+      case "cadre et service confort":
+        return 2;
+      case "cadre luxe":
+        return 3;
+      default:
+        return 0;
+    }
+  };
+
+  const renderForks = (numStars) => {
+    return Array(numStars)
+      .fill(0)
+      .map((_, index) => (
+        <GiKnifeFork key={index} className="h-6 w-6 text-blue-500" />
+      ));
+  };
+
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">
@@ -223,9 +246,19 @@ const RestaurantDetails = ({ editFunc }) => {
         <div className=" w-[350px]  px-4 text-slate-400 ">
           Qualité de la table:
         </div>
-        <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-          <p className="text-sm font-normal">{table_grade}</p>
-          <div className="flex gap-1">{renderStars(getStars(table_grade))}</div>
+        <div className="w-full flex flex-col justify-start gap-6 divide-y ">
+          <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+            <p className="text-sm font-normal">{table_grade}</p>
+            <div className="flex gap-1">
+              {renderStars(getStars(table_grade))}
+            </div>
+          </div>
+          <div className=" w-full flex justify-start gap-2 text-slate-800 pt-6 ">
+            <p className="text-sm font-normal">{table_service}</p>
+            <div className="flex gap-1">
+              {renderForks(getForks(table_service))}
+            </div>
+          </div>
         </div>
       </div>
 

@@ -33,6 +33,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     text_review: "",
     imagesUrl: [],
     table_grade: "",
+    table_service: "",
   });
   const navigate = useNavigate();
 
@@ -52,7 +53,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         date_modified: restaurantInfo.date_modified || null,
         email: restaurantInfo.email || "",
         text_review: restaurantInfo.text_review || "",
-        text_grade: restaurantInfo.text_grade || "",
+        table_grade: restaurantInfo.table_grade || "",
+        table_service: restaurantInfo.table_service || "",
       });
     }
   }, [restaurantInfo]);
@@ -199,6 +201,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       email: "",
       text_review: "",
       table_grade: "",
+      table_service: "",
     });
   };
 

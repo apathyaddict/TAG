@@ -1,83 +1,62 @@
-import React, { useState } from "react";
+import React from "react";
 import { MdTableRestaurant } from "react-icons/md";
 
-const Symbols = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleOptionChange = (optionIndex) => {
-    setSelectedOption(optionIndex);
-  };
-
-  const renderIcons = (count) => {
-    return Array.from({ length: count }, (_, index) => (
-      <MdTableRestaurant key={index} className="text-blue-600/50" />
-    ));
-  };
-
+const Symbols = ({ table_grade, handleTableGradeChange }) => {
   return (
-    <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-start">
-      <div className="w-[150px] px-4 text-slate-400">La cuisine:</div>
-      <div className="flex flex-col gap-4">
-        <ul className="text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-          <li
-            className={`flex items-center border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600 ${
-              selectedOption === 0 ? "bg-gray-100" : ""
-            }`}>
-            <input
-              id="horizontal-list-radio-license-0"
-              type="radio"
-              checked={selectedOption === 0}
-              onChange={() => handleOptionChange(0)}
-              value=""
-              name="list-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-            />
-            <label
-              htmlFor="horizontal-list-radio-license-0"
-              className="flex items-center py-3 ml-2 space-x-1 text-sm font-medium text-gray-900 dark:text-gray-300">
-              Trés bonne table {renderIcons(1)}
-            </label>
-          </li>
-          <li
-            className={`flex items-center border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600 ${
-              selectedOption === 1 ? "bg-gray-100" : ""
-            }`}>
-            <input
-              id="horizontal-list-radio-license-1"
-              type="radio"
-              checked={selectedOption === 1}
-              onChange={() => handleOptionChange(1)}
-              value=""
-              name="list-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-            />
-            <label
-              htmlFor="horizontal-list-radio-license-1"
-              className="flex items-center py-3 ml-2 space-x-1 text-sm font-medium text-gray-900 dark:text-gray-300">
-              Grande Table, Grande cuisine {renderIcons(2)}
-            </label>
-          </li>
-          <li
-            className={`flex items-center border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600 ${
-              selectedOption === 2 ? "bg-gray-100" : ""
-            }`}>
-            <input
-              id="horizontal-list-radio-license-2"
-              type="radio"
-              checked={selectedOption === 2}
-              onChange={() => handleOptionChange(2)}
-              value=""
-              name="list-radio"
-              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500"
-            />
-            <label
-              htmlFor="horizontal-list-radio-license-2"
-              className="flex items-center py-3 ml-2 space-x-1 text-sm font-medium text-gray-900 dark:text-gray-300">
-              Une des meilleures tables {renderIcons(3)}
-            </label>
-          </li>
-        </ul>
-      </div>
+    <div className="container mb-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white ">
+        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="table_grade1"
+            className="h-4 w-4 text-blue-500"
+            onChange={handleTableGradeChange}
+            checked={table_grade === "Bonne Table"}
+            value="Bonne Table"
+          />
+          <label
+            htmlFor="table_grade1"
+            className="text-slate-700 text-sm font-medium flex items-center">
+            <MdTableRestaurant className="h-4 w-4 mr-2  text-blue-500" /> Bonne
+            Table
+          </label>
+        </li>
+        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="table_grade2"
+            className="h-4 w-4 text-blue-500"
+            onChange={handleTableGradeChange}
+            checked={table_grade === "Très bonne table"}
+            value="Très bonne table"
+          />
+          <label
+            htmlFor="table_grade2"
+            className="text-slate-700 text-sm font-medium flex items-center">
+            <MdTableRestaurant className="h-4 w-4 text-blue-500" />
+            <MdTableRestaurant className="h-4 w-4   text-blue-500 mr-2" /> Très
+            bonne table
+          </label>
+        </li>
+        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="table_grade3"
+            className="h-4 w-4 text-blue-500"
+            onChange={handleTableGradeChange}
+            checked={table_grade === "Table d'exception"}
+            value="Table d'exception"
+          />
+          <label
+            htmlFor="table_grade3"
+            className="text-slate-700 text-sm font-medium flex items-center">
+            <MdTableRestaurant className="h-4 w-4   text-blue-500" />
+            <MdTableRestaurant className="h-4 w-4 text-blue-500" />
+            <MdTableRestaurant className="h-4 w-4 mr-2  text-blue-500" /> Table
+            d'exception
+          </label>
+        </li>
+      </ul>
     </div>
   );
 };

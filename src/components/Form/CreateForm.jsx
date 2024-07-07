@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import DropdownCat from "./DropdownCat";
 import { MdTableRestaurant } from "react-icons/md";
+import Symbols from "./Symbols";
+import ServiceTable from "./ServiceTable";
 
 const CreateForm = ({
   handleSave,
@@ -52,6 +54,17 @@ const CreateForm = ({
     setRestaurantData((prevState) => ({
       ...prevState,
       table_grade: value,
+      table_service: value,
+    }));
+  };
+
+  const handleTableServiceChange = (e) => {
+    const { value } = e.target;
+
+    setRestaurantData((prevState) => ({
+      ...prevState,
+
+      table_service: value,
     }));
   };
 
@@ -213,61 +226,15 @@ const CreateForm = ({
             Niveau de table
           </p>
 
-          <div className="container">
-            <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white ">
-              <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
-                <input
-                  type="radio"
-                  id="table_grade1"
-                  className="form-radio h-4 w-4 text-blue-500"
-                  onChange={handleTableGradeChange}
-                  checked={restaurantData.table_grade === "Bonne Table"}
-                  value="Bonne Table"
-                />
-                <label
-                  htmlFor="table_grade1"
-                  className="text-slate-700 text-sm font-medium flex items-center">
-                  <MdTableRestaurant className="h-4 w-4 mr-2  text-blue-500" />{" "}
-                  Bonne Table
-                </label>
-              </li>
-              <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
-                <input
-                  type="radio"
-                  id="table_grade2"
-                  className="form-radio h-4 w-4 text-blue-500"
-                  onChange={handleTableGradeChange}
-                  checked={restaurantData.table_grade === "Très bonne table"}
-                  value="Très bonne table"
-                />
-                <label
-                  htmlFor="table_grade2"
-                  className="text-slate-700 text-sm font-medium flex items-center">
-                  <MdTableRestaurant className="h-4 w-4 text-blue-500" />
-                  <MdTableRestaurant className="h-4 w-4   text-blue-500 mr-2" />{" "}
-                  Très bonne table
-                </label>
-              </li>
-              <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
-                <input
-                  type="radio"
-                  id="table_grade3"
-                  className="form-radio h-4 w-4 text-blue-500"
-                  onChange={handleTableGradeChange}
-                  checked={restaurantData.table_grade === "Table d'exception"}
-                  value="Table d'exception"
-                />
-                <label
-                  htmlFor="table_grade3"
-                  className="text-slate-700 text-sm font-medium flex items-center">
-                  <MdTableRestaurant className="h-4 w-4   text-blue-500" />
-                  <MdTableRestaurant className="h-4 w-4 text-blue-500" />
-                  <MdTableRestaurant className="h-4 w-4 mr-2  text-blue-500" />{" "}
-                  Table d'exception
-                </label>
-              </li>
-            </ul>
-          </div>
+          <Symbols
+            {...{ handleTableGradeChange }}
+            table_grade={restaurantData.table_grade}
+          />
+
+          <ServiceTable
+            table_service={restaurantData.table_service}
+            {...{ handleTableServiceChange }}
+          />
         </div>
         <div className="mb-4">
           <label
