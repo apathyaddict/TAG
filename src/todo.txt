@@ -1,0 +1,7 @@
+//TODO:
+
+1. progress bar to image upload and delete
+2. icons sorting for catgeories
+3. side bar h keeps moving
+4. check the load more capacity 
+5. dashboard filter library?

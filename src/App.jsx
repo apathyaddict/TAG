@@ -20,8 +20,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { auth, db } from "./firebase";
 import { doc, getDoc } from "firebase/firestore";
 import EditForm from "./Pages/EditForm";
-import SidebarSearch from "./components/SidebarSearch";
-import UploadImage from "./components/Form/UploadImage";
+
+import Symbols from "./components/Form/Symbols";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -94,7 +94,6 @@ function App() {
             />
             <Route
               path="/edit-restaurant/:id"
-              // element={<CreatePage />}
               element={
                 <EditForm {...{ selectedRestaurant, isNew, setIsEditing }} />
               }
@@ -103,7 +102,7 @@ function App() {
               path="/profile"
               element={<ProfilePage {...{ userDetails, handleLogout }} />}
             />
-            <Route path="/test" element={<UploadImage />} />
+            <Route path="/test" element={<Symbols />} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/login" />} />
