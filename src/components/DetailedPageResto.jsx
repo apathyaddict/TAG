@@ -110,7 +110,7 @@ const RestaurantDetails = ({ editFunc }) => {
         </h5>
         <ul className="flex flex-col gap-4  ">
           <li className="flex gap-5 pb-4font-normal text-md  py-2 border-b pb-4 border-gray-300">
-            <div className=" w-[350px]  px-4 text-slate-400 ">Catégorie</div>
+            <div className=" w-[350px]  px-4 text-slate-400 ">Rubrique</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
               <p className=""> {category}</p>
             </div>

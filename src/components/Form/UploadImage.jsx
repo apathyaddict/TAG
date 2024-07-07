@@ -10,10 +10,9 @@ import { RiImageAddFill, RiDeleteBinFill } from "react-icons/ri";
 import { db, storage } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-import { arrayUnion, doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
-import { refFromURL } from "firebase/database";
 
 const UploadImage = ({ imagesUrl }) => {
   const [images, setImages] = useState([]);
@@ -62,7 +61,7 @@ const UploadImage = ({ imagesUrl }) => {
       // Delete from Storage
       const imageRef = ref(storage, imageUrlToDelete);
       await deleteObject(imageRef);
-
+      toast.success("image supprimée", { position: "top-right" });
       console.log("Image deleted successfully from storage and Firestore.");
     } catch (error) {
       console.error("Error deleting image: ", error);
@@ -119,7 +118,6 @@ const UploadImage = ({ imagesUrl }) => {
       const updatedFiches = {
         ...currentData,
         imagesUrl: [...(currentData.imagesUrl || []), url],
-        // imagesUrl: [url],
       };
 
       await setDoc(ficheRef, updatedFiches, { merge: true });

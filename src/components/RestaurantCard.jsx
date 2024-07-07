@@ -36,7 +36,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-lg shadow-md bg-white p-4  border-l-8 border-blue-600 overflow-x-hidden w-2/5">
+    <div className="flex flex-col justify-between rounded-lg shadow-md bg-white p-4  border-l-8 border-blue-600 overflow-x-hidden w-md">
       <h5 className="mb-2 text-xl uppercase  font-bold leading-snug text-sky border-b  ">
         {name}
       </h5>

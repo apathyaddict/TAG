@@ -61,7 +61,12 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     setErrorMessage("");
 
     if (!restaurantData.name) {
-      setErrorMessage("Le nom du Restaurant est requis.");
+      setErrorMessage("Le nom du restaurant est requis.");
+      return;
+    }
+
+    if (!restaurantData.category) {
+      setErrorMessage("La rubrique du restaurant est requise.");
       return;
     }
 
@@ -102,7 +107,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
 
     try {
       setIsLoading(true);
-      await addDoc(collection(db, "fiches"), newFiche);
+      const docRef = await addDoc(collection(db, "fiches"), newFiche);
       console.log("SUCCES : Sent to Database", newFiche);
 
       toast.success("Restaurant ajouté avec succès!", {
@@ -110,6 +115,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       });
       clearRestaurantData();
       setIsLoading(false);
+      navigate(`/restaurants/${docRef.id}`);
     } catch (error) {
       console.error("Error adding document: ", error);
       setErrorMessage("Une erreur est survenue lors de l'envoi du formulaire.");

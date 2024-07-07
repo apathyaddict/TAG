@@ -187,9 +187,9 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         />
       </div>
 
-      <section className="flex-grow">
-        <div className="mx-auto flex flex-col px-10">
-          <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl">
+      <section className="flex-grow ">
+        <div className="mx-auto flex flex-col  ">
+          <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl px-10">
             Banque de données
           </h1>
 
@@ -200,7 +200,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
               <Skeleton height={20} className="my-2" count={3} />
             </div>
           ) : (
-            <div>
+            <div className="w-full pl-10 pr-2">
               {searchTerm ||
               citySearchTerm ||
               managerSearchTerm ||
