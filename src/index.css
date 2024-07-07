@@ -53,6 +53,6 @@ link {
 }
 
 .select-selected {
-  background-color: white;
+  /* background-color: blue; */
   border-color: rgb(33, 33, 232);
 }

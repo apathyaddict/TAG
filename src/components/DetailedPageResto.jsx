@@ -19,6 +19,10 @@ const RestaurantDetails = ({ editFunc }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const capitalizeFirstLetter = (str) => {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
@@ -102,11 +106,33 @@ const RestaurantDetails = ({ editFunc }) => {
         console.error("Error deleting restaurant:", error);
       }
   };
+
+  const capitalizeCityName = (cityName) => {
+    if (!cityName) return "";
+
+    // Words that should remain lowercase
+    const lowercaseWords = ["de", "du", "des", "et", "la", "le", "les"];
+
+    // Split the city name into words
+    const words = cityName.toLowerCase().split(" ");
+
+    // Capitalize each word unless it's in the lowercaseWords array
+    const capitalizedWords = words.map((word, index) => {
+      if (index === 0 || !lowercaseWords.includes(word)) {
+        return capitalizeFirstLetter(word);
+      } else {
+        return word;
+      }
+    });
+
+    return capitalizedWords.join(" ");
+  };
+
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">
         <h5 className="block mb-6 text-3xl font-semibold text-blue-800 uppercase">
-          {name}
+          {capitalizeFirstLetter(name)}
         </h5>
         <ul className="flex flex-col gap-4  ">
           <li className="flex gap-5 pb-4font-normal text-md  py-2 border-b pb-4 border-gray-300">
@@ -118,9 +144,9 @@ const RestaurantDetails = ({ editFunc }) => {
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
             <div className=" w-[350px]  px-4 text-slate-400 ">Addresse</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-              <p className=" ">{rue} , </p>{" "}
-              <span className="font-semibold">{code_postal} , </span>
-              <p className="gap-4"> {ville}</p>
+              <p className=" ">{capitalizeCityName(rue)}, </p>{" "}
+              <span className="font-medium">{code_postal}, </span>
+              <p className="gap-4"> {capitalizeFirstLetter(ville)}</p>
             </div>
           </li>
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
@@ -159,7 +185,7 @@ const RestaurantDetails = ({ editFunc }) => {
               Nom du gérant
             </div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-              <p className=""> {manager_name}</p>
+              <p className=""> {capitalizeFirstLetter(manager_name)}</p>
             </div>
           </li>
           <li className="flex gap-5  font-normal text-md  py-2">
