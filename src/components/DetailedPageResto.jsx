@@ -11,6 +11,7 @@ import { BiEdit, BiEraser } from "react-icons/bi";
 import { format } from "date-fns";
 
 import UploadImage from "./Form/UploadImage";
+import { MdTableRestaurant } from "react-icons/md";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -53,21 +54,6 @@ const RestaurantDetails = ({ editFunc }) => {
       </div>
     );
   }
-
-  if (!restaurant || Object.keys(restaurant).length === 0) {
-    return (
-      <div className="flex mt-16 flex-col items-center gap-2">
-        <FaUtensils className="h-8 w-8 text-zinc-800" />
-        <h3 className="font-semibold text-xl">C'est calme ici.</h3>
-        <p>Aucune fiche de restaurant trouvée.</p>
-      </div>
-    );
-  }
-
-  const handleEdit = (restaurant) => {
-    editFunc(restaurant);
-  };
-
   const {
     name,
     rue,
@@ -83,7 +69,22 @@ const RestaurantDetails = ({ editFunc }) => {
     email,
     text_review,
     imagesUrl,
+    table_grade,
   } = restaurant;
+
+  if (!restaurant || Object.keys(restaurant).length === 0) {
+    return (
+      <div className="flex mt-16 flex-col items-center gap-2">
+        <FaUtensils className="h-8 w-8 text-zinc-800" />
+        <h3 className="font-semibold text-xl">C'est calme ici.</h3>
+        <p>Aucune fiche de restaurant trouvée.</p>
+      </div>
+    );
+  }
+
+  const handleEdit = (restaurant) => {
+    editFunc(restaurant);
+  };
 
   const formatPhoneNumber = (phoneNumber) => {
     const cleaned = ("" + phoneNumber).replace(/\D/g, "");
@@ -110,10 +111,8 @@ const RestaurantDetails = ({ editFunc }) => {
   const capitalizeCityName = (cityName) => {
     if (!cityName) return "";
 
-    // Words that should remain lowercase
     const lowercaseWords = ["de", "du", "des", "et", "la", "le", "les"];
 
-    // Split the city name into words
     const words = cityName.toLowerCase().split(" ");
 
     // Capitalize each word unless it's in the lowercaseWords array
@@ -126,6 +125,27 @@ const RestaurantDetails = ({ editFunc }) => {
     });
 
     return capitalizedWords.join(" ");
+  };
+
+  const getStars = (grade) => {
+    switch (grade) {
+      case "Bonne Table":
+        return 1;
+      case "Très bonne table":
+        return 2;
+      case "Table d'exception":
+        return 3;
+      default:
+        return 0;
+    }
+  };
+
+  const renderStars = (numStars) => {
+    return Array(numStars)
+      .fill(0)
+      .map((_, index) => (
+        <MdTableRestaurant key={index} className="h-6 w-6 text-blue-500" />
+      ));
   };
 
   return (
@@ -197,6 +217,16 @@ const RestaurantDetails = ({ editFunc }) => {
             </div>
           </li>
         </ul>
+      </div>
+
+      <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-start ">
+        <div className=" w-[350px]  px-4 text-slate-400 ">
+          Qualité de la table:
+        </div>
+        <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+          <p className="text-sm font-normal">{table_grade}</p>
+          <div className="flex gap-1">{renderStars(getStars(table_grade))}</div>
+        </div>
       </div>
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-start ">
