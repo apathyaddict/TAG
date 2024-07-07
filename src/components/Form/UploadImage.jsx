@@ -1,8 +1,16 @@
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useState } from "react";
+
+import { MdSaveAlt } from "react-icons/md";
 import { RiImageAddFill, RiDeleteBinFill } from "react-icons/ri";
+import { storage } from "../../firebase";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
 
 const UploadImage = () => {
   const [images, setImages] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
   const maxImages = 2;
 
   const handleImageUpload = (e) => {
@@ -11,13 +19,16 @@ const UploadImage = () => {
       if (file) {
         const newImage = URL.createObjectURL(file);
         setImages([...images, newImage]);
+        setImageFiles([...imageFiles, file]);
       }
     }
   };
 
   const handleDeleteImage = (index) => {
     const updatedImages = images.filter((_, i) => i !== index);
+    const updatedImageFiles = imageFiles.filter((_, i) => i !== index);
     setImages(updatedImages);
+    setImageFiles(updatedImageFiles);
   };
 
   const handleDrop = (e) => {
@@ -27,12 +38,35 @@ const UploadImage = () => {
       if (file) {
         const newImage = URL.createObjectURL(file);
         setImages([...images, newImage]);
+        setImageFiles([...imageFiles, file]);
       }
     }
   };
 
   const handleDragOver = (e) => {
     e.preventDefault();
+  };
+
+  const handleSave = async () => {
+    setIsUploading(true);
+    const uploadPromises = imageFiles.map(async (file) => {
+      const imgRef = ref(storage, `files/${uuidv4()}`);
+      const snapshot = await uploadBytes(imgRef, file);
+      const url = await getDownloadURL(snapshot.ref);
+      console.log("url", url);
+      return url;
+    });
+
+    try {
+      const urls = await Promise.all(uploadPromises);
+      toast.success("Images sauvergarder avec succés!");
+      console.log("Uploaded image URLs: ", urls);
+      setIsUploading(false);
+    } catch (error) {
+      toast.error("Erreur lors de la sauvegarde", error);
+      console.error("Error uploading images: ", error);
+      setIsUploading(false);
+    }
   };
 
   return (
@@ -70,11 +104,11 @@ const UploadImage = () => {
           />
           <label
             htmlFor="upload-button"
-            className="w-1/2 cursor-pointer"
+            className="md:w-1/2 w-4/5 cursor-pointer"
             onDrop={handleDrop}
             onDragOver={handleDragOver}>
-            <div className="flex items-center justify-center font-semibold rounded-lg border-dashed border-2 border-gray-300 cursor-pointer  pointer-events-auto  hover:bg-blue-100 bg-gray-50 p-8 text-gray-500 text-center">
-              <RiImageAddFill className="h-6 w-6 text-gray-500" />
+            <div className="flex md:items-center md:justify-center font-semibold rounded-lg border-dashed border-2 border-gray-300 cursor-pointer  pointer-events-auto  hover:bg-blue-100 bg-gray-50 p-8 text-gray-500 text-center">
+              <RiImageAddFill className="md:h-6 md:w-6 h-10 w-12 text-gray-500" />
               <span className="ml-2">
                 Glissez et déposez des images ici ou cliquez pour télécharger
               </span>
@@ -82,6 +116,16 @@ const UploadImage = () => {
           </label>
         </>
       )}
+
+      <div className="flex justify-end w-full">
+        <button
+          className="uppercase flex items-center font-semibold rounded-lg border border-solid cursor-pointer text-white bg-blue-400 border-blue-500 hover:bg-blue-600 px-4 py-2 text-sm"
+          disabled={isUploading || images.length >= maxImages}
+          onClick={handleSave}>
+          <MdSaveAlt className="h-6 w-6 pr-2 text-white" />
+          {isUploading ? "Téléchargement..." : "Sauvegarder"}
+        </button>
+      </div>
     </div>
   );
 };
