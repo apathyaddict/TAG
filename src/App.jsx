@@ -22,6 +22,7 @@ import { doc, getDoc } from "firebase/firestore";
 import EditForm from "./Pages/EditForm";
 
 import Symbols from "./components/Form/Symbols";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -102,7 +103,7 @@ function App() {
               path="/profile"
               element={<ProfilePage {...{ userDetails, handleLogout }} />}
             />
-            <Route path="/test" element={<Symbols />} />
+            <Route path="/admin" element={<Dashboard />} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/login" />} />

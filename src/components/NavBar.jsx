@@ -3,6 +3,7 @@ import { BiPlus } from "react-icons/bi";
 import { FaSearch, FaUserCircle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import { MdDashboard } from "react-icons/md";
 
 const Navbar = ({ handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false); // State for dropdown menu
@@ -60,6 +61,14 @@ const Navbar = ({ handleLogout }) => {
               <FiSearch className="h-8 w-8 text-slate-700 hover:text-blue-600" />
             </button>
           </Link>
+          <Link to="/admin">
+            <button
+              type="button"
+              className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  ">
+              {" "}
+              <MdDashboard className="h-8 w-8 text-slate-700 hover:text-blue-600" />
+            </button>
+          </Link>
 
           {/* Avatar - dropdown menu on click */}
           <div className="relative">
@@ -85,6 +94,13 @@ const Navbar = ({ handleLogout }) => {
                     href="list"
                     className="block px-4 py-2 text-sm text-gray-700">
                     Fiches et listes
+                  </a>
+                </div>
+                <div className=" hover:bg-gray-100">
+                  <a
+                    href="admin"
+                    className="block px-4 py-2 text-sm text-gray-700">
+                    Tableau de bord
                   </a>
                 </div>
                 <div className=" hover:bg-gray-100 font-bold">

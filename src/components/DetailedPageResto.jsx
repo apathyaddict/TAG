@@ -173,8 +173,6 @@ const RestaurantDetails = ({ editFunc }) => {
       ));
   };
 
-  console.log(table_grade);
-
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">

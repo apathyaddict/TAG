@@ -7,4 +7,4 @@
 5. dashboard filter library?
 
 //FIXME:
-bug with hotel restaurant - & 
+bug with hotel restaurant - &  ---- done

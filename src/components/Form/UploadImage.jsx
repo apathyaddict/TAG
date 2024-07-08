@@ -110,6 +110,8 @@ const UploadImage = ({ imagesUrl }) => {
   };
 
   const saveUrl = async (url, id) => {
+    // console.log("url", url);
+    // console.log("id", id);
     try {
       const ficheRef = doc(db, "fiches", id);
       const ficheSnap = await getDoc(ficheRef);
