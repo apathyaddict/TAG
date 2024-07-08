@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaArrowRight, FaCheck } from "react-icons/fa";
+import { FaArrowRight, FaCheck, FaSortAmountDown } from "react-icons/fa";
 import { HiXCircle } from "react-icons/hi";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -12,18 +12,20 @@ import { GiKnifeFork } from "react-icons/gi";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [sortBy, setSortBy] = useState("date_added");
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [sortBy]);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       const restaurantsQuery = query(
         collection(db, "fiches"),
-        orderBy("date_added", "desc")
+        orderBy(sortBy, "desc")
       );
       const documentSnapshots = await getDocs(restaurantsQuery);
       const results = documentSnapshots.docs.map((doc) => ({
@@ -35,6 +37,22 @@ const Dashboard = () => {
     } catch (error) {
       console.error("Error fetching documents: ", error);
       setLoading(false);
+    }
+  };
+
+  const sortByName = () => {
+    if (sortBy === "name") {
+      setSortBy("-name"); // Toggle descending order
+    } else {
+      setSortBy("name"); // Ascending order by name
+    }
+  };
+
+  const sortByCategory = () => {
+    if (sortBy === "category") {
+      setSortBy("-category"); // Toggle descending order
+    } else {
+      setSortBy("category"); // Ascending order by category
     }
   };
 
@@ -99,23 +117,43 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="container mx-auto px-2 sm:px-4">
+    <div className="container mx-auto px-2 sm:px-4 mt-10">
       <div className="py-4">
+        <div className="flex justify-end mb-4">
+          <div>
+            <button
+              className="bg-white hover:bg-slate-100 uppercase text-sm  text-slate-700 font-normal py-2 px-4 rounded-lg shadow-sm"
+              onClick={sortByName}>
+              Trier: Nom
+            </button>
+            <button
+              className="bg-white hover:bg-slate-100 uppercase text-sm  text-slate-700 font-normal py-2 px-4 rounded-lg shadow-sm"
+              onClick={sortByCategory}>
+              Trier: catégory
+            </button>
+          </div>
+        </div>
         <div className="shadow overflow-hidden rounded-lg border-b border-slate-200">
           <table className="min-w-full bg-white">
             <thead className="bg-slate-600 text-white">
               <tr>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                  Name
+                  Nom
+                </th>
+
+                <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+                  <button
+                    className=" text-white uppercase text-md  font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800/60 px-2"
+                    onClick={sortByCategory}>
+                    Catégorie
+                    <FaSortAmountDown className="text-white text-lg ml-2" />
+                  </button>
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                  Category
+                  Table
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                  Table Quality
-                </th>
-                <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                  Service Quality
+                  Service
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
                   Texte
@@ -126,9 +164,7 @@ const Dashboard = () => {
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
                   Date
                 </th>
-                <th className="text-center py-2 px-2 uppercase font-semibold text-xs">
-                  Action
-                </th>
+                <th className="text-center py-2 px-2 uppercase font-semibold text-xs"></th>
               </tr>
             </thead>
             <tbody className="text-slate-700">
@@ -181,6 +217,9 @@ const Dashboard = () => {
             </tbody>
           </table>
         </div>
+        <p className="slate-700 text-xs my-4 ">
+          Nombre de fiches: {data.length}
+        </p>
       </div>
     </div>
   );
