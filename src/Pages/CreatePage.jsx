@@ -34,6 +34,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     imagesUrl: [],
     table_grade: "",
     table_service: "",
+    detailsData: [],
   });
   const navigate = useNavigate();
 
@@ -55,6 +56,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         text_review: restaurantInfo.text_review || "",
         table_grade: restaurantInfo.table_grade || "",
         table_service: restaurantInfo.table_service || "",
+        detailsData: restaurantInfo.detailsData || [],
       });
     }
   }, [restaurantInfo]);
@@ -165,8 +167,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       date_modified: new Date().toISOString(),
     };
 
-    console.log("setIsEditing", updatedFiche);
-    console.log("isNew", isNew);
+    // console.log("setIsEditing", updatedFiche);
+    // console.log("isNew", isNew);
 
     try {
       setIsLoading(true);
@@ -202,6 +204,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       text_review: "",
       table_grade: "",
       table_service: "",
+      detailsData: [],
     });
   };
 

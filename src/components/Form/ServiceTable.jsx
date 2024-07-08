@@ -4,8 +4,8 @@ import { GiKnifeFork } from "react-icons/gi";
 const ServiceTable = ({ table_service, handleTableServiceChange }) => {
   return (
     <div className="container mb-4">
-      <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white">
-        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+      <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 ">
+        <li className="border border-gray-300 rounded-lg p-4  bg-white flex items-center space-x-2">
           <input
             type="checkbox"
             id="table_service1"
@@ -22,7 +22,7 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             cadre simple
           </label>
         </li>
-        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+        <li className="border border-gray-300 rounded-lg p-4  bg-white flex items-center space-x-2">
           <input
             type="checkbox"
             id="table_service2"
@@ -39,7 +39,7 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             service confort
           </label>
         </li>
-        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+        <li className="border border-gray-300 rounded-lg p-4   bg-white flex items-center space-x-2">
           <input
             type="checkbox"
             id="table_service3"

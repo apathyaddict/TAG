@@ -4,8 +4,8 @@ import { MdTableRestaurant } from "react-icons/md";
 const Symbols = ({ table_grade, handleTableGradeChange }) => {
   return (
     <div className="container mb-4">
-      <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-white ">
-        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+      <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <li className="border bg-white border-gray-300 rounded-lg p-4 flex items-center space-x-2">
           <input
             type="checkbox"
             id="table_grade1"
@@ -21,7 +21,7 @@ const Symbols = ({ table_grade, handleTableGradeChange }) => {
             Table
           </label>
         </li>
-        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+        <li className="border  bg-white border-gray-300 rounded-lg p-4 flex items-center space-x-2">
           <input
             type="checkbox"
             id="table_grade2"
@@ -38,7 +38,7 @@ const Symbols = ({ table_grade, handleTableGradeChange }) => {
             bonne table
           </label>
         </li>
-        <li className="border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
+        <li className=" bg-white border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
           <input
             type="checkbox"
             id="table_grade3"

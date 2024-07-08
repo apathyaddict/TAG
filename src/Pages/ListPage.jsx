@@ -16,8 +16,6 @@ import useDebounce from "../hooks/useDebounce.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-//TODO: check chaining queries
-
 const RESTAURANTS_PER_PAGE = 9;
 
 const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
@@ -34,7 +32,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const debouncedCitySearchTerm = useDebounce(citySearchTerm, 500);
   const debouncedManagerSearchTerm = useDebounce(managerSearchTerm, 1000);
-  const debouncedCategorySearch = useDebounce(categorySearch, 0);
 
   const fetchRestaurants = useCallback(
     async (isInitial = false) => {
@@ -103,12 +100,13 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   }, [debouncedManagerSearchTerm]);
 
   useEffect(() => {
-    if (debouncedCategorySearch.length > 0) {
-      performCategorySearch(debouncedCategorySearch);
+    if (categorySearch.length > 0) {
+      // const encodedCategories = categorySearch.map(encodeCategory);
+      performCategorySearch(categorySearch);
     } else {
       setSearchResults([]);
     }
-  }, [debouncedCategorySearch]);
+  }, [categorySearch]);
 
   const performSearch = async (field, value) => {
     setLoading(true);
@@ -147,7 +145,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   const performCategorySearch = async (categories) => {
     setLoading(true);
-    console.log(categories);
+
     try {
       const queries = categories.map((category) =>
         query(collection(db, "fiches"), where("category", "==", category))

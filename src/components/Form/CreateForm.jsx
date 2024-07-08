@@ -3,6 +3,7 @@ import DropdownCat from "./DropdownCat";
 import { MdTableRestaurant } from "react-icons/md";
 import Symbols from "./Symbols";
 import ServiceTable from "./ServiceTable";
+import DetailsTableForm from "./DetailsTableForm";
 
 const CreateForm = ({
   handleSave,
@@ -35,9 +36,10 @@ const CreateForm = ({
     }
 
     if (id === "name") {
-      // Split names into parts and save the whole name in lowercase for searching later
-      const nameSubstrings = value.toLowerCase().split(/\s+/);
-      nameSubstrings.push(value.toLowerCase());
+      // Remove non-alphanumeric characters and split names into parts
+      const cleanedValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
+      const nameSubstrings = cleanedValue.toLowerCase().split(/\s+/);
+      nameSubstrings.push(cleanedValue.toLowerCase());
 
       setRestaurantData((prevState) => ({
         ...prevState,
@@ -65,6 +67,13 @@ const CreateForm = ({
       ...prevState,
 
       table_service: value,
+    }));
+  };
+
+  const handleDetailsTableChange = (detailsData) => {
+    setRestaurantData((prevState) => ({
+      ...prevState,
+      detailsData: detailsData,
     }));
   };
 
@@ -236,6 +245,14 @@ const CreateForm = ({
             {...{ handleTableServiceChange }}
           />
         </div>
+        <label className="block text-sm mb-1 font-medium text-gray-500">
+          Autres Détails
+        </label>
+        <DetailsTableForm
+          restaurantData={restaurantData}
+          handleDetailsTableChange={handleDetailsTableChange}
+        />
+
         <div className="mb-4">
           <label
             htmlFor="text_review"

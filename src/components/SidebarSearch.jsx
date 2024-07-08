@@ -23,12 +23,25 @@ const SidebarSearch = ({
     "AUTRE",
   ];
 
+  const categoryMap = {
+    RESTAURANT: "RESTAURANT",
+    "RESTAURANT & HÔTEL": "RESTAURANT ET HOTEL",
+    "RESTAURANT HÔTEL & SPA": "RESTAURANT HOTEL ET SPA",
+    "HÔTEL & SPA": "HOTEL ET SPA",
+    VIGNOBLE: "VIGNOBLE",
+    DISTILLERIE: "DISTILLERIE",
+    CHARCUTERIE: "CHARCUTERIE",
+    TRAITEUR: "TRAITEUR",
+    AUTRE: "AUTRE",
+  };
+
   const handleCategoryChange = (category) => {
+    const plainCategory = categoryMap[category];
     let updatedCategories;
-    if (categorySearch.includes(category)) {
-      updatedCategories = categorySearch.filter((cat) => cat !== category);
+    if (categorySearch.includes(plainCategory)) {
+      updatedCategories = categorySearch.filter((cat) => cat !== plainCategory);
     } else {
-      updatedCategories = [...categorySearch, category];
+      updatedCategories = [...categorySearch, plainCategory];
     }
     setCategorySearch(updatedCategories);
   };
@@ -86,7 +99,7 @@ const SidebarSearch = ({
                 name="category"
                 value={category}
                 className="mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                checked={categorySearch.includes(category)}
+                checked={categorySearch.includes(categoryMap[category])}
                 onChange={() => handleCategoryChange(category)}
               />
               <label htmlFor={category} className="text-sm text-gray-800">

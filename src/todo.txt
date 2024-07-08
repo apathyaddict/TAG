@@ -5,3 +5,6 @@
 3. side bar h keeps moving
 4. check the load more capacity 
 5. dashboard filter library?
+
+//FIXME:
+bug with hotel restaurant - & 

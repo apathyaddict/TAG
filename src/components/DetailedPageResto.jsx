@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { FaUtensils } from "react-icons/fa";
 
+import { FaRegStar, FaWineBottle, FaUtensils } from "react-icons/fa";
+import { IoStorefrontSharp } from "react-icons/io5";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
@@ -72,7 +73,14 @@ const RestaurantDetails = ({ editFunc }) => {
     imagesUrl,
     table_grade,
     table_service,
+    detailsData,
   } = restaurant;
+
+  const features = [
+    { name: "Cave", value: true, icon: <FaWineBottle /> },
+    { name: "Decor Remarquable", value: true, icon: <FaRegStar /> },
+    { name: "Terrasse", value: true, icon: <IoStorefrontSharp /> },
+  ];
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
     return (
@@ -246,19 +254,40 @@ const RestaurantDetails = ({ editFunc }) => {
         <div className=" w-[350px]  px-4 text-slate-400 ">
           Qualité de la table:
         </div>
-        <div className="w-full flex flex-col justify-start gap-6 divide-y ">
-          <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-            <p className="text-sm font-normal">{table_grade}</p>
-            <div className="flex gap-1">
+        <div className="w-full flex flex-col justify-start gap-6 divide-y  ">
+          <div className=" w-full flex justify-start gap-2 text-slate-800  ">
+            <div className="flex items-center gap-1 w-[150px] ">
               {renderStars(getStars(table_grade))}
             </div>
+            <p className="text-sm font-normal">{table_grade}</p>
           </div>
           <div className=" w-full flex justify-start gap-2 text-slate-800 pt-6 ">
-            <p className="text-sm font-normal">{table_service}</p>
-            <div className="flex gap-1">
+            <div className="flex items-center gap-1 w-[150px]">
               {renderForks(getForks(table_service))}
             </div>
+            <p className="text-sm font-normal">{table_service}</p>
           </div>
+          {detailsData ? (
+            <div className="w-full flex justify-start gap-2 text-slate-800 ">
+              <ul className="list-disc gap-6 w-full ">
+                {features.map(
+                  (feature, index) =>
+                    feature.value && (
+                      <li
+                        key={index}
+                        className="flex items-center space-x-2 border-b pt-6 pb-6">
+                        <div className="flex items-center gap-1  text-blue-500 w-[150px]">
+                          <span className=""></span> {feature.icon}
+                        </div>
+                        <p className="text-sm font-normal">{feature.name}</p>
+                      </li>
+                    )
+                )}
+              </ul>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
 
