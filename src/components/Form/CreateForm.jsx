@@ -56,7 +56,6 @@ const CreateForm = ({
     setRestaurantData((prevState) => ({
       ...prevState,
       table_grade: value,
-      table_service: value,
     }));
   };
 

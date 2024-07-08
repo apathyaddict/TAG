@@ -14,7 +14,6 @@ const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
   useEffect(() => {
     if (restaurantData.detailsData) {
       setCheckedItems({
-        ...checkedItems,
         cave: restaurantData.detailsData.cave || false,
         terrasse: restaurantData.detailsData.terrasse || false,
         decorRemarquable: restaurantData.detailsData.decorRemarquable || false,
@@ -25,14 +24,16 @@ const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
   // Handle checkbox change
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target;
-    setCheckedItems({
-      ...checkedItems,
+
+    // Update the state with the new checked value
+    setCheckedItems((prevState) => ({
+      ...prevState,
       [id]: checked,
-    });
+    }));
 
     // Pass updated details data back to parent component
     const updatedDetailsData = {
-      ...checkedItems,
+      ...checkedItems, // Use the current state, not the potentially outdated state
       [id]: checked,
     };
     handleDetailsTableChange(updatedDetailsData);

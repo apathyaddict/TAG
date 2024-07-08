@@ -76,12 +76,6 @@ const RestaurantDetails = ({ editFunc }) => {
     detailsData,
   } = restaurant;
 
-  const features = [
-    { name: "Cave", value: true, icon: <FaWineBottle /> },
-    { name: "Decor Remarquable", value: true, icon: <FaRegStar /> },
-    { name: "Terrasse", value: true, icon: <IoStorefrontSharp /> },
-  ];
-
   if (!restaurant || Object.keys(restaurant).length === 0) {
     return (
       <div className="flex mt-16 flex-col items-center gap-2">
@@ -179,6 +173,8 @@ const RestaurantDetails = ({ editFunc }) => {
       ));
   };
 
+  console.log(table_grade);
+
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">
@@ -267,27 +263,41 @@ const RestaurantDetails = ({ editFunc }) => {
             </div>
             <p className="text-sm font-normal">{table_service}</p>
           </div>
-          {detailsData ? (
-            <div className="w-full flex justify-start gap-2 text-slate-800 ">
-              <ul className="list-disc gap-6 w-full ">
-                {features.map(
-                  (feature, index) =>
-                    feature.value && (
-                      <li
-                        key={index}
-                        className="flex items-center space-x-2 border-b pt-6 pb-6">
-                        <div className="flex items-center gap-1  text-blue-500 w-[150px]">
-                          <span className=""></span> {feature.icon}
-                        </div>
-                        <p className="text-sm font-normal">{feature.name}</p>
-                      </li>
-                    )
-                )}
-              </ul>
-            </div>
-          ) : (
-            ""
-          )}
+
+          <div className="w-full flex justify-start gap-2 text-slate-800 ">
+            <ul className="list-disc gap-6 w-full">
+              {detailsData.cave ? (
+                <li className="flex items-center space-x-2 border-b pt-6 pb-6">
+                  <div className="flex items-center gap-1 text-blue-500 w-[150px]">
+                    <span>
+                      <FaWineBottle />
+                    </span>
+                  </div>
+                  <p className="text-sm font-normal">Cave remarquable</p>
+                </li>
+              ) : null}
+              {detailsData.decorRemarquable ? (
+                <li className="flex items-center space-x-2 border-b pt-6 pb-6">
+                  <div className="flex items-center gap-1 text-blue-500 w-[150px]">
+                    <span>
+                      <FaRegStar />
+                    </span>
+                  </div>
+                  <p className="text-sm font-normal">Décor remarquable</p>
+                </li>
+              ) : null}
+              {detailsData.terrasse ? (
+                <li className="flex items-center space-x-2 border-b pt-6 pb-6">
+                  <div className="flex items-center gap-1 text-blue-500 w-[150px]">
+                    <span>
+                      <IoStorefrontSharp />
+                    </span>
+                  </div>
+                  <p className="text-sm font-normal">Terrasse</p>
+                </li>
+              ) : null}
+            </ul>
+          </div>
         </div>
       </div>
 
