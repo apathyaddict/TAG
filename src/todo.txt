@@ -2,6 +2,7 @@
 
 1. admin page vs. other
 2. export by pdf
+3. delete only from dashboard and admin
 
 
 

@@ -23,6 +23,7 @@ import EditForm from "./Pages/EditForm";
 
 import Symbols from "./components/Form/Symbols";
 import Dashboard from "./components/Dashboard/Dashboard";
+import PdfExport from "./Pages/PdfExport";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -104,6 +105,7 @@ function App() {
               element={<ProfilePage {...{ userDetails, handleLogout }} />}
             />
             <Route path="/admin" element={<Dashboard />} />
+            <Route path="/pdf" element={<PdfExport />} />
           </>
         ) : (
           <Route path="/*" element={<Navigate to="/login" />} />
