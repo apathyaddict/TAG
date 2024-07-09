@@ -1,19 +1,23 @@
 //TODO:
 
 1. admin page vs. other
-2. maybe check by name vs. sybstring
-4. check the load more capacity 
+2. export by pdf
+
+
 
 
 
 //FIXME:
-1. bug that returns the load more to the top of the screen insteasd of staying at the bottom
+
 
 
 
 
 
 //DONE
+
+
+2. maybe check by name vs. sybstring --- done
 5. bigger postal input box --- done
 bug with hotel restaurant - &  ---- done
 7. switch toast on sucees --- done1. 
@@ -24,3 +28,5 @@ filter removes on second time in dashboard ---done
 7. replace load more with pagination? --- no it will load too many things
 3. side bar h keeps moving --- seems to have fixed itself
 2. add a clause that says that letters are the end of an adress or in the middle cannot be capitalized (ex:enfin, gauloi, domaine vincent) --- done
+1. bug that returns the load more to the top of the screen insteasd of staying at the bottom --- done
+4. check the load more capacity  ---done

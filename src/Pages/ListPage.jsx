@@ -71,10 +71,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     [lastVisible, loading, hasMore]
   );
 
-  console.log("Scroll position before fetch:", window.scrollY);
-  // Perform fetchRestaurants logic
-  console.log("Scroll position after fetch:", window.scrollY);
-
   useEffect(() => {
     fetchRestaurants(true);
   }, []);
@@ -105,7 +101,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   useEffect(() => {
     if (categorySearch.length > 0) {
-      // const encodedCategories = categorySearch.map(encodeCategory);
       performCategorySearch(categorySearch);
     } else {
       setSearchResults([]);
@@ -138,7 +133,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         ...doc.data(),
       }));
 
-      // console.log("results", results);
       setSearchResults(results);
       setLoading(false);
     } catch (error) {
@@ -163,7 +157,6 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         }))
       );
 
-      console.log("category results", results);
       setSearchResults(results);
       setLoading(false);
     } catch (error) {
@@ -190,12 +183,12 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
       </div>
 
       <section className="flex-grow">
-        <div className="mx-auto flex flex-col mb-8 ">
-          <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl px-10">
+        <div className="mx-auto flex flex-col mb-16 ">
+          <h1 className="my-10 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl px-10 ">
             Banque de données
           </h1>
 
-          {loading ? (
+          {loading && allRestaurants.length === 0 ? (
             <div className="max-w-full mr-10 p-10">
               <Skeleton height={20} className="my-2 w-[200px]" count={3} />{" "}
               <Skeleton height={20} className="my-2 w-[300px]" count={3} />
@@ -224,7 +217,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
                   {...{ setIsEditing, setIsnew, editFunc }}
                 />
               )}
-              {hasMore && !loading && (
+              {hasMore && (
                 <div className="text-center my-10 uppercase">
                   <button
                     onClick={(e) => {
