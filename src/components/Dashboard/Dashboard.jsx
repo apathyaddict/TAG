@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaArrowRight, FaCheck, FaSortAmountDown } from "react-icons/fa";
+import {
+  FaArrowRight,
+  FaCheck,
+  FaSortAmountDown,
+  FaSortAmountUp,
+} from "react-icons/fa";
 import { HiXCircle } from "react-icons/hi";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../firebase";
@@ -23,9 +28,11 @@ const Dashboard = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
+      const orderDirection = sortBy.startsWith("-") ? "desc" : "asc";
+      const sortField = sortBy.startsWith("-") ? sortBy.slice(1) : sortBy;
       const restaurantsQuery = query(
         collection(db, "fiches"),
-        orderBy(sortBy, "desc")
+        orderBy(sortField, orderDirection)
       );
       const documentSnapshots = await getDocs(restaurantsQuery);
       const results = documentSnapshots.docs.map((doc) => ({
@@ -40,26 +47,30 @@ const Dashboard = () => {
     }
   };
 
-  const sortByName = () => {
-    if (sortBy === "name") {
-      setSortBy("-name"); // Toggle descending order
+  const toggleSort = (field) => {
+    if (sortBy === field) {
+      setSortBy(`-${field}`);
+    } else if (sortBy === `-${field}`) {
+      setSortBy(field);
     } else {
-      setSortBy("name"); // Ascending order by name
+      setSortBy(field);
     }
   };
 
-  const sortByCategory = () => {
-    if (sortBy === "category") {
-      setSortBy("-category"); // Toggle descending order
+  const getSortIcon = (field) => {
+    if (sortBy === field) {
+      return <FaSortAmountDown className="text-white text-lg ml-2" />;
+    } else if (sortBy === `-${field}`) {
+      return <FaSortAmountUp className="text-white text-lg ml-2" />;
     } else {
-      setSortBy("category"); // Ascending order by category
+      return null;
     }
   };
 
   if (loading) {
     return (
-      <div className="max-w-full mr-10 p-10">
-        <Skeleton height={30} className="my-2" count={3} />
+      <div className="max-w-full mx-auto mr-10 p-10">
+        <Skeleton height={30} className="my-2" count={10} />
       </div>
     );
   }
@@ -83,7 +94,7 @@ const Dashboard = () => {
       .map((_, index) => (
         <MdTableRestaurant
           key={index}
-          className=" inline-block h-5 w-5 text-slate-600"
+          className="inline-block h-5 w-5 text-slate-600"
         />
       ));
   };
@@ -118,35 +129,34 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto px-2 sm:px-4 mt-10">
+      <div className="my-5 px-2">
+        {" "}
+        <h1 className=" text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
+          Tableau de bord
+        </h1>
+        <p className="text-sm text-slate-700 mt-2">
+          Il est possible de filtrer par critère (ascendant et descendant) en
+          cliquant sur les boutons dans le tableau.
+        </p>{" "}
+      </div>
+
       <div className="py-4">
-        <div className="flex justify-end mb-4">
-          <div>
-            <button
-              className="bg-white hover:bg-slate-100 uppercase text-sm  text-slate-700 font-normal py-2 px-4 rounded-lg shadow-sm"
-              onClick={sortByName}>
-              Trier: Nom
-            </button>
-            <button
-              className="bg-white hover:bg-slate-100 uppercase text-sm  text-slate-700 font-normal py-2 px-4 rounded-lg shadow-sm"
-              onClick={sortByCategory}>
-              Trier: catégory
-            </button>
-          </div>
-        </div>
-        <div className="shadow overflow-hidden rounded-lg border-b border-slate-200">
-          <table className="min-w-full bg-white">
-            <thead className="bg-slate-600 text-white">
+        <div className="shadow overflow-hidden rounded-lg border-b border-slate-200 ">
+          <table className="min-w-full bg-white ">
+            <thead className="bg-zinc-500 text-white ">
               <tr>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                  Nom
+                  <button
+                    className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left px-2 hover:bg-slate-800  bg-slate-800/40 "
+                    onClick={() => toggleSort("name")}>
+                    Nom{getSortIcon("name")}
+                  </button>
                 </th>
-
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
                   <button
-                    className=" text-white uppercase text-md  font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800/60 px-2"
-                    onClick={sortByCategory}>
-                    Catégorie
-                    <FaSortAmountDown className="text-white text-lg ml-2" />
+                    className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
+                    onClick={() => toggleSort("category")}>
+                    Catégorie {getSortIcon("category")}
                   </button>
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
@@ -156,13 +166,21 @@ const Dashboard = () => {
                   Service
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                  Texte
+                  <button
+                    className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
+                    onClick={() => toggleSort("text_review")}>
+                    Texte {getSortIcon("text_review")}
+                  </button>
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
                   Photo
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                  Date
+                  <button
+                    className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
+                    onClick={() => toggleSort("date_added")}>
+                    Date {getSortIcon("date_added")}
+                  </button>
                 </th>
                 <th className="text-center py-2 px-2 uppercase font-semibold text-xs"></th>
               </tr>
@@ -171,8 +189,10 @@ const Dashboard = () => {
               {data.map((item, index) => (
                 <tr
                   key={item.id}
-                  className={index % 2 === 0 ? "bg-slate-50" : "bg-white"}>
-                  <td className="text-left py-2 px-2 uppercase text-bold text-sm text-slate-900">
+                  className={`${
+                    index % 2 === 0 ? "bg-slate-50" : "bg-white"
+                  } hover:bg-blue-100`}>
+                  <td className="text-left py-2 px-4 uppercase font-semibold text-sm  text-blue-800">
                     {item.name}
                   </td>
                   <td className="text-left py-2 px-2">
@@ -181,28 +201,26 @@ const Dashboard = () => {
                     </span>
                   </td>
                   <td className="text-left py-2 px-2">
-                    {" "}
                     {renderForks(getForks(item.table_service))}
                   </td>
                   <td className="text-left py-2 px-2">
-                    {" "}
                     {renderStars(getStars(item.table_grade))}
                   </td>
-                  <td className="text-left  py-2 px-2">
+                  <td className="text-left py-2 px-2">
                     {item.text_review && item.text_review.length > 0 ? (
                       <FaCheck className="w-6 h-6 text-green-500" />
                     ) : (
                       <HiXCircle className="w-6 h-6 text-red-500" />
                     )}
                   </td>
-                  <td className=" py-2  px-2">
+                  <td className="py-2 px-2">
                     {item.imagesUrl && item.imagesUrl.length > 0 ? (
                       <FaCheck className="w-6 h-6 text-green-500" />
                     ) : (
                       <HiXCircle className="w-6 h-6 text-red-500" />
                     )}
                   </td>
-                  <td className="text-left text-xs py-2 px-2 ">
+                  <td className="text-left text-xs py-2 px-2">
                     {format(new Date(item.date_added), "dd/MM/yy")}
                   </td>
                   <td className="flex justify-center py-2 px-2">
@@ -217,9 +235,11 @@ const Dashboard = () => {
             </tbody>
           </table>
         </div>
-        <p className="slate-700 text-xs my-4 ">
-          Nombre de fiches: {data.length}
-        </p>
+        <div>
+          <p className="slate-700 text-xs my-8">
+            Nombre de fiches: {data.length}
+          </p>
+        </div>
       </div>
     </div>
   );

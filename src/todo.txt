@@ -4,7 +4,9 @@
 2. icons sorting for catgeories
 3. side bar h keeps moving
 4. check the load more capacity 
-5. dashboard filter library?
+5. bigger postal input box
+6. if name has an apostrophe save a substring without it l'
 
 //FIXME:
 bug with hotel restaurant - &  ---- done
+filter removes on second time in dashboard

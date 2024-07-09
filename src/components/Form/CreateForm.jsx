@@ -77,8 +77,8 @@ const CreateForm = ({
   };
 
   return (
-    <section className="container">
-      <div className="max-w-4xl mx-auto my-4 p-8">
+    <section className="container w-full">
+      <div className=" max-w-5xl mx-auto my-4 p-8 ">
         {!isEditing ? (
           <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
             Ajouter un nouvel établissement:
@@ -125,7 +125,7 @@ const CreateForm = ({
             />
           </div>
 
-          <div className="mb-4 max-w-[100px]">
+          <div className="mb-4 max-w-[120px]">
             <label
               htmlFor="code_postal"
               className="block text-sm font-medium text-gray-500">
