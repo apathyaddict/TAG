@@ -34,10 +34,9 @@ const CreateForm = ({
         [id]: trimPhoneNumber,
       }));
     }
-
     if (id === "name") {
-      // Remove non-alphanumeric characters and split names into parts
-      const cleanedValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
+      // Remove non-alphanumeric characters except apostrophes and split names into parts
+      const cleanedValue = value.replace(/[^a-zA-Z0-9\s']/g, "");
       const nameSubstrings = cleanedValue.toLowerCase().split(/\s+/);
       nameSubstrings.push(cleanedValue.toLowerCase());
 

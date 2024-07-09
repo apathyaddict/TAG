@@ -14,16 +14,18 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { format } from "date-fns";
 import { MdTableRestaurant } from "react-icons/md";
 import { GiKnifeFork } from "react-icons/gi";
+import Pagination from "./Pagination";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [sortBy, setSortBy] = useState("date_added");
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
-  }, [sortBy]);
+  }, [sortBy, currentPage]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -74,6 +76,17 @@ const Dashboard = () => {
       </div>
     );
   }
+
+  const onPageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Calculate current items based on currentPage
+  const itemsPerPage = 5; // Number of items to display per page
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const getStars = (grade) => {
     switch (grade) {
@@ -186,13 +199,13 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody className="text-slate-700">
-              {data.map((item, index) => (
+              {currentItems.map((item, index) => (
                 <tr
                   key={item.id}
                   className={`${
                     index % 2 === 0 ? "bg-slate-50" : "bg-white"
                   } hover:bg-blue-100`}>
-                  <td className="text-left py-2 px-4 uppercase font-semibold text-sm  text-blue-800">
+                  <td className="text-left py-2 px-4 uppercase font-semibold text-sm  text-blue-900">
                     {item.name}
                   </td>
                   <td className="text-left py-2 px-2">
@@ -235,11 +248,13 @@ const Dashboard = () => {
             </tbody>
           </table>
         </div>
-        <div>
+
+        <Pagination {...{ onPageChange, totalPages, currentPage }} />
+        {/* <div>
           <p className="slate-700 text-xs my-8">
             Nombre de fiches: {data.length}
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

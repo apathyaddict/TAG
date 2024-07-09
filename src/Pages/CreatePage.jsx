@@ -117,7 +117,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       console.log("SUCCES : Sent to Database", newFiche);
 
       toast.success("Restaurant ajouté avec succès!", {
-        position: "top-right",
+        position: "top-left",
       });
       clearRestaurantData();
       setIsLoading(false);
