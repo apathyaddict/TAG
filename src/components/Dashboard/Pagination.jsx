@@ -31,14 +31,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
           <p className="text-sm text-slate-700">
-            Affichage &nbsp;
-            <span className="font-medium">{(currentPage - 1) * 5 + 1}</span> à
+            Affichage&nbsp;
+            <span className="font-medium">{(currentPage - 1) * 20 + 1}</span> à
             &nbsp;
             <span className="font-medium">
-              {Math.min(currentPage * 5, totalPages * 5)}
+              {Math.min(currentPage * 20, totalPages * 20)}
             </span>
-            &nbsp; sur &nbsp;
-            <span className="font-medium">{totalPages * 5}</span> résultats
+            &nbsp; sur&nbsp;
+            <span className="font-medium">{totalPages * 20}</span> résultats
           </p>
         </div>
         <div>

@@ -16,7 +16,7 @@ import useDebounce from "../hooks/useDebounce.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const RESTAURANTS_PER_PAGE = 9;
+const RESTAURANTS_PER_PAGE = 10;
 
 const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [allRestaurants, setAllRestaurants] = useState([]);

@@ -82,7 +82,7 @@ const Dashboard = () => {
   };
 
   // Calculate current items based on currentPage
-  const itemsPerPage = 5; // Number of items to display per page
+  const itemsPerPage = 20; // Number of items to display per page
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
@@ -147,7 +147,7 @@ const Dashboard = () => {
         <h1 className=" text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
           Tableau de bord
         </h1>
-        <p className="text-sm text-slate-700 mt-2">
+        <p className="text-sm text-slate-600 mt-2">
           Il est possible de filtrer par critère (ascendant et descendant) en
           cliquant sur les boutons dans le tableau.
         </p>{" "}
