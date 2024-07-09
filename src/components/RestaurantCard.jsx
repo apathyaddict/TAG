@@ -3,12 +3,16 @@ import { FaPhoneAlt, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const RestaurantCard = ({ restaurant, editFunc }) => {
-  const { name, rue, code_postal, ville, manager_name, category, id } =
+  const { name, rue, code_postal, ville, manager_name, phone, category, id } =
     restaurant;
 
   // Function to capitalize the first letter of each word
-  const capitalizeFirstLetter = (str) => {
-    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  // const capitalizeFirstLetter = (str) => {
+  //   return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  // };
+
+  const capitalizeFirstLetter = (word) => {
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   };
 
   // Function to format phone number with spaced pairs
@@ -18,29 +22,45 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
     return formatted;
   };
 
-  const handleEdit2 = (restaurant) => {
-    editFunc(restaurant);
-  };
+  // const handleEdit2 = (restaurant) => {
+  //   editFunc(restaurant);
+  // };
+
+  const lowercaseWords = ["de", "du", "des", "et", "la", "le", "les"];
 
   const capitalizeCityName = (cityName) => {
     if (!cityName) return "";
 
-    // Words that should remain lowercase
-    const lowercaseWords = ["de", "du", "des", "et", "la", "le", "les"];
+    // Split the city name by spaces and hyphens while preserving special characters
+    const words = cityName.split(/[\s-]+/);
 
-    // Split the city name into words
-    const words = cityName.toLowerCase().split(" ");
+    for (let i = 0; i < words.length; i++) {
+      let word = words[i];
 
-    // Capitalize each word unless it's in the lowercaseWords array
-    const capitalizedWords = words.map((word, index) => {
-      if (index === 0 || !lowercaseWords.includes(word)) {
-        return capitalizeFirstLetter(word);
+      // Handle words containing an apostrophe
+      if (word.includes("'")) {
+        const parts = word.split("'");
+        parts[0] = capitalizeFirstLetter(parts[0]);
+        parts[1] = capitalizeFirstLetter(parts[1]);
+        word = parts.join("'");
       } else {
-        return word;
+        word = capitalizeFirstLetter(word);
       }
-    });
 
-    return capitalizedWords.join(" ");
+      // Ignore certain lowercase words
+      if (i === 0 || !lowercaseWords.includes(word.toLowerCase())) {
+        words[i] = word;
+      } else {
+        words[i] = word.toLowerCase();
+      }
+
+      // Handle special characters like accents after a dash or hyphen
+      if (i > 0 && word.startsWith("-")) {
+        words[i] = "-" + words[i][1].toUpperCase() + words[i].slice(2);
+      }
+    }
+
+    return words.join(" ");
   };
 
   return (
@@ -64,10 +84,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
 
         <div className="flex items-center gap-2">
           <FaPhoneAlt className="text-blue-400" />
-          <p className="text-gray-700">
-            {" "}
-            {capitalizeFirstLetter(manager_name)}
-          </p>
+          <p className="text-gray-700"> {formatPhoneNumber(phone)}</p>
         </div>
       </div>
 
