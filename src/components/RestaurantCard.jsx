@@ -44,7 +44,7 @@ const RestaurantCard = ({ restaurant, editFunc }) => {
   };
 
   return (
-    <div className="flex flex-col justify-between rounded-lg shadow-md bg-white p-4 border-l-8 border-blue-600 w-full max-w-sm">
+    <div className="flex flex-col justify-between rounded-lg shadow-md bg-white p-4 border-l-8 border-blue-600 w-full max-w-80">
       <div className="flex justify-start max-w-full flex-wrap border-b overflow-x-hidden">
         <h5 className="mb-2 text-xl uppercase font-bold leading-snug text-sky wrap">
           {capitalizeFirstLetter(name)}

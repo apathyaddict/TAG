@@ -91,7 +91,7 @@ const RestaurantDetails = ({ editFunc }) => {
   };
 
   const formatPhoneNumber = (phoneNumber) => {
-    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    const cleaned = ("" + phoneNumber).replace(/[^\d+]/g, "");
     const formatted = cleaned.replace(/(\d{2})(?=\d{2,})/g, "$1 ");
     return formatted;
   };

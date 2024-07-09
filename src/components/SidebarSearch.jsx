@@ -47,7 +47,7 @@ const SidebarSearch = ({
   };
 
   return (
-    <div className=" sm:h-full   bg-white text-slate-700 p-4 shadow-md ">
+    <div className=" sm:h-full  bg-white text-slate-700 px-4 py-4   shadow-md ">
       <h2 className="text-2xl font-bold mb-4 text-slate-700">
         Filtrer les résultats
       </h2>

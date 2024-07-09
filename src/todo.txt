@@ -1,22 +1,25 @@
 //TODO:
 
-1. progress bar to image upload and delete
-2. icons sorting for catgeories
-3. side bar h keeps moving
+1. admin page vs. other
+2. maybe check by name vs. sybstring
 4. check the load more capacity 
 
-6. if name has an apostrophe save a substring without it l'
 
 
 //FIXME:
+1. bug that returns the load more to the top of the screen insteasd of staying at the bottom
+2. add a clause that says that letters are the end of an adress or in the middle cannot be capitalized (ex:enfin, gauloi, domaine vincent)
 
-filter removes on second time in dashboard
-check sorting
-allow + sign in phone and display them - add to crocodillo
-maybe check by name vs. sybstring
+
 
 
 //DONE
 5. bigger postal input box --- done
 bug with hotel restaurant - &  ---- done
-7. switch toast on sucees --- done
+7. switch toast on sucees --- done1. 
+progress bar to image upload and delete
+2. icons sorting for catgeories ---done
+6. if name has an apostrophe save a substring without it l' --- didn't work , saved it with the l'+nameallow + sign in phone and display them - add to crocodillo ---done
+filter removes on second time in dashboard ---done
+7. replace load more with pagination? --- no it will load too many things
+3. side bar h keeps moving --- seems to have fixed itself

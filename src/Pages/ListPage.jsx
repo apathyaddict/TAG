@@ -16,7 +16,7 @@ import useDebounce from "../hooks/useDebounce.jsx";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
-const RESTAURANTS_PER_PAGE = 10;
+const RESTAURANTS_PER_PAGE = 9;
 
 const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [allRestaurants, setAllRestaurants] = useState([]);
@@ -70,6 +70,10 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     },
     [lastVisible, loading, hasMore]
   );
+
+  console.log("Scroll position before fetch:", window.scrollY);
+  // Perform fetchRestaurants logic
+  console.log("Scroll position after fetch:", window.scrollY);
 
   useEffect(() => {
     fetchRestaurants(true);
@@ -185,8 +189,8 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
         />
       </div>
 
-      <section className="flex-grow ">
-        <div className="mx-auto flex flex-col  ">
+      <section className="flex-grow">
+        <div className="mx-auto flex flex-col mb-8 ">
           <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl px-10">
             Banque de données
           </h1>
@@ -198,7 +202,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
               <Skeleton height={20} className="my-2" count={3} />
             </div>
           ) : (
-            <div className="w-full pl-10 pr-2">
+            <div className="w-full pl-6 pr-2">
               {searchTerm ||
               citySearchTerm ||
               managerSearchTerm ||
@@ -221,9 +225,13 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
                 />
               )}
               {hasMore && !loading && (
-                <div className="text-center my-10 capitalize">
+                <div className="text-center my-10 uppercase">
                   <button
-                    onClick={() => fetchRestaurants(false)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      fetchRestaurants(false);
+                    }}
+                    type="button"
                     className="px-10 py-2 hover:bg-white text-slate-600 transition-all border-slate-200 
                 hover:text-slate-900 rounded-lg focus:text-gray-800 font-bold border uppercase disabled:text-slate-300 hover:cursor-pointer"
                     disabled={loading}>

@@ -4,6 +4,7 @@ import { MdTableRestaurant } from "react-icons/md";
 import Symbols from "./Symbols";
 import ServiceTable from "./ServiceTable";
 import DetailsTableForm from "./DetailsTableForm";
+import { FaCircleInfo } from "react-icons/fa6";
 
 const CreateForm = ({
   handleSave,
@@ -28,12 +29,13 @@ const CreateForm = ({
     }));
 
     if (id === "phone" || id === "manager_phone") {
-      const trimPhoneNumber = value.replace(/\s/g, "");
+      const trimPhoneNumber = value.replace(/[^\d+]/g, ""); // Replace any character that is not a digit or plus sign
       setRestaurantData((prevState) => ({
         ...prevState,
         [id]: trimPhoneNumber,
       }));
     }
+
     if (id === "name") {
       // Remove non-alphanumeric characters except apostrophes and split names into parts
       const cleanedValue = value.replace(/[^a-zA-Z0-9\s']/g, "");
@@ -265,6 +267,13 @@ const CreateForm = ({
             onChange={handleInputChange}
             value={restaurantData.text_review}
           />
+        </div>
+
+        <div className="flex justify-start gap-2 px-4">
+          <FaCircleInfo className="text-slate-700 h-5 w-5" />
+          <p classname="text-slate-600 text-sm">
+            Pour modifier ou ajouter des images, allez à la page individuelle.
+          </p>
         </div>
 
         {/* Error message */}

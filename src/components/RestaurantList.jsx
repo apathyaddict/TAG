@@ -22,7 +22,7 @@ const RestaurantList = ({ restaurants, setIsEditing, setIsnew, editFunc }) => {
 
   return (
     // <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-flow-col-4 gap-4">
-    <div className="flex flex-col md:flex-row flex-wrap gap-4 w-full overflow-x-hidden justify-start mx-auto align-left ">
+    <div className="flex flex-col md:flex-row flex-wrap gap-4 w-full overflow-x-hidden justify-start mx-auto align-left  px-4">
       {restaurants.map((restaurant) => (
         <RestaurantCard
           key={restaurant.id}
