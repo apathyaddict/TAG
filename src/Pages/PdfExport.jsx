@@ -4,6 +4,8 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { BsFiletypePdf } from "react-icons/bs";
+import { FaDownload } from "react-icons/fa";
 
 const PdfExport = () => {
   const [data, setData] = useState([]);
@@ -12,12 +14,62 @@ const PdfExport = () => {
 
   const generatePDF = () => {
     const doc = new jsPDF();
-    // Example: Adding selected items to PDF
-    doc.text("Selected Items:", 10, 10);
+    const pageWidth = doc.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
+    const margin = 20;
+    let yPos = margin;
+
+    // Define box dimensions
+    const boxWidth = pageWidth - 2 * margin;
+    const boxHeight = 60;
+
+    // Add title
+    doc.setFontSize(18);
+    doc.text("Selected Items", margin, yPos);
+    yPos += 15;
+
+    // Add each selected item
     selectedItems.forEach((item, index) => {
-      const yPos = 20 + index * 10;
-      doc.text(`${item.category} - ${item.name}`, 10, yPos);
+      if (yPos + boxHeight > pageHeight - margin) {
+        doc.addPage();
+        yPos = margin;
+      }
+
+      // Draw box
+      doc.setDrawColor(0);
+      doc.setFillColor(255, 255, 255);
+      doc.rect(margin, yPos, boxWidth, boxHeight, "FD");
+
+      // Item number and name
+      yPos += 10;
+      doc.setFontSize(14);
+      doc.text(`${index + 1}. ${item.name}`, margin + 5, yPos);
+
+      // Details
+      yPos += 12;
+      doc.setFontSize(12);
+      doc.text(`Category: ${item.category}`, margin + 10, yPos);
+      yPos += 8;
+      doc.text(
+        `Ville: ${capitalizeFirstLetter(item.ville)}`,
+        margin + 10,
+        yPos
+      );
+      yPos += 8;
+      doc.text(`Numéro: ${item.phone}`, margin + 10, yPos);
+      yPos += 8;
+      doc.text(`Table: ${item.table_grade}`, margin + 10, yPos);
+      yPos += 8;
+      doc.text(`Service: ${item.service_grade}`, margin + 10, yPos);
+      yPos += 8;
+      doc.text(`Texte: ${item.text_review}`, margin + 10, yPos);
+      yPos += 8;
+      doc.text(`Photo: ${item.imageUrl}`, margin + 10, yPos);
+
+      yPos += boxHeight + 10;
     });
+
+    // Save the PDF with a unique name
     doc.save("selected_items.pdf");
   };
 
@@ -58,6 +110,7 @@ const PdfExport = () => {
   };
 
   const capitalizeFirstLetter = (str) => {
+    if (!str) return ""; // Handle cases where str is undefined or null
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
@@ -76,11 +129,33 @@ const PdfExport = () => {
   }
 
   return (
-    <div className=" flex justify-center flex-col py-4 px-12 mt-10 mb-10">
+    <div className="flex justify-center flex-col py-4 px-12 mt-10 mb-10">
+      <div className="my-2 px-2">
+        {" "}
+        <h1 className=" text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
+          Conversion PDF
+        </h1>
+        <p className="text-sm text-slate-600 mt-2">
+          Selectionner les fiches et cliquer sur telecharger.
+        </p>{" "}
+      </div>
+
+      <div className=" flex justify-end items-right p-2  gap-4 my-5 ">
+        <button
+          type="button"
+          className="flex items-center justify-right  rounded-xl border border-solid  cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 "
+          onClick={generatePDF}>
+          Telecharger le PDF
+          <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
+        </button>
+      </div>
       <div className="shadow overflow-hidden rounded-lg border-b border-gray-200">
         <table className="min-w-full bg-white">
           <thead className="bg-gray-800 text-white">
             <tr>
+              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+                Sélectionner
+              </th>
               <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
                 Nom
               </th>
@@ -90,14 +165,24 @@ const PdfExport = () => {
               <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
                 Ville
               </th>
-              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                Sélectionner
-              </th>
             </tr>
           </thead>
           <tbody className="text-gray-700">
-            {data.map((item) => (
-              <tr key={item.id} className="hover:bg-blue-100">
+            {data.map((item, index) => (
+              <tr
+                key={item.id}
+                className={`${
+                  index % 2 === 0 ? "bg-slate-100" : "bg-white"
+                } hover:bg-blue-100`}>
+                <td className="text-left py-2 px-2">
+                  <input
+                    type="checkbox"
+                    checked={selectedItems.some(
+                      (selected) => selected.id === item.id
+                    )}
+                    onChange={() => handleCheckboxChange(item.id)}
+                  />
+                </td>
                 <td className="text-left py-2 px-4 uppercase font-semibold text-sm text-blue-900">
                   {item.name}
                 </td>
@@ -109,28 +194,10 @@ const PdfExport = () => {
                 <td className="text-left py-2 px-2">
                   {capitalizeFirstLetter(item.ville)}
                 </td>
-                <td className="text-left py-2 px-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedItems.some(
-                      (selected) => selected.id === item.id
-                    )}
-                    onChange={() => handleCheckboxChange(item.id)}
-                  />
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Export button */}
-      <div className="mt-4">
-        <button
-          onClick={generatePDF}
-          className="uppercase bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-          Exporter en PDF
-        </button>
       </div>
     </div>
   );

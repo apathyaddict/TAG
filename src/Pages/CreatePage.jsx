@@ -8,6 +8,7 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase";
@@ -31,7 +32,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     date_modified: null,
     email: "",
     text_review: "",
-    imagesUrl: [],
+    // imagesUrl: [],
     table_grade: "",
     table_service: "",
     detailsData: [],
@@ -162,6 +163,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       );
       return;
     }
+
     const updatedFiche = {
       ...restaurantData,
       date_modified: new Date().toISOString(),
@@ -172,7 +174,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
 
     try {
       setIsLoading(true);
-      await setDoc(doc(db, "fiches", id), updatedFiche);
+      await updateDoc(doc(db, "fiches", id), updatedFiche);
 
       toast.success("Restaurant mis à jour avec succès!", {
         position: "top-right",

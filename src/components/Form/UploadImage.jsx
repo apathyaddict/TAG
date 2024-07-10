@@ -10,7 +10,7 @@ import { RiImageAddFill, RiDeleteBinFill } from "react-icons/ri";
 import { db, storage } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
 
@@ -122,7 +122,7 @@ const UploadImage = ({ imagesUrl }) => {
         imagesUrl: [...(currentData.imagesUrl || []), url],
       };
 
-      await setDoc(ficheRef, updatedFiches, { merge: true });
+      await updateDoc(ficheRef, updatedFiches, { merge: true });
 
       console.log("URL saved successfully!");
     } catch (error) {

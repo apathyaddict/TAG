@@ -34,18 +34,6 @@ const Navbar = ({ handleLogout }) => {
 
         {/* Right side - Search Bar, Create Restaurant, Avatar */}
         <div className="flex items-center space-x-4">
-          {/* Search Bar with icon */}
-          {/* <div className="relative">
-            <input
-              type="text"
-              placeholder="Recherche..."
-              className="pl-10 pr-3 py-2 text-gray-800 bg-white rounded-2xl focus:outline-none ring-1 ring-stone-200 focus:ring-2 focus:ring-amber-700 w-[300px]"
-            />
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <FaSearch className="h-5 w-5 text-gray-400" />
-            </div>
-          </div> */}
-
           <Link to="/new">
             <button
               type="button"
