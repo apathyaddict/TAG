@@ -56,3 +56,47 @@ link {
   /* background-color: blue; */
   border-color: rgb(33, 33, 232);
 }
+
+/* Tooltip container */
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip-text {
+  visibility: hidden;
+  width: 320px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  /* Position the tooltip above the icon */
+  left: 100%;
+  margin-left: -300px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when hovering */
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaInfoCircle } from "react-icons/fa";
 import {
   Document,
   Page,
@@ -14,7 +14,8 @@ import {
   Svg,
   Path,
 } from "@react-pdf/renderer";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import { MdEdit } from "react-icons/md";
 
 const capitalizeFirstLetter = (str) => {
   if (!str) return ""; // Handle cases where str is undefined or null
@@ -61,9 +62,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   itemText: {
-    marginVertical: 3, // Increased spacing between lines of text
-    color: "#1a202c", // Darker text color
-    fontSize: 8, // Smaller font size
+    marginVertical: 3,
+    color: "#1a202c",
+    fontSize: 8,
     textAlign: "left",
     lineHeight: 1.3,
   },
@@ -91,32 +92,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// Functions to get the number of stars and forks based on grades
-const getStars = (grade) => {
-  switch (grade) {
-    case "Bonne Table":
-      return 1;
-    case "Très bonne table":
-      return 2;
-    case "Table d'exception":
-      return 3;
-    default:
-      return 0;
-  }
-};
-
-const ForkSvg = () => (
-  <Svg
-    fill="#000000"
-    width="20px"
-    height="20px"
-    stroke-width="0"
-    viewBox="0 0 512 512">
-    <Path d="M39.906 27.188c-9.118 13.907-11.366 30.99-7.843 50.718 4.2 23.526 16.91 50.038 35.28 75 36.742 49.925 96.05 93.082 148.813 99.625l3.688.47 2.375 2.844L416.374 490.22c19.352 4.624 31.847 1.745 38.344-4.69 6.547-6.484 9.566-19.005 4.717-38.874L39.908 27.187zM414.97 29.5L306.47 138c-12 11.998-12.104 25.2-5.908 39.625l2.563 5.97-4.688 4.5L262 222.844l29.594 29.593 34.594-36.532 4.5-4.75 5.968 2.594c15.165 6.535 29.546 6.267 40.688-4.875l108.5-108.5L471.75 86.28l-70.563 70.532L388 143.595l70.53-70.53L443.5 58.03l-70.53 70.532-13.22-13.218 70.53-70.53-15.31-15.314zM210.936 271.563L25.53 448.469c-4.575 18.95-1.644 30.787 4.532 36.905 6.178 6.118 18.128 8.927 36.844 4.406l173.22-182.967-29.19-35.25z"></Path>
-  </Svg>
-);
-
-// const renderStars = (numStars) => {
 //   const starPaths = {
 //     1: "M19.704 8.375l-6.359-.551-2.736-6.092L9.376 2.05 6.77 2.732l-.517 2.57-6.462.554 4.979 4.442L2.3 17.685l5.313-3.22 5.296 3.227-1.57-6.904 4.979-4.44z",
 //     2: "M9.377 17.686l-6.462.555 4.979-4.442L2.3 6.357l5.313-3.221 5.296 3.227-1.57-6.906 4.979 4.442L19.705 8.375l-6.359-.551-2.736-6.093L9.377 2.05z",
@@ -264,8 +239,10 @@ const PdfExport = () => {
     navigate("/to-print", {
       state: { selectedItems },
     });
+  };
 
-    console.log("in", selectedItems);
+  const handleEdit = (id) => {
+    navigate(`/restaurants/${id}`);
   };
 
   return (
@@ -286,7 +263,7 @@ const PdfExport = () => {
           {({ blob, url, loading, error }) => (
             <button
               type="button"
-              className="flex items-center justify-right  rounded-xl border border-solid  cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 ">
+              className="flex items-center justify-right  rounded-xl border border-solid text-sm cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 ">
               Telecharger le PDF (simplifié)
               <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
             </button>
@@ -296,11 +273,17 @@ const PdfExport = () => {
         <button
           type="button"
           targer="_blank"
-          className="flex items-center justify-right  rounded-xl border border-solid  cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 "
+          className="flex items-center justify-right  rounded-xl border border-solid  text-sm cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 "
           onClick={handlePrintButtonClick}>
           PDF(stylisé)
           <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
         </button>
+        <div className="flex justify-center items-center mt-4 tooltip-container">
+          <FaInfoCircle className="text-2xl  text-slate-700/50 hover:text-slate-700" />
+          <span className="tooltip-text">
+            cliquer sur imprimer, puis selectionner "sauvergarder en pdf"
+          </span>
+        </div>
       </div>
       <div className="shadow overflow-hidden rounded-lg border-b border-gray-200">
         <table className="min-w-full bg-white">
@@ -317,6 +300,9 @@ const PdfExport = () => {
               </th>
               <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
                 Ville
+              </th>
+              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+                détails
               </th>
             </tr>
           </thead>
@@ -346,6 +332,13 @@ const PdfExport = () => {
                 </td>
                 <td className="text-left py-2 px-2">
                   {capitalizeFirstLetter(item.ville)}
+                </td>
+                <td className="text-left py-2 px-2">
+                  <button
+                    onClick={() => handleEdit(item.id)}
+                    className="bg-emerald-400 text-white p-2 hover:bg-emerald-200 rounded-lg">
+                    <MdEdit />
+                  </button>
                 </td>
               </tr>
             ))}
