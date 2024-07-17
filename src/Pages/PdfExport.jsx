@@ -1,83 +1,170 @@
-import React, { useEffect, useState } from "react";
-import jsPDF from "jspdf";
+import React, { useCallback, useEffect, useState } from "react";
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { BsFiletypePdf } from "react-icons/bs";
 import { FaDownload } from "react-icons/fa";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  PDFDownloadLink,
+} from "@react-pdf/renderer";
+import { GiKnifeFork } from "react-icons/gi";
+import { MdTableRestaurant } from "react-icons/md";
+
+// const capitalizeFirstLetter = (str) => {
+//   if (!str) return ""; // Handle cases where str is undefined or null
+//   return str.charAt(0).toUpperCase() + str.slice(1);
+// };
+
+// Define styles for the PDF document
+const styles = StyleSheet.create({
+  page: {
+    padding: 20,
+    fontSize: 12,
+  },
+  section: {
+    marginBottom: 20,
+  },
+  header: {
+    fontSize: 18,
+    marginBottom: 10,
+    textAlign: "center",
+    color: "#e63946",
+  },
+  item: {
+    marginBottom: 15,
+    padding: 10,
+    border: "1pt solid #e63946",
+    borderRadius: 5,
+  },
+  itemTitle: {
+    fontSize: 24,
+    fontWeight: "semibold",
+    color: "#1d3557",
+    textTransform: "uppercase",
+    marginBottom: 10,
+  },
+  category: {
+    color: "#9b2226",
+    fontWeight: "bold",
+    marginBottom: 5,
+    textAlign: "right",
+    padding: "2px",
+  },
+  itemText: {
+    marginVertical: 5,
+    color: "black",
+    fontSize: 10,
+  },
+  itemImage: {
+    width: "100%",
+    height: 100,
+    objectFit: "cover",
+    marginBottom: 5,
+  },
+  starForkContainer: {
+    display: "flex",
+    flexDirection: "row",
+    marginBottom: 5,
+  },
+});
+
+// Functions to get the number of stars and forks based on grades
+const getStars = (grade) => {
+  switch (grade) {
+    case "Bonne Table":
+      return 1;
+    case "Très bonne table":
+      return 2;
+    case "Table d'exception":
+      return 3;
+    default:
+      return 0;
+  }
+};
+
+const renderStars = (numStars) => {
+  return Array(numStars)
+    .fill(0)
+    .map((_, index) => (
+      <MdTableRestaurant key={index} className="h-6 w-6 text-blue-500" />
+    ));
+};
+
+const getForks = (grade) => {
+  switch (grade) {
+    case "service et cadre simple":
+      return 1;
+    case "cadre et service confort":
+      return 2;
+    case "cadre luxe":
+      return 3;
+    default:
+      return 0;
+  }
+};
+
+const renderForks = (numForks) => {
+  return Array(numForks)
+    .fill(0)
+    .map((_, index) => (
+      <GiKnifeFork key={index} className="h-6 w-6 text-blue-500" />
+    ));
+};
+
+// Create the PDF document component
+const PdfDocument = ({ items }) => (
+  <Document>
+    <Page style={styles.page}>
+      {items.map((item, index) => (
+        <View key={index} style={styles.item}>
+          {item.imagesUrl &&
+            item.imagesUrl.map((url, i) => (
+              <Image
+                key={i}
+                src={{
+                  uri: `https://firebasestorage.googleapis.com/v0/b/tag-eric.appspot.com/o/files%2Fdad9fbaa-9477-4b2b-9e2e-16a9ac0b600b?alt=media&token=172b7dd2-741f-4f42-9b61-8075ee3f6047`,
+                  method: "GET",
+                  headers: {},
+                  body: "",
+                }}
+                style={styles.itemImage}
+              />
+            ))}
+
+          <Text style={styles.itemTitle}>{item.name}</Text>
+          <Text style={styles.category}>{item.category}</Text>
+          <Text style={styles.itemText}>{item.ville}</Text>
+          <Text style={styles.itemText}>Numéro: {item.phone}</Text>
+          <View style={styles.starForkContainer}>
+            <Text style={styles.itemText}>Table: </Text>
+            {renderStars(getStars(item.table_grade))}
+          </View>
+          <View style={styles.starForkContainer}>
+            <Text style={styles.itemText}>Service: </Text>
+            {renderForks(getForks(item.table_service))}
+          </View>
+          <Text style={styles.itemText}> {item.text_review}</Text>
+        </View>
+      ))}
+    </Page>
+  </Document>
+);
 
 const PdfExport = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-    const margin = 20;
-    let yPos = margin;
-
-    // Define box dimensions
-    const boxWidth = pageWidth - 2 * margin;
-    const boxHeight = 60;
-
-    // Add title
-    doc.setFontSize(18);
-    doc.text("Selected Items", margin, yPos);
-    yPos += 15;
-
-    // Add each selected item
-    selectedItems.forEach((item, index) => {
-      if (yPos + boxHeight > pageHeight - margin) {
-        doc.addPage();
-        yPos = margin;
-      }
-
-      // Draw box
-      doc.setDrawColor(0);
-      doc.setFillColor(255, 255, 255);
-      doc.rect(margin, yPos, boxWidth, boxHeight, "FD");
-
-      // Item number and name
-      yPos += 10;
-      doc.setFontSize(14);
-      doc.text(`${index + 1}. ${item.name}`, margin + 5, yPos);
-
-      // Details
-      yPos += 12;
-      doc.setFontSize(12);
-      doc.text(`Category: ${item.category}`, margin + 10, yPos);
-      yPos += 8;
-      doc.text(
-        `Ville: ${capitalizeFirstLetter(item.ville)}`,
-        margin + 10,
-        yPos
-      );
-      yPos += 8;
-      doc.text(`Numéro: ${item.phone}`, margin + 10, yPos);
-      yPos += 8;
-      doc.text(`Table: ${item.table_grade}`, margin + 10, yPos);
-      yPos += 8;
-      doc.text(`Service: ${item.service_grade}`, margin + 10, yPos);
-      yPos += 8;
-      doc.text(`Texte: ${item.text_review}`, margin + 10, yPos);
-      yPos += 8;
-      doc.text(`Photo: ${item.imageUrl}`, margin + 10, yPos);
-
-      yPos += boxHeight + 10;
-    });
-
-    // Save the PDF with a unique name
-    doc.save("selected_items.pdf");
-  };
-
   useEffect(() => {
     fetchData();
+    console.log(data);
   }, []);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const q = query(
@@ -91,12 +178,12 @@ const PdfExport = () => {
         ...doc.data(),
       }));
       setData(results);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching documents: ", error);
+    } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const handleCheckboxChange = (id) => {
     const selectedItem = data.find((item) => item.id === id);
@@ -131,23 +218,27 @@ const PdfExport = () => {
   return (
     <div className="flex justify-center flex-col py-4 px-12 mt-10 mb-10">
       <div className="my-2 px-2">
-        {" "}
         <h1 className=" text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
           Conversion PDF
         </h1>
         <p className="text-sm text-slate-600 mt-2">
           Selectionner les fiches et cliquer sur telecharger.
-        </p>{" "}
+        </p>
       </div>
 
       <div className=" flex justify-end items-right p-2  gap-4 my-5 ">
-        <button
-          type="button"
-          className="flex items-center justify-right  rounded-xl border border-solid  cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 "
-          onClick={generatePDF}>
-          Telecharger le PDF
-          <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
-        </button>
+        <PDFDownloadLink
+          document={<PdfDocument items={selectedItems} />}
+          fileName="selected_items.pdf">
+          {({ blob, url, loading, error }) => (
+            <button
+              type="button"
+              className="flex items-center justify-right  rounded-xl border border-solid  cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 ">
+              Telecharger le PDF
+              <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
+            </button>
+          )}
+        </PDFDownloadLink>
       </div>
       <div className="shadow overflow-hidden rounded-lg border-b border-gray-200">
         <table className="min-w-full bg-white">
@@ -187,7 +278,7 @@ const PdfExport = () => {
                   {item.name}
                 </td>
                 <td className="text-left py-2 px-2">
-                  <span className="px-2 py-1 text-xs rounded-full bg-gray-200">
+                  <span className="px-2 py-1 text-red-900 font-bold">
                     {item.category}
                   </span>
                 </td>

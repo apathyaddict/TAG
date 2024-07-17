@@ -149,7 +149,7 @@ const Dashboard = () => {
         </h1>
         <p className="text-sm text-slate-600 mt-2">
           Il est possible de filtrer par critère (ascendant et descendant) en
-          cliquant sur les boutons dans le tableau.
+          cliquant sur les boutons dans la marge du tableau.
         </p>{" "}
       </div>
 
