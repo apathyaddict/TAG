@@ -14,6 +14,7 @@ import {
   Svg,
   Path,
 } from "@react-pdf/renderer";
+import { useNavigate } from "react-router-dom";
 
 const capitalizeFirstLetter = (str) => {
   if (!str) return ""; // Handle cases where str is undefined or null
@@ -201,6 +202,7 @@ const PdfExport = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchData();
@@ -258,6 +260,14 @@ const PdfExport = () => {
     );
   }
 
+  const handlePrintButtonClick = () => {
+    navigate("/to-print", {
+      state: { selectedItems },
+    });
+
+    console.log("in", selectedItems);
+  };
+
   return (
     <div className="flex justify-center flex-col py-4 px-12 mt-10 mb-10">
       <div className="my-2 px-2">
@@ -277,11 +287,20 @@ const PdfExport = () => {
             <button
               type="button"
               className="flex items-center justify-right  rounded-xl border border-solid  cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 ">
-              Telecharger le PDF
+              Telecharger le PDF (simplifié)
               <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
             </button>
           )}
         </PDFDownloadLink>
+
+        <button
+          type="button"
+          targer="_blank"
+          className="flex items-center justify-right  rounded-xl border border-solid  cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 "
+          onClick={handlePrintButtonClick}>
+          PDF(stylisé)
+          <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
+        </button>
       </div>
       <div className="shadow overflow-hidden rounded-lg border-b border-gray-200">
         <table className="min-w-full bg-white">

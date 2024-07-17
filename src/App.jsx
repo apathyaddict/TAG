@@ -24,6 +24,7 @@ import EditForm from "./Pages/EditForm";
 import Symbols from "./components/Form/Symbols";
 import Dashboard from "./components/Dashboard/Dashboard";
 import PdfExport from "./Pages/PdfExport";
+import PrintPage from "./Pages/PrintPage";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -74,10 +75,17 @@ function App() {
     }
   }
 
+  const shouldDisplayNavbar = () => {
+    // Check if current path matches the PrintPage route
+    return !location.pathname.startsWith("/to-print");
+  };
+
   return (
     <BrowserRouter>
+      {/* {shouldDisplayNavbar() && <Navbar {...{ handleLogout }} />} */}
       <Navbar {...{ handleLogout }} />
       <Routes>
+        <Route path="/to-print/" element={<PrintPage />} />
         <Route path="/" element={<HomePage userDetails={userDetails} />} />
         <Route path="/secret/register" element={<RegisterComp />} />
         <Route path="/login" element={<Loginpage />} />
@@ -111,6 +119,7 @@ function App() {
           <Route path="/*" element={<Navigate to="/login" />} />
         )}
       </Routes>
+
       <ToastContainer />
     </BrowserRouter>
   );
