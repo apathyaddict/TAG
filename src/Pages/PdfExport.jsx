@@ -8,67 +8,85 @@ import {
   Text,
   View,
   Image,
+  Link,
   StyleSheet,
   PDFDownloadLink,
+  Svg,
+  Path,
 } from "@react-pdf/renderer";
-import { GiKnifeFork } from "react-icons/gi";
-import { MdTableRestaurant } from "react-icons/md";
 
-// const capitalizeFirstLetter = (str) => {
-//   if (!str) return ""; // Handle cases where str is undefined or null
-//   return str.charAt(0).toUpperCase() + str.slice(1);
-// };
+const capitalizeFirstLetter = (str) => {
+  if (!str) return ""; // Handle cases where str is undefined or null
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 // Define styles for the PDF document
 const styles = StyleSheet.create({
   page: {
-    padding: 20,
-    fontSize: 12,
+    padding: 30,
+    fontSize: 10, // Smaller font size
+    fontFamily: "Courier",
+    margin: 10,
+    width: "60%",
   },
-  section: {
-    marginBottom: 20,
-  },
+
   header: {
     fontSize: 18,
+    marginBottom: 2, // Reduced spacing below header
+    textAlign: "left",
+    color: "#8B0000", // Dark Red color
+    fontFamily: "Courier-Bold",
+    fontWeight: 800,
+    textTransform: "uppercase",
+  },
+  city: {
+    fontSize: 12,
+    color: "#8B0000",
+    textAlign: "left",
     marginBottom: 10,
-    textAlign: "center",
-    color: "#e63946",
+    textTransform: "uppercase",
+    fontFamily: "Courier-Bold",
   },
   item: {
     marginBottom: 15,
-    padding: 10,
-    border: "1pt solid #e63946",
-    borderRadius: 5,
+    padding: 0, // Removed padding
+    borderRadius: 0, // Removed border radius
   },
   itemTitle: {
-    fontSize: 24,
-    fontWeight: "semibold",
-    color: "#1d3557",
-    textTransform: "uppercase",
-    marginBottom: 10,
-  },
-  category: {
-    color: "#9b2226",
+    fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 5,
-    textAlign: "right",
-    padding: "2px",
+    color: "#1a202c", // Darker text color for item title
+    marginBottom: 2,
+    textAlign: "center",
   },
   itemText: {
-    marginVertical: 5,
-    color: "black",
-    fontSize: 10,
+    marginVertical: 3, // Increased spacing between lines of text
+    color: "#1a202c", // Darker text color
+    fontSize: 8, // Smaller font size
+    textAlign: "left",
+    lineHeight: 1.3,
   },
-  itemImage: {
-    width: "100%",
-    height: 100,
-    objectFit: "cover",
-    marginBottom: 5,
+  contactInfo: {
+    marginTop: 10,
+    fontSize: 8,
+    fontFamily: "Courier-Bold",
+    fontWeight: "bold",
+    textAlign: "center",
   },
-  starForkContainer: {
-    display: "flex",
-    flexDirection: "row",
-    marginBottom: 5,
+  linkSection: {
+    marginTop: 10,
+    fontSize: 8,
+    textAlign: "left",
+  },
+  link: {
+    color: "#1a202c", // Darker text color
+
+    textAlign: "left",
+  },
+  divider: {
+    borderBottom: "1px solid #ccc", // Grey line divider
+    marginVertical: 10,
+    marginTop: 15,
   },
 });
 
@@ -86,68 +104,93 @@ const getStars = (grade) => {
   }
 };
 
-const renderStars = (numStars) => {
-  return Array(numStars)
-    .fill(0)
-    .map((_, index) => (
-      <MdTableRestaurant key={index} className="h-6 w-6 text-blue-500" />
-    ));
-};
+const ForkSvg = () => (
+  <Svg
+    fill="#000000"
+    width="20px"
+    height="20px"
+    stroke-width="0"
+    viewBox="0 0 512 512">
+    <Path d="M39.906 27.188c-9.118 13.907-11.366 30.99-7.843 50.718 4.2 23.526 16.91 50.038 35.28 75 36.742 49.925 96.05 93.082 148.813 99.625l3.688.47 2.375 2.844L416.374 490.22c19.352 4.624 31.847 1.745 38.344-4.69 6.547-6.484 9.566-19.005 4.717-38.874L39.908 27.187zM414.97 29.5L306.47 138c-12 11.998-12.104 25.2-5.908 39.625l2.563 5.97-4.688 4.5L262 222.844l29.594 29.593 34.594-36.532 4.5-4.75 5.968 2.594c15.165 6.535 29.546 6.267 40.688-4.875l108.5-108.5L471.75 86.28l-70.563 70.532L388 143.595l70.53-70.53L443.5 58.03l-70.53 70.532-13.22-13.218 70.53-70.53-15.31-15.314zM210.936 271.563L25.53 448.469c-4.575 18.95-1.644 30.787 4.532 36.905 6.178 6.118 18.128 8.927 36.844 4.406l173.22-182.967-29.19-35.25z"></Path>
+  </Svg>
+);
 
-const getForks = (grade) => {
-  switch (grade) {
-    case "service et cadre simple":
-      return 1;
-    case "cadre et service confort":
-      return 2;
-    case "cadre luxe":
-      return 3;
-    default:
-      return 0;
-  }
-};
+// const renderStars = (numStars) => {
+//   const starPaths = {
+//     1: "M19.704 8.375l-6.359-.551-2.736-6.092L9.376 2.05 6.77 2.732l-.517 2.57-6.462.554 4.979 4.442L2.3 17.685l5.313-3.22 5.296 3.227-1.57-6.904 4.979-4.44z",
+//     2: "M9.377 17.686l-6.462.555 4.979-4.442L2.3 6.357l5.313-3.221 5.296 3.227-1.57-6.906 4.979 4.442L19.705 8.375l-6.359-.551-2.736-6.093L9.377 2.05z",
+//     3: "M2.301 6.356l5.313-3.22 5.296 3.227-1.57-6.904 4.979-4.44L19.705 8.374l-6.36-.551-2.735-6.092L9.377 2.05l-2.607.683-.517 2.569-6.462.554z",
+//   };
 
-const renderForks = (numForks) => {
-  return Array(numForks)
-    .fill(0)
-    .map((_, index) => (
-      <GiKnifeFork key={index} className="h-6 w-6 text-blue-500" />
-    ));
-};
+//   return Array(numStars)
+//     .fill(0)
+//     .map((_, index) => <Svg key={index} src={{ path: starPaths[numStars] }} />);
+// };
+
+// const getForks = (grade) => {
+//   switch (grade) {
+//     case "service et cadre simple":
+//       return 1;
+//     case "cadre et service confort":
+//       return 2;
+//     case "cadre luxe":
+//       return 3;
+//     default:
+//       return 0;
+//   }
+// };
 
 // Create the PDF document component
 const PdfDocument = ({ items }) => (
   <Document>
     <Page style={styles.page}>
       {items.map((item, index) => (
-        <View key={index} style={styles.item}>
-          {item.imagesUrl &&
-            item.imagesUrl.map((url, i) => (
-              <Image
-                key={i}
-                src={{
-                  uri: `https://firebasestorage.googleapis.com/v0/b/tag-eric.appspot.com/o/files%2Fdad9fbaa-9477-4b2b-9e2e-16a9ac0b600b?alt=media&token=172b7dd2-741f-4f42-9b61-8075ee3f6047`,
-                  method: "GET",
-                  headers: {},
-                  body: "",
-                }}
-                style={styles.itemImage}
-              />
-            ))}
+        <View key={index}>
+          <Text style={styles.header}>{item.name}</Text>
+          <Text style={styles.city}>{item.ville}</Text>
 
-          <Text style={styles.itemTitle}>{item.name}</Text>
-          <Text style={styles.category}>{item.category}</Text>
-          <Text style={styles.itemText}>{item.ville}</Text>
-          <Text style={styles.itemText}>Numéro: {item.phone}</Text>
-          <View style={styles.starForkContainer}>
-            <Text style={styles.itemText}>Table: </Text>
-            {renderStars(getStars(item.table_grade))}
+          <View style={styles.item}>
+            <Text style={styles.itemText}>{item.text_review}</Text>
+
+            <View style={styles.starForkContainer}>
+              <Text style={styles.itemText}>Table: {item.table_service} </Text>
+
+              {/* <ForkSvg /> */}
+            </View>
+
+            <View style={styles.starForkContainer}>
+              <Text style={styles.itemText}>Service: {item.table_grade} </Text>
+            </View>
           </View>
+
           <View style={styles.starForkContainer}>
-            <Text style={styles.itemText}>Service: </Text>
-            {renderForks(getForks(item.table_service))}
+            {item.detailsData &&
+              Object.keys(item.detailsData).map(
+                (key, i) =>
+                  item.detailsData[key] && (
+                    <Text key={i} style={styles.itemText}>
+                      {key}
+                    </Text>
+                  )
+              )}
           </View>
-          <Text style={styles.itemText}> {item.text_review}</Text>
+
+          <Text style={styles.contactInfo}>
+            {item.rue} {item.code_postal}{" "}
+            {item.ville.charAt(0).toUpperCase() + item.ville.slice(1)} |{" "}
+            {item.phone} | {item.website}
+          </Text>
+
+          <View style={styles.linkSection}>
+            {item.imagesUrl &&
+              item.imagesUrl.map((url, i) => (
+                <Link key={i} src={url}>
+                  <Text style={styles.link}>Cliquer ici pour lien: photo</Text>
+                </Link>
+              ))}
+          </View>
+
+          <View style={styles.divider} />
         </View>
       ))}
     </Page>
