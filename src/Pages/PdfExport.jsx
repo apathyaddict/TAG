@@ -16,6 +16,7 @@ import {
 } from "@react-pdf/renderer";
 import { redirect, useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
+import Pagination from "../components/Dashboard/Pagination";
 
 const capitalizeFirstLetter = (str) => {
   if (!str) return ""; // Handle cases where str is undefined or null
@@ -178,6 +179,8 @@ const PdfExport = () => {
   const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   useEffect(() => {
     fetchData();
@@ -245,6 +248,16 @@ const PdfExport = () => {
     navigate(`/restaurants/${id}`);
   };
 
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const paginatedData = data.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
   return (
     <div className="flex justify-center flex-col py-4 px-12 mt-10 mb-10">
       <div className="my-2 px-2">
@@ -307,7 +320,7 @@ const PdfExport = () => {
             </tr>
           </thead>
           <tbody className="text-gray-700">
-            {data.map((item, index) => (
+            {paginatedData.map((item, index) => (
               <tr
                 key={item.id}
                 className={`${
@@ -345,6 +358,11 @@ const PdfExport = () => {
           </tbody>
         </table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 };
