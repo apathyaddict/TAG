@@ -117,7 +117,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       const docRef = await addDoc(collection(db, "fiches"), newFiche);
       console.log("SUCCES : Sent to Database", newFiche);
 
-      toast.success("Restaurant ajouté avec succès!", {
+      toast.success("Restaurant ajouté!", {
         position: "top-left",
       });
       clearRestaurantData();

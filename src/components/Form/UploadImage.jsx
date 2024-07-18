@@ -61,7 +61,7 @@ const UploadImage = ({ imagesUrl }) => {
       // Delete from Storage
       const imageRef = ref(storage, imageUrlToDelete);
       await deleteObject(imageRef);
-      toast.success("image supprimée", { position: "top-right" });
+      toast.success("image.s supprimée.s", { position: "top-right" });
       console.log("Image deleted successfully from storage and Firestore.");
     } catch (error) {
       console.error("Error deleting image: ", error);
@@ -99,7 +99,7 @@ const UploadImage = ({ imagesUrl }) => {
 
     try {
       const urls = await Promise.all(uploadPromises);
-      toast.success("Images sauvegarder avec succès!");
+      toast.success("Image.s sauvegardées!");
       console.log("Uploaded image URLs: ", urls);
       setIsUploading(false);
     } catch (error) {
