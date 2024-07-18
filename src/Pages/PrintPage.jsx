@@ -80,74 +80,83 @@ const PrintPage = () => {
       ));
   };
 
+  // Group items into pairs for two columns per page
+  const groupedItems = [];
+  for (let i = 0; i < data.selectedItems.length; i += 2) {
+    groupedItems.push(data.selectedItems.slice(i, i + 2));
+  }
+
   return (
-    <section className="flex flex-row justify center px-6 my-12 ">
-      {data.selectedItems.map((fiche) => (
-        <div
-          key={fiche.id}
-          className="bg-white border p-8  flex-1 flex  flex-col ">
-          <div>
-            <h1 className="text-3xl uppercase font-bold text-red-900">
-              {fiche.name}
-            </h1>
-            <h2 className="text-md uppercase font-semibold text-red-900">
-              {fiche.ville}
-            </h2>
-          </div>
-
-          <div className="flex flex-row justify-start  gap-5 text-xs mt-6">
-            <div> {renderStars(getStars(fiche.table_grade))}</div>
-            <div className="flex text-xs">
-              {renderForks(getForks(fiche.table_service))}
-            </div>
-            <div className="text-blue-900   ">
-              {fiche.detailsData.cave ? (
-                <FaWineBottle className="h-5 w-5" />
-              ) : null}
-            </div>
-            {fiche.detailsData.decorRemarquable ? (
-              <div className="text-blue-900 ">
-                <FaRegStar className="h-5 w-5" />
+    <section className="flex flex-wrap justify-center px-6 my-12">
+      {groupedItems.map((pair, index) => (
+        <div key={index} className="flex">
+          {pair.map((fiche) => (
+            <div
+              key={fiche.id}
+              className="bg-white border p-8 flex-1 flex flex-col w-1/2 min-w-1/2">
+              <div>
+                <h1 className="text-3xl uppercase font-bold text-red-900">
+                  {fiche.name}
+                </h1>
+                <h2 className="text-md uppercase font-semibold text-red-900">
+                  {fiche.ville}
+                </h2>
               </div>
-            ) : null}
-            {fiche.detailsData.terrasse ? (
-              <div className=" text-blue-900 ">
-                <IoStorefrontSharp className="h-5 w-5" />
-              </div>
-            ) : null}
-          </div>
 
-          <div className="text-black text-sm relative mt-8 mb-10">
-            {fiche.imagesUrl && fiche.imagesUrl[0] && (
-              <img
-                src={fiche.imagesUrl[0]}
-                alt="Image 1"
-                className="float-right mr-4 mb-4 w-1/4"
-              />
-            )}
-            {fiche.text_review}
-          </div>
-          {/* //image 2 */}
-          {fiche.imagesUrl && fiche.imagesUrl[1] && (
-            <img
-              src={fiche.imagesUrl[1]}
-              alt="Image 2"
-              className="max-h-[300px] max-w-full object-cover"
-            />
-          )}
-          {/* //footer */}
-          <div className="flex flex-row gap-2  justify-around  mt-8 text-xs font-bold  ">
-            <div className="flex flex-row gap-1 mb-10">
-              {" "}
-              <p className=""> {capitalizeCityName(fiche.rue)}</p>
-              <p className="text-xs font-bold">
-                {capitalizeCityName(fiche.ville)}
-              </p>
-              <p className="">{fiche.code_postal}</p>
+              <div className="flex flex-row justify-start gap-5 text-xs mt-6">
+                <div>{renderStars(getStars(fiche.table_grade))}</div>
+                <div className="flex text-xs">
+                  {renderForks(getForks(fiche.table_service))}
+                </div>
+                <div className="text-blue-900">
+                  {fiche.detailsData.cave ? (
+                    <FaWineBottle className="h-5 w-5" />
+                  ) : null}
+                </div>
+                {fiche.detailsData.decorRemarquable ? (
+                  <div className="text-blue-900">
+                    <FaRegStar className="h-5 w-5" />
+                  </div>
+                ) : null}
+                {fiche.detailsData.terrasse ? (
+                  <div className="text-blue-900">
+                    <IoStorefrontSharp className="h-5 w-5" />
+                  </div>
+                ) : null}
+              </div>
+
+              <div className="text-black text-sm relative mt-8 mb-10">
+                {fiche.imagesUrl && fiche.imagesUrl[0] && (
+                  <img
+                    src={fiche.imagesUrl[0]}
+                    alt="Image 1"
+                    className="float-right mr-4 mb-4 w-1/4"
+                  />
+                )}
+                {fiche.text_review}
+              </div>
+
+              {fiche.imagesUrl && fiche.imagesUrl[1] && (
+                <img
+                  src={fiche.imagesUrl[1]}
+                  alt="Image 2"
+                  className="max-h-[300px] max-w-full object-cover"
+                />
+              )}
+
+              <div className="flex flex-row gap-2 justify-around mt-8 text-xs font-bold">
+                <div className="flex flex-row gap-1 mb-10">
+                  <p className="">{capitalizeCityName(fiche.rue)}</p>
+                  <p className="text-xs font-bold">
+                    {capitalizeCityName(fiche.ville)}
+                  </p>
+                  <p className="">{fiche.code_postal}</p>
+                </div>
+                <div className="text-xs">{formatPhoneNumber(fiche.phone)}</div>
+                <div className="text-xs">{fiche.website}</div>
+              </div>
             </div>
-            <div className="text-xs">{formatPhoneNumber(fiche.phone)}</div>
-            <div className="text-xs">{fiche.website}</div>
-          </div>
+          ))}
         </div>
       ))}
     </section>
