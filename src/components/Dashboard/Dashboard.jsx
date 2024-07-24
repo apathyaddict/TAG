@@ -15,6 +15,11 @@ import { format } from "date-fns";
 import { FaRegCircle } from "react-icons/fa";
 import { IoStarSharp } from "react-icons/io5";
 import Pagination from "./Pagination";
+import {
+  TbCheckbox,
+  TbHexagonLetterR,
+  TbSquareLetterNFilled,
+} from "react-icons/tb";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -140,6 +145,12 @@ const Dashboard = () => {
     );
   };
 
+  const iconMapping = {
+    nouveau: <TbSquareLetterNFilled className="w-5 h-5 text-red-500 mx-4" />,
+    retiré: <TbHexagonLetterR className="w-5 h-5 text-gray-500  mx-4" />,
+    aucun: <TbCheckbox className="w-5 h-5 text-blue-500 mx-4" />,
+  };
+
   return (
     <div className="container mx-auto px-2 sm:px-4 mt-10">
       <div className="my-5 px-2">
@@ -170,6 +181,13 @@ const Dashboard = () => {
                     className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
                     onClick={() => toggleSort("category")}>
                     Catégorie {getSortIcon("category")}
+                  </button>
+                </th>
+                <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+                  <button
+                    className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
+                    onClick={() => toggleSort("status")}>
+                    Statut {getSortIcon("status")}
                   </button>
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
@@ -211,6 +229,12 @@ const Dashboard = () => {
                   <td className="text-left py-2 px-2">
                     <span className="px-2 py-1 text-xs rounded-full bg-slate-200">
                       {item.category}
+                    </span>
+                  </td>
+                  <td className="text-left py-2 px-2">
+                    <span className="px-2 py-1 text-xs">
+                      {iconMapping[item.status] || null}
+                      {/* {item.status} */}
                     </span>
                   </td>
                   <td className="text-left py-2 px-2">
