@@ -23,6 +23,7 @@ import {
   TbSquareRoundedLetterNFilled,
   TbHexagonLetterRFilled,
 } from "react-icons/tb";
+import DialogBox from "./DialogBox";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -30,6 +31,7 @@ const RestaurantDetails = ({ editFunc }) => {
   const navigate = useNavigate();
   const [restaurant, setRestaurant] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const capitalizeFirstLetter = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
@@ -110,19 +112,19 @@ const RestaurantDetails = ({ editFunc }) => {
   };
 
   const handleDelete = async () => {
-    if (
-      window.confirm(
-        "Êtes-vous sûr de vouloir supprimer ces fichiers ? Cette action est irréversible."
-      )
-    )
-      try {
-        const docRef = doc(db, "fiches", id);
-        await deleteDoc(docRef);
-        console.log("Restaurant successfully deleted");
-        navigate("/list");
-      } catch (error) {
-        console.error("Error deleting restaurant:", error);
-      }
+    // if (
+    //   window.confirm(
+    //     "Êtes-vous sûr de vouloir supprimer ces fichiers ? Cette action est irréversible."
+    //   )
+    // )
+    try {
+      const docRef = doc(db, "fiches", id);
+      await deleteDoc(docRef);
+      console.log("Restaurant successfully deleted");
+      navigate("/list");
+    } catch (error) {
+      console.error("Error deleting restaurant:", error);
+    }
   };
 
   const capitalizeCityName = (cityName) => {
@@ -192,8 +194,26 @@ const RestaurantDetails = ({ editFunc }) => {
     aucun: <TbCheckbox className="w-5 h-5 text-blue-500" />,
   };
 
+  const handleConfirmDelete = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleDialogConfirm = () => {
+    handleDelete();
+    handleDialogClose();
+  };
+
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
+      <DialogBox
+        open={isDialogOpen}
+        onClose={handleDialogClose}
+        onConfirm={handleDialogConfirm}
+      />
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">
         <h5 className="block mb-6 text-3xl font-semibold text-blue-800 uppercase">
           {capitalizeFirstLetter(name)}
@@ -408,7 +428,8 @@ const RestaurantDetails = ({ editFunc }) => {
           </button>
         </Link>
         <button
-          onClick={handleDelete}
+          onClick={handleConfirmDelete}
+          // onClick={handleDelete}
           type="button"
           className="flex items-center justify-center font-semibold rounded-lg border border-solid  cursor-pointer pointer-events-auto 
           shadow-md hover:bg-red-600 bg-red-400 px-4 py-2 text-white border-pink-500 text-sm gap-2">

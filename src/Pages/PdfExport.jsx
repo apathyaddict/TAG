@@ -112,8 +112,6 @@ const PdfDocument = ({ items }) => (
 
             <View style={styles.starForkContainer}>
               <Text style={styles.itemText}>Table: {item.table_service} </Text>
-
-              {/* <ForkSvg /> */}
             </View>
 
             <View style={styles.starForkContainer}>
