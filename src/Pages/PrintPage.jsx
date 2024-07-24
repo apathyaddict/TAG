@@ -185,6 +185,14 @@ const PrintPage = () => {
                 <div className="text-xs">{formatPhoneNumber(fiche.phone)}</div>
                 <div className="text-xs">{fiche.website}</div>
               </div>
+
+              {fiche.imagesUrl.map((url) => (
+                <div className="text-xs truncate gap-1 flex justify-center items-center max-w-[100px] ">
+                  <a href={url} target="_blank" alt="lien image">
+                    {url}
+                  </a>
+                </div>
+              ))}
             </div>
           ))}
         </div>
