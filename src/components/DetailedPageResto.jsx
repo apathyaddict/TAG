@@ -14,6 +14,8 @@ import { format } from "date-fns";
 import UploadImage from "./Form/UploadImage";
 import { FaRegCircle } from "react-icons/fa";
 import { IoStarSharp } from "react-icons/io5";
+import { PiClover } from "react-icons/pi";
+import Chaudron from "./icons/Chaudron";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -293,6 +295,32 @@ const RestaurantDetails = ({ editFunc }) => {
                     </span>
                   </div>
                   <p className="text-sm font-normal">Terrasse</p>
+                </li>
+              ) : null}
+              {detailsData.qualite_prix ? (
+                <li className="flex items-center space-x-2 border-b pt-6 pb-6">
+                  <div className="flex items-center gap-1 text-blue-500 w-[150px]">
+                    <span>
+                      <Chaudron
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          color: "rgb(59, 130, 246)",
+                        }}
+                      />
+                    </span>
+                  </div>
+                  <p className="text-sm font-normal"> Rapport qualité-prix</p>
+                </li>
+              ) : null}
+              {detailsData.hotel_calme ? (
+                <li className="flex items-center space-x-2 border-b pt-6 pb-6">
+                  <div className="flex items-center gap-1 text-blue-500 w-[150px]">
+                    <span>
+                      <PiClover />
+                    </span>
+                  </div>
+                  <p className="text-sm font-normal">Hôtel au calme</p>
                 </li>
               ) : null}
             </ul>

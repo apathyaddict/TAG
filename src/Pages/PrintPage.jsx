@@ -4,6 +4,8 @@ import { IoStarSharp } from "react-icons/io5";
 import { IoStorefrontSharp } from "react-icons/io5";
 import { FaRegCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import Chaudron from "../components/icons/Chaudron";
+import { PiClover } from "react-icons/pi";
 
 const PrintPage = () => {
   const location = useLocation();
@@ -103,9 +105,11 @@ const PrintPage = () => {
                 </h2>
               </div>
 
-              <div className="flex flex-row justify-start gap-5 text-xs mt-6">
-                <div>{renderStars(getStars(fiche.table_grade))}</div>
-                <div className="flex text-xs">
+              <div className="flex flex-row justify-start gap-5 text-xs mt-6 ">
+                <div className="flex flex-row">
+                  {renderStars(getStars(fiche.table_grade))}
+                </div>
+                <div className="flex text-xs flex-row">
                   {renderForks(getForks(fiche.table_service))}
                 </div>
                 <div className="text-blue-900">
@@ -121,6 +125,16 @@ const PrintPage = () => {
                 {fiche.detailsData.terrasse ? (
                   <div className="text-blue-900">
                     <IoStorefrontSharp className="h-5 w-5" />
+                  </div>
+                ) : null}
+                {fiche.detailsData.qualite_prix ? (
+                  <div className="text-blue-900">
+                    <Chaudron className="h-5 w-5" />
+                  </div>
+                ) : null}
+                {fiche.detailsData.hotel_calme ? (
+                  <div className="text-blue-900">
+                    <PiClover className="h-5 w-5" />
                   </div>
                 ) : null}
               </div>

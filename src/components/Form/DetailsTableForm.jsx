@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaRegStar, FaWineBottle } from "react-icons/fa";
 import { IoStorefrontSharp } from "react-icons/io5";
+import Chaudron from "../icons/Chaudron";
+import { PiClover, PiCloverLight } from "react-icons/pi";
 
 const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
   // State to manage checked items
@@ -8,6 +10,8 @@ const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
     cave: false,
     terrasse: false,
     decorRemarquable: false,
+    qualite_prix: false,
+    hotel_calme: false,
   });
 
   // Update state if restaurantData changes (e.g., when editing existing data)
@@ -17,6 +21,8 @@ const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
         cave: restaurantData.detailsData.cave || false,
         terrasse: restaurantData.detailsData.terrasse || false,
         decorRemarquable: restaurantData.detailsData.decorRemarquable || false,
+        qualite_prix: restaurantData.detailsData.qualite_prix || false,
+        hotel_calme: restaurantData.detailsData.hotel_calme || false,
       });
     }
   }, [restaurantData]);
@@ -84,6 +90,42 @@ const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
             className="text-slate-700 text-sm font-medium flex items-center">
             <FaRegStar className="h-4 w-4 mr-2 text-blue-500" /> Décor
             Remarquable
+          </label>
+        </li>
+        <li className="border border-gray-300 rounded-lg p-4 bg-white flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="qualite_prix"
+            className="h-4 w-4 text-blue-500"
+            onChange={handleCheckboxChange}
+            checked={checkedItems.qualite_prix}
+          />
+          <label
+            htmlFor="qualite_prix"
+            className="text-slate-700 text-sm font-medium flex items-center">
+            <Chaudron
+              className="mr-2 text-blue-500"
+              style={{
+                width: "20px",
+                height: "20px",
+                color: "rgb(59, 130, 246)",
+              }}
+            />{" "}
+            Rapport qualité-prix
+          </label>
+        </li>
+        <li className="border border-gray-300 rounded-lg p-4 bg-white flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id="hotel_calme"
+            className="h-4 w-4 text-blue-500"
+            onChange={handleCheckboxChange}
+            checked={checkedItems.hotel_calme}
+          />
+          <label
+            htmlFor="hotel_calme"
+            className="text-slate-700 text-sm font-medium flex items-center">
+            <PiClover className="h-4 w-4 mr-2 text-blue-500" /> Hôtel au calme
           </label>
         </li>
       </ul>
