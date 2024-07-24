@@ -105,6 +105,18 @@ const PrintPage = () => {
                 </h2>
               </div>
 
+              <div className="flex flex-row gap-6 my-5">
+                <div className="flex flex-row gap-3 items-center">
+                  <h3 className="font-bold text-black">Menu:</h3>
+                  <span>{fiche.menu}</span>
+                </div>
+
+                <div className="flex flex-row gap-3 items-center">
+                  <h3 className="font-bold text-black">Carte:</h3>
+                  <span>{fiche.carte}</span>
+                </div>
+              </div>
+
               <div className="flex flex-row justify-start gap-5 text-xs mt-6 ">
                 <div className="flex flex-row">
                   {renderStars(getStars(fiche.table_grade))}

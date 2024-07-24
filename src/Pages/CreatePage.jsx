@@ -38,6 +38,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     detailsData: [],
     text_title: "",
     status: "",
+    menu: "",
+    carte: "",
   });
   const navigate = useNavigate();
 
@@ -62,6 +64,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         detailsData: restaurantInfo.detailsData || [],
         text_title: restaurantInfo.text_title || "",
         handleStatus: restaurantInfo.status || "",
+        menu: restaurantInfo.menu || "",
+        carte: restaurantInfo.carte || "",
       });
     }
   }, [restaurantInfo]);
@@ -211,6 +215,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       detailsData: [],
       text_title: "",
       status: "",
+      menu: "",
+      carte: "",
     });
   };
 

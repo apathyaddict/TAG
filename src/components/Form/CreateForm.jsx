@@ -194,7 +194,39 @@ const CreateForm = ({
             value={restaurantData.website}
           />
         </div>
-        <div className="mb-4">
+
+        <div className="flex gap-3 justify-start">
+          <div className="mb-8 w-full ">
+            <label
+              htmlFor="carte"
+              className="block text-sm font-medium text-gray-500">
+              Carte
+            </label>
+            <input
+              type="carte"
+              id="carte"
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              onChange={handleInputChange}
+              value={restaurantData.carte}
+            />
+          </div>
+          <div className="mb-8 w-full">
+            <label
+              htmlFor="menu"
+              className="block text-sm font-medium text-gray-500">
+              Menu
+            </label>
+            <input
+              type="menu"
+              id="menu"
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              onChange={handleInputChange}
+              value={restaurantData.menu}
+            />
+          </div>
+        </div>
+
+        <div className="mb-8">
           <label
             htmlFor="email"
             className="block text-sm font-medium text-gray-500">

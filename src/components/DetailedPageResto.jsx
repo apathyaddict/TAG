@@ -85,6 +85,8 @@ const RestaurantDetails = ({ editFunc }) => {
     detailsData,
     text_title,
     status,
+    menu,
+    carte,
   } = restaurant;
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
@@ -219,6 +221,21 @@ const RestaurantDetails = ({ editFunc }) => {
               <p className=""> {formatPhoneNumber(phone)}</p>
             </div>
           </li>
+
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[350px]  px-4 text-slate-400 ">Menu</div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=""> {menu}</p>
+            </div>
+          </li>
+
+          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
+            <div className=" w-[350px]  px-4 text-slate-400 ">Carte</div>
+            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+              <p className=""> {carte}</p>
+            </div>
+          </li>
+
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
             <div className=" w-[350px]  px-4 text-slate-400 ">Mail</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
