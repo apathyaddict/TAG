@@ -32,10 +32,11 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     date_modified: null,
     email: "",
     text_review: "",
-    // imagesUrl: [],
+
     table_grade: "",
     table_service: "",
     detailsData: [],
+    text_title: "",
   });
   const navigate = useNavigate();
 
@@ -58,11 +59,10 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         table_grade: restaurantInfo.table_grade || "",
         table_service: restaurantInfo.table_service || "",
         detailsData: restaurantInfo.detailsData || [],
+        text_title: restaurantInfo.text_title || "",
       });
     }
   }, [restaurantInfo]);
-
-  //TODO: trim spaces
 
   const handleSave = async () => {
     setErrorMessage("");
@@ -207,6 +207,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       table_grade: "",
       table_service: "",
       detailsData: [],
+      text_title: "",
     });
   };
 

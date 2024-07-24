@@ -126,6 +126,10 @@ const PrintPage = () => {
               </div>
 
               <div className="text-black text-sm relative mt-8 mb-10">
+                <div className="text-lg font-bold mb-4">
+                  {" "}
+                  {fiche.text_title}
+                </div>
                 {fiche.imagesUrl && fiche.imagesUrl[0] && (
                   <img
                     src={fiche.imagesUrl[0]}

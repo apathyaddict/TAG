@@ -74,6 +74,7 @@ const RestaurantDetails = ({ editFunc }) => {
     table_grade,
     table_service,
     detailsData,
+    text_title,
   } = restaurant;
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
@@ -298,11 +299,18 @@ const RestaurantDetails = ({ editFunc }) => {
           </div>
         </div>
       </div>
-
-      <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-start ">
-        <div className=" w-[150px]  px-4 text-slate-400 ">Texte:</div>
-        <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-          <p className="text-sm font-normal">{text_review}</p>
+      <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-6">
+        <div className="flex items-center gap-4">
+          <div className="w-[150px] text-slate-400">Titre du Texte:</div>
+          <div className="flex-1 text-slate-800 text-sm font-normal">
+            {text_title}
+          </div>
+        </div>
+        <div>
+          <div className="w-[150px] text-slate-400 mb-2">Texte:</div>
+          <div className="flex-1 text-slate-800 text-sm font-normal">
+            {text_review}
+          </div>
         </div>
       </div>
 

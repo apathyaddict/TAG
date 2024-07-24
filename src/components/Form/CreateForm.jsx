@@ -93,7 +93,7 @@ const CreateForm = ({
           <label
             htmlFor="name"
             className="block text-sm font-medium text-gray-500">
-            Nom du Restaurant <span className="text-red-500">*</span>
+            Nom <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
@@ -126,7 +126,7 @@ const CreateForm = ({
             />
           </div>
 
-          <div className="mb-4 max-w-[120px]">
+          <div className="mb-4 max-w-[150px]">
             <label
               htmlFor="code_postal"
               className="block text-sm font-medium text-gray-500">
@@ -228,6 +228,9 @@ const CreateForm = ({
             value={restaurantData.manager_phone}
           />
         </div>
+
+        <div className="border-gray-200 border space-y-2 my-16"></div>
+
         <div className="mb-4">
           <p
             htmlFor="table_grade"
@@ -253,6 +256,21 @@ const CreateForm = ({
           handleDetailsTableChange={handleDetailsTableChange}
         />
 
+        <div className="border-gray-200 border space-y-2 my-16"></div>
+        <div className="mb-4">
+          <label
+            htmlFor="text_title"
+            className="block text-sm font-medium text-gray-500">
+            Titre du Text
+          </label>
+          <input
+            type="text"
+            id="text_title"
+            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
+            onChange={handleInputChange}
+            value={restaurantData.text_title}
+          />
+        </div>
         <div className="mb-4">
           <label
             htmlFor="text_review"
@@ -282,9 +300,9 @@ const CreateForm = ({
             {errorMessage}
           </div>
         )}
-        <div className="flex justify-end items-end  mt-8">
+        <div className="flex justify-end items-end  my-8 pb-16">
           <button
-            className="cursor-pointer bg-white mt-2 px-12 py-2 text-blue-600 font-bold border border-slate-300 rounded-lg hover:bg-slate-800 hover:text-blue-100 uppercase"
+            className="cursor-pointer hover:bg-white mt-2 px-12 py-2 hover:text-blue-600 font-bold border border-slate-300 rounded-lg bg-slate-800 text-blue-100 uppercase"
             onClick={isEditing ? handleEdit : handleSave}
             disabled={isLoading}>
             {isLoading ? "En cours..." : isEditing ? "Modifier" : "Ajouter"}

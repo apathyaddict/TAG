@@ -69,6 +69,10 @@ const styles = StyleSheet.create({
     textAlign: "left",
     lineHeight: 1.3,
   },
+  itemTitle: {
+    marginBottom: 2,
+    fontSize: 12,
+  },
   contactInfo: {
     marginTop: 10,
     fontSize: 8,
@@ -93,30 +97,6 @@ const styles = StyleSheet.create({
   },
 });
 
-//   const starPaths = {
-//     1: "M19.704 8.375l-6.359-.551-2.736-6.092L9.376 2.05 6.77 2.732l-.517 2.57-6.462.554 4.979 4.442L2.3 17.685l5.313-3.22 5.296 3.227-1.57-6.904 4.979-4.44z",
-//     2: "M9.377 17.686l-6.462.555 4.979-4.442L2.3 6.357l5.313-3.221 5.296 3.227-1.57-6.906 4.979 4.442L19.705 8.375l-6.359-.551-2.736-6.093L9.377 2.05z",
-//     3: "M2.301 6.356l5.313-3.22 5.296 3.227-1.57-6.904 4.979-4.44L19.705 8.374l-6.36-.551-2.735-6.092L9.377 2.05l-2.607.683-.517 2.569-6.462.554z",
-//   };
-
-//   return Array(numStars)
-//     .fill(0)
-//     .map((_, index) => <Svg key={index} src={{ path: starPaths[numStars] }} />);
-// };
-
-// const getForks = (grade) => {
-//   switch (grade) {
-//     case "service et cadre simple":
-//       return 1;
-//     case "cadre et service confort":
-//       return 2;
-//     case "cadre luxe":
-//       return 3;
-//     default:
-//       return 0;
-//   }
-// };
-
 // Create the PDF document component
 const PdfDocument = ({ items }) => (
   <Document>
@@ -127,6 +107,7 @@ const PdfDocument = ({ items }) => (
           <Text style={styles.city}>{item.ville}</Text>
 
           <View style={styles.item}>
+            <Text style={styles.itemTitle}>{item.text_title}</Text>
             <Text style={styles.itemText}>{item.text_review}</Text>
 
             <View style={styles.starForkContainer}>
@@ -184,7 +165,7 @@ const PdfExport = () => {
 
   useEffect(() => {
     fetchData();
-    console.log(data);
+    // console.log(data);
   }, []);
 
   const fetchData = useCallback(async () => {
