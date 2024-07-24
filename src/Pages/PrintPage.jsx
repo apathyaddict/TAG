@@ -1,8 +1,8 @@
 import React from "react";
 import { FaRegStar, FaWineBottle } from "react-icons/fa";
-import { GiKnifeFork } from "react-icons/gi";
+import { IoStarSharp } from "react-icons/io5";
 import { IoStorefrontSharp } from "react-icons/io5";
-import { MdTableRestaurant } from "react-icons/md";
+import { FaRegCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 
 const PrintPage = () => {
@@ -55,7 +55,7 @@ const PrintPage = () => {
     return Array(numStars)
       .fill(0)
       .map((_, index) => (
-        <MdTableRestaurant key={index} className="h-6 w-6 text-blue-900" />
+        <FaRegCircle key={index} className="h-6 w-6 text-blue-900" />
       ));
   };
 
@@ -76,7 +76,7 @@ const PrintPage = () => {
     return Array(numStars)
       .fill(0)
       .map((_, index) => (
-        <GiKnifeFork key={index} className="h-5 w-5 text-blue-900" />
+        <IoStarSharp key={index} className="h-5 w-5 text-blue-900" />
       ));
   };
 

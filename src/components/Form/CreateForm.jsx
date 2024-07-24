@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DropdownCat from "./DropdownCat";
-import { MdTableRestaurant } from "react-icons/md";
+import { FaRegCircle } from "react-icons/fa";
 import Symbols from "./Symbols";
 import ServiceTable from "./ServiceTable";
 import DetailsTableForm from "./DetailsTableForm";

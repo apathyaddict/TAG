@@ -1,5 +1,5 @@
 import React from "react";
-import { GiKnifeFork } from "react-icons/gi";
+import { IoStarSharp } from "react-icons/io5";
 
 const ServiceTable = ({ table_service, handleTableServiceChange }) => {
   return (
@@ -11,14 +11,14 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             id="table_service1"
             className=" h-4 w-4 text-blue-500"
             onChange={handleTableServiceChange}
-            checked={table_service === "service et cadre simple"}
+            checked={table_service === "cadre  et service simple"}
             value="service et cadre simple"
             readOnly
           />
           <label
             htmlFor="table_service1"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <GiKnifeFork className="h-4 w-4 mr-2 text-blue-500" /> Service et
+            <IoStarSharp className="h-4 w-4 mr-2 text-blue-500" /> Service et
             cadre simple
           </label>
         </li>
@@ -34,8 +34,8 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
           <label
             htmlFor="table_service2"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <GiKnifeFork className="h-4 w-4 text-blue-500" />
-            <GiKnifeFork className="h-4 w-4 mr-2 text-blue-500" /> Cadre et
+            <IoStarSharp className="h-4 w-4 text-blue-500" />
+            <IoStarSharp className="h-4 w-4 mr-2 text-blue-500" /> Cadre et
             service confort
           </label>
         </li>
@@ -51,9 +51,9 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
           <label
             htmlFor="table_service3"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <GiKnifeFork className="h-4 w-4 text-blue-500" />
-            <GiKnifeFork className="h-4 w-4 text-blue-500" />
-            <GiKnifeFork className="h-4 w-4 mr-2 text-blue-500" /> Cadre luxe
+            <IoStarSharp className="h-4 w-4 text-blue-500" />
+            <IoStarSharp className="h-4 w-4 text-blue-500" />
+            <IoStarSharp className="h-4 w-4 mr-2 text-blue-500" /> Cadre luxe
           </label>
         </li>
       </ul>

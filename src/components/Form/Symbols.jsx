@@ -1,5 +1,5 @@
 import React from "react";
-import { MdTableRestaurant } from "react-icons/md";
+import { FaRegCircle } from "react-icons/fa";
 
 const Symbols = ({ table_grade, handleTableGradeChange }) => {
   return (
@@ -17,8 +17,7 @@ const Symbols = ({ table_grade, handleTableGradeChange }) => {
           <label
             htmlFor="table_grade1"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <MdTableRestaurant className="h-4 w-4 mr-2  text-blue-500" /> Bonne
-            Table
+            <FaRegCircle className="h-4 w-4 mr-2  text-blue-500" /> Bonne Table
           </label>
         </li>
         <li className="border  bg-white border-gray-300 rounded-lg p-4 flex items-center space-x-2">
@@ -33,9 +32,9 @@ const Symbols = ({ table_grade, handleTableGradeChange }) => {
           <label
             htmlFor="table_grade2"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <MdTableRestaurant className="h-4 w-4 text-blue-500" />
-            <MdTableRestaurant className="h-4 w-4   text-blue-500 mr-2" /> Très
-            bonne table
+            <FaRegCircle className="h-4 w-4 text-blue-500" />
+            <FaRegCircle className="h-4 w-4   text-blue-500 mr-2" /> Très bonne
+            table
           </label>
         </li>
         <li className=" bg-white border border-gray-300 rounded-lg p-4 flex items-center space-x-2">
@@ -50,9 +49,9 @@ const Symbols = ({ table_grade, handleTableGradeChange }) => {
           <label
             htmlFor="table_grade3"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <MdTableRestaurant className="h-4 w-4   text-blue-500" />
-            <MdTableRestaurant className="h-4 w-4 text-blue-500" />
-            <MdTableRestaurant className="h-4 w-4 mr-2  text-blue-500" /> Table
+            <FaRegCircle className="h-4 w-4   text-blue-500" />
+            <FaRegCircle className="h-4 w-4 text-blue-500" />
+            <FaRegCircle className="h-4 w-4 mr-2  text-blue-500" /> Table
             d'exception
           </label>
         </li>

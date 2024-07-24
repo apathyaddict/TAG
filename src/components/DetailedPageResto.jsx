@@ -12,8 +12,8 @@ import { BiEdit, BiEraser } from "react-icons/bi";
 import { format } from "date-fns";
 
 import UploadImage from "./Form/UploadImage";
-import { MdTableRestaurant } from "react-icons/md";
-import { GiKnifeFork } from "react-icons/gi";
+import { FaRegCircle } from "react-icons/fa";
+import { IoStarSharp } from "react-icons/io5";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -149,7 +149,7 @@ const RestaurantDetails = ({ editFunc }) => {
     return Array(numStars)
       .fill(0)
       .map((_, index) => (
-        <MdTableRestaurant key={index} className="h-6 w-6 text-blue-500" />
+        <FaRegCircle key={index} className="h-6 w-6 text-blue-500" />
       ));
   };
 
@@ -170,7 +170,7 @@ const RestaurantDetails = ({ editFunc }) => {
     return Array(numStars)
       .fill(0)
       .map((_, index) => (
-        <GiKnifeFork key={index} className="h-6 w-6 text-blue-500" />
+        <IoStarSharp key={index} className="h-6 w-6 text-blue-500" />
       ));
   };
 

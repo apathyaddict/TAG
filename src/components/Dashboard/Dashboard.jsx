@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { format } from "date-fns";
-import { MdTableRestaurant } from "react-icons/md";
-import { GiKnifeFork } from "react-icons/gi";
+import { FaRegCircle } from "react-icons/fa";
+import { IoStarSharp } from "react-icons/io5";
 import Pagination from "./Pagination";
 
 const Dashboard = () => {
@@ -105,7 +105,7 @@ const Dashboard = () => {
     return Array(numStars)
       .fill(0)
       .map((_, index) => (
-        <MdTableRestaurant
+        <FaRegCircle
           key={index}
           className="inline-block h-5 w-5 text-slate-600"
         />
@@ -131,7 +131,7 @@ const Dashboard = () => {
         {Array(numForks)
           .fill(0)
           .map((_, index) => (
-            <GiKnifeFork
+            <IoStarSharp
               key={index}
               className="inline-block h-4 w-4 text-slate-600"
             />

@@ -253,7 +253,7 @@ const PdfExport = () => {
       <div className=" flex justify-end items-right p-2  gap-4 my-5 ">
         <PDFDownloadLink
           document={<PdfDocument items={selectedItems} />}
-          fileName="selected_items.pdf">
+          fileName="fiches_imprimer.pdf">
           {({ blob, url, loading, error }) => (
             <button
               type="button"
