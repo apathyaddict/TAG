@@ -5,6 +5,7 @@ import Symbols from "./Symbols";
 import ServiceTable from "./ServiceTable";
 import DetailsTableForm from "./DetailsTableForm";
 import { FaCircleInfo } from "react-icons/fa6";
+import NewOldStatus from "./NewOldStatus";
 
 const CreateForm = ({
   handleSave,
@@ -74,6 +75,13 @@ const CreateForm = ({
     setRestaurantData((prevState) => ({
       ...prevState,
       detailsData: detailsData,
+    }));
+  };
+
+  const handleStatus = (value) => {
+    setRestaurantData((prevState) => ({
+      ...prevState,
+      status: value,
     }));
   };
 
@@ -242,6 +250,23 @@ const CreateForm = ({
             {...{ handleTableGradeChange }}
             table_grade={restaurantData.table_grade}
           />
+        </div>
+
+        <div className="mb-4">
+          <p className="block text-sm font-medium text-gray-500 mb-1">
+            Statut:
+          </p>
+
+          <NewOldStatus
+            status={restaurantData.status}
+            handleStatus={handleStatus}
+          />
+        </div>
+
+        <div className="mb-4">
+          <p className="block text-sm font-medium text-gray-500 mb-1">
+            Niveau de l'hotel
+          </p>
 
           <ServiceTable
             table_service={restaurantData.table_service}

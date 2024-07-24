@@ -19,6 +19,10 @@ const SidebarSearch = ({
     "VIGNOBLE",
     "DISTILLERIE",
     "CHARCUTERIE",
+    "PATISSERIE",
+    "BOULANGER",
+    "FROMAGER",
+    "BOUCHER",
     "TRAITEUR",
     "AUTRE",
   ];
@@ -33,6 +37,10 @@ const SidebarSearch = ({
     CHARCUTERIE: "CHARCUTERIE",
     TRAITEUR: "TRAITEUR",
     AUTRE: "AUTRE",
+    PATISSERIE: "PATISSERIE",
+    BOULANGER: "BOULANGER",
+    FROMAGER: "FROMAGER",
+    BOUCHER: "BOUCHER",
   };
 
   const handleCategoryChange = (category) => {

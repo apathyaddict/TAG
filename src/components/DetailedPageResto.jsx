@@ -16,6 +16,13 @@ import { FaRegCircle } from "react-icons/fa";
 import { IoStarSharp } from "react-icons/io5";
 import { PiClover } from "react-icons/pi";
 import Chaudron from "./icons/Chaudron";
+import {
+  TbSquareLetterNFilled,
+  TbHexagonLetterR,
+  TbCheckbox,
+  TbSquareRoundedLetterNFilled,
+  TbHexagonLetterRFilled,
+} from "react-icons/tb";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -77,6 +84,7 @@ const RestaurantDetails = ({ editFunc }) => {
     table_service,
     detailsData,
     text_title,
+    status,
   } = restaurant;
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
@@ -176,6 +184,12 @@ const RestaurantDetails = ({ editFunc }) => {
       ));
   };
 
+  const iconMapping = {
+    nouveau: <TbSquareRoundedLetterNFilled className="w-5 h-5 text-blue-500" />,
+    retiré: <TbHexagonLetterRFilled className="w-5 h-5 text-blue-500" />,
+    aucun: <TbCheckbox className="w-5 h-5 text-blue-500" />,
+  };
+
   return (
     <div className="max-w-full mx-4 p-10 flex flex-col justify-center gap-4">
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex flex-col gap-10 justify-between ">
@@ -248,9 +262,9 @@ const RestaurantDetails = ({ editFunc }) => {
       </div>
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-start ">
-        <div className=" w-[350px]  px-4 text-slate-400 ">
+        {/* <div className=" w-[350px]  px-4 text-slate-400 ">
           Qualité de la table:
-        </div>
+        </div> */}
         <div className="w-full flex flex-col justify-start gap-6 divide-y  ">
           <div className=" w-full flex justify-start gap-2 text-slate-800  ">
             <div className="flex items-center gap-1 w-[150px] ">
@@ -263,6 +277,13 @@ const RestaurantDetails = ({ editFunc }) => {
               {renderForks(getForks(table_service))}
             </div>
             <p className="text-sm font-normal">{table_service}</p>
+          </div>
+
+          <div className=" w-full flex justify-start gap-2 text-slate-800 pt-6 ">
+            <div className="flex items-center gap-1 w-[150px]">
+              {iconMapping[status] || null}
+            </div>
+            <p className="text-sm font-normal">{status}</p>
           </div>
 
           <div className="w-full flex justify-start gap-2 text-slate-800 ">

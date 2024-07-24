@@ -11,7 +11,7 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             id="table_service1"
             className=" h-4 w-4 text-blue-500"
             onChange={handleTableServiceChange}
-            checked={table_service === "cadre  et service simple"}
+            checked={table_service === "service et cadre simple"}
             value="service et cadre simple"
             readOnly
           />
