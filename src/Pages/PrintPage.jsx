@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import Chaudron from "../components/icons/Chaudron";
 import { PiClover, PiForkKnifeFill } from "react-icons/pi";
 import { TbHexagonLetterLFilled } from "react-icons/tb";
+import { BsHouseFill } from "react-icons/bs";
 
 const PrintPage = () => {
   const location = useLocation();
@@ -85,8 +86,12 @@ const PrintPage = () => {
         return 1;
       case "cadre et service confort":
         return 2;
-      case "cadre luxe":
+      case "cadre grand confort":
         return 3;
+      case "cadre luxe":
+        return 4;
+      case "cadre grand luxe":
+        return 5;
       default:
         return 0;
     }
@@ -96,7 +101,7 @@ const PrintPage = () => {
     return Array(numStars)
       .fill(0)
       .map((_, index) => (
-        <IoStarSharp key={index} className="h-5 w-5 text-blue-900" />
+        <BsHouseFill key={index} className="h-5 w-5 text-blue-900" />
       ));
   };
 
