@@ -69,10 +69,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     lineHeight: 1.3,
   },
-  itemTitle: {
-    marginBottom: 2,
-    fontSize: 12,
-  },
+
   contactInfo: {
     marginTop: 10,
     fontSize: 8,

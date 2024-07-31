@@ -30,6 +30,7 @@ import {
   TbHexagonLetterLFilled,
 } from "react-icons/tb";
 import DialogBox from "./DialogBox";
+import ContactTracking from "./Form/ContactTracking";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -486,6 +487,12 @@ const RestaurantDetails = ({ editFunc }) => {
       </div>
 
       <UploadImage {...{ id, imagesUrl }} />
+
+      <ContactTracking
+        restaurant={restaurant}
+        setRestaurant={setRestaurant}
+        id={id}
+      />
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-between ">
         <div className="mt-2 text-left">

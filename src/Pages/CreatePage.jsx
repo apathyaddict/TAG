@@ -45,6 +45,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     entrée: "",
     plat: "",
     dessert: "",
+    contacts: [],
   });
   const navigate = useNavigate();
 
@@ -185,9 +186,6 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       ...restaurantData,
       date_modified: new Date().toISOString(),
     };
-
-    // console.log("setIsEditing", updatedFiche);
-    // console.log("isNew", isNew);
 
     try {
       setIsLoading(true);
