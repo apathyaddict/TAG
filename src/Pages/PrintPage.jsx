@@ -1,11 +1,12 @@
 import React from "react";
-import { FaRegStar, FaWineBottle } from "react-icons/fa";
+import { FaRegStar, FaUmbrellaBeach, FaWineBottle } from "react-icons/fa";
 import { IoStarSharp } from "react-icons/io5";
 import { IoStorefrontSharp } from "react-icons/io5";
 import { FaRegCircle } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
 import Chaudron from "../components/icons/Chaudron";
 import { PiClover, PiForkKnifeFill } from "react-icons/pi";
+import { TbHexagonLetterLFilled } from "react-icons/tb";
 
 const PrintPage = () => {
   const location = useLocation();
@@ -148,12 +149,12 @@ const PrintPage = () => {
                 </div>
                 {fiche.detailsData.decorRemarquable ? (
                   <div className="text-blue-900">
-                    <FaRegStar className="h-5 w-5" />
+                    <TbHexagonLetterLFilled className="h-5 w-5" />
                   </div>
                 ) : null}
                 {fiche.detailsData.terrasse ? (
                   <div className="text-blue-900">
-                    <IoStorefrontSharp className="h-5 w-5" />
+                    <FaUmbrellaBeach className="h-5 w-5" />
                   </div>
                 ) : null}
                 {fiche.detailsData.qualite_prix ? (

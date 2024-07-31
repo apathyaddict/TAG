@@ -1,7 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 
-import { FaRegStar, FaWineBottle, FaUtensils } from "react-icons/fa";
+import {
+  FaRegStar,
+  FaWineBottle,
+  FaUtensils,
+  FaUmbrellaBeach,
+} from "react-icons/fa";
 import { IoStorefrontSharp } from "react-icons/io5";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
@@ -22,6 +27,7 @@ import {
   TbCheckbox,
   TbSquareRoundedLetterNFilled,
   TbHexagonLetterRFilled,
+  TbHexagonLetterLFilled,
 } from "react-icons/tb";
 import DialogBox from "./DialogBox";
 
@@ -205,8 +211,8 @@ const RestaurantDetails = ({ editFunc }) => {
   };
 
   const iconMapping = {
-    nouveau: <TbSquareRoundedLetterNFilled className="w-5 h-5 text-blue-500" />,
-    retiré: <TbHexagonLetterRFilled className="w-5 h-5 text-blue-500" />,
+    nouveau: <TbSquareRoundedLetterNFilled className="w-6 h-6 text-blue-500" />,
+    retiré: <TbHexagonLetterRFilled className="w-6 h-6 text-blue-500" />,
     aucun: <TbCheckbox className="w-5 h-5 text-blue-500" />,
   };
 
@@ -345,17 +351,17 @@ const RestaurantDetails = ({ editFunc }) => {
                 <li className="flex items-center space-x-2 border-b pt-6 pb-6">
                   <div className="flex items-center gap-1 text-blue-500 w-[150px]">
                     <span>
-                      <FaWineBottle />
+                      <FaWineBottle className="h-6 w-6" />
                     </span>
                   </div>
-                  <p className="text-sm font-normal">Cave remarquable</p>
+                  <p className="text-sm font-normal ">Cave remarquable</p>
                 </li>
               ) : null}
               {detailsData.decorRemarquable ? (
                 <li className="flex items-center space-x-2 border-b pt-6 pb-6">
                   <div className="flex items-center gap-1 text-blue-500 w-[150px]">
                     <span>
-                      <FaRegStar />
+                      <TbHexagonLetterLFilled className="h-6 w-6" />
                     </span>
                   </div>
                   <p className="text-sm font-normal">Décor remarquable</p>
@@ -365,7 +371,7 @@ const RestaurantDetails = ({ editFunc }) => {
                 <li className="flex items-center space-x-2 border-b pt-6 pb-6">
                   <div className="flex items-center gap-1 text-blue-500 w-[150px]">
                     <span>
-                      <IoStorefrontSharp />
+                      <FaUmbrellaBeach className="h-6 w-6" />
                     </span>
                   </div>
                   <p className="text-sm font-normal">Terrasse</p>
@@ -391,7 +397,7 @@ const RestaurantDetails = ({ editFunc }) => {
                 <li className="flex items-center space-x-2 border-b pt-6 pb-6">
                   <div className="flex items-center gap-1 text-blue-500 w-[150px]">
                     <span>
-                      <PiClover />
+                      <PiClover className="h-6 w-6" />
                     </span>
                   </div>
                   <p className="text-sm font-normal">Hôtel au calme</p>

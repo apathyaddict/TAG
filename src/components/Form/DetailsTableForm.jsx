@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { FaRegStar, FaWineBottle } from "react-icons/fa";
+import { FaRegStar, FaUmbrellaBeach, FaWineBottle } from "react-icons/fa";
 import { IoStorefrontSharp } from "react-icons/io5";
 import Chaudron from "../icons/Chaudron";
 import { PiClover, PiCloverLight } from "react-icons/pi";
+import { TbCircleLetterLFilled, TbHexagonLetterLFilled } from "react-icons/tb";
 
 const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
   // State to manage checked items
@@ -73,8 +74,7 @@ const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
           <label
             htmlFor="terrasse"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <IoStorefrontSharp className="h-4 w-4 mr-2 text-blue-500" />{" "}
-            Terrasse
+            <FaUmbrellaBeach className="h-4 w-4 mr-2 text-blue-500" /> Terrasse
           </label>
         </li>
         <li className="border border-gray-300 rounded-lg p-4 bg-white flex items-center space-x-2">
@@ -88,8 +88,8 @@ const DetailsTableForm = ({ restaurantData, handleDetailsTableChange }) => {
           <label
             htmlFor="decorRemarquable"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <FaRegStar className="h-4 w-4 mr-2 text-blue-500" /> Décor
-            Remarquable
+            <TbHexagonLetterLFilled className="h-5 w-5 mr-2 text-blue-500" />{" "}
+            Décor Remarquable
           </label>
         </li>
         <li className="border border-gray-300 rounded-lg p-4 bg-white flex items-center space-x-2">

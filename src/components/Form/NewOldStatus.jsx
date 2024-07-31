@@ -14,7 +14,7 @@ const iconMapping = {
 const NewOldStatus = ({ status, handleStatus }) => {
   const options = [
     { id: "status1", label: "Nouveau", value: "nouveau" },
-    { id: "status2", label: "Aucun", value: "aucun" },
+    // { id: "status2", label: "Aucun", value: "aucun" },
     { id: "status3", label: "Retiré", value: "retiré" },
   ];
 
