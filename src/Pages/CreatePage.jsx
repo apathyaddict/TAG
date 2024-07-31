@@ -60,7 +60,8 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         manager_phone: restaurantInfo.manager_phone || "",
         manager_name: restaurantInfo.manager_name || "",
         category: restaurantInfo.category || "",
-        date_added: restaurantInfo.added || new Date().toISOString(),
+
+        date_added: restaurantInfo.date_added ?? new Date().toISOString(),
         date_modified: restaurantInfo.date_modified || null,
         email: restaurantInfo.email || "",
         text_review: restaurantInfo.text_review || "",

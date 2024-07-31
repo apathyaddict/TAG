@@ -40,6 +40,7 @@ const RestaurantDetails = ({ editFunc }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const capitalizeFirstLetter = (str) => {
+    if (!str) return "";
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
@@ -491,10 +492,12 @@ const RestaurantDetails = ({ editFunc }) => {
           <p className="text-sm text-slate-500">
             Ajouté à la banque de donnée::
           </p>
+
           {format(new Date(date_added), "dd / MM / yyyy")}
         </div>
         <div className="mt-2 text-right">
           <p className="text-sm text-slate-500">Dernière mise à jour:</p>
+
           {date_modified
             ? format(new Date(date_modified), "dd / MM / yyyy")
             : "-- / -- / --"}
