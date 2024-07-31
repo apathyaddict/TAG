@@ -31,6 +31,7 @@ import {
 } from "react-icons/tb";
 import DialogBox from "./DialogBox";
 import ContactTracking from "./Form/ContactTracking";
+import { BsHouseFill } from "react-icons/bs";
 
 const RestaurantDetails = ({ editFunc }) => {
   const { id } = useParams();
@@ -207,18 +208,24 @@ const RestaurantDetails = ({ editFunc }) => {
         return 1;
       case "cadre et service confort":
         return 2;
-      case "cadre luxe":
+      case "cadre grand confort":
         return 3;
+      case "cadre luxe":
+        return 4;
+      case "cadre grand luxe":
+        return 5;
       default:
         return 0;
     }
   };
 
   const renderForks = (numStars) => {
+    const iconColor = numStars > 4 ? "text-red-500" : "text-blue-500";
+
     return Array(numStars)
       .fill(0)
       .map((_, index) => (
-        <IoStarSharp key={index} className="h-6 w-6 text-blue-500" />
+        <BsHouseFill key={index} className={`h-6 w-6 ${iconColor}`} />
       ));
   };
 

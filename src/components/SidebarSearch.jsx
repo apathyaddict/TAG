@@ -24,6 +24,8 @@ const SidebarSearch = ({
     "FROMAGER",
     "BOUCHER",
     "TRAITEUR",
+    "PRODUIT",
+    "TABLE ETRANGERE",
     "AUTRE",
   ];
 
@@ -41,6 +43,8 @@ const SidebarSearch = ({
     BOULANGER: "BOULANGER",
     FROMAGER: "FROMAGER",
     BOUCHER: "BOUCHER",
+    PRODUIT: "PRODUIT",
+    "TABLE ETRANGERE": "TABLE ETRANGERE",
   };
 
   const handleCategoryChange = (category) => {

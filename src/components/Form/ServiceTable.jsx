@@ -63,8 +63,8 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             id="table_service3"
             className=" h-4 w-4 text-blue-500"
             onChange={handleTableServiceChange}
-            checked={table_service === "cadre grand luxe"}
-            value="cadre grand luxe"
+            checked={table_service === "cadre luxe"}
+            value="cadre luxe"
           />
           <label
             htmlFor="table_service4"
@@ -72,8 +72,7 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             <BsHouseFill className="h-4 w-4 text-blue-500" />
             <BsHouseFill className="h-4 w-4 text-blue-500" />
             <BsHouseFill className="h-4 w-4 text-blue-500" />
-            <BsHouseFill className="h-4 w-4 mr-2 text-blue-500" /> Cadre grand
-            luxe
+            <BsHouseFill className="h-4 w-4 mr-2 text-blue-500" /> Cadre luxe
           </label>
         </li>
         <li className="border border-gray-300 rounded-lg p-4   bg-white flex items-center space-x-2">
@@ -82,8 +81,8 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             id="table_service5"
             className=" h-4 w-4 text-blue-500"
             onChange={handleTableServiceChange}
-            checked={table_service === "cadre luxe"}
-            value="cadre luxe"
+            checked={table_service === "cadre grand luxe"}
+            value="cadre grand luxe"
           />
           <label
             htmlFor="table_service5"
@@ -93,7 +92,7 @@ const ServiceTable = ({ table_service, handleTableServiceChange }) => {
             <BsHouseFill className="h-4 w-4 text-red-500" />
             <BsHouseFill className="h-4 w-4 text-red-500" />
             <BsHouseFill className="h-4 w-4 mr-2 text-red-500" /> Cadre grand
-            luxe, service de classe
+            luxe
           </label>
         </li>
       </ul>

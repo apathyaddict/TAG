@@ -13,13 +13,14 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { format } from "date-fns";
 import { FaRegCircle } from "react-icons/fa";
-import { IoStarSharp } from "react-icons/io5";
+import { PiForkKnifeFill } from "react-icons/pi";
 import Pagination from "./Pagination";
 import {
   TbCheckbox,
   TbHexagonLetterR,
   TbSquareLetterNFilled,
 } from "react-icons/tb";
+import { BsHouseFill } from "react-icons/bs";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -101,54 +102,65 @@ const Dashboard = () => {
         return 2;
       case "Table d'exception":
         return 3;
+      case "Simple":
+        return 4;
+      case "Bon confort":
+        return 5;
+      case "Trés confortable":
+        return 6;
       default:
         return 0;
     }
   };
-
   const renderStars = (numStars) => {
-    return Array(numStars)
+    let renderCount;
+    let IconComponent;
+
+    if (numStars <= 3) {
+      renderCount = numStars;
+      IconComponent = FaRegCircle;
+    } else {
+      renderCount = numStars - 3;
+      IconComponent = PiForkKnifeFill;
+    }
+
+    return Array(renderCount)
       .fill(0)
       .map((_, index) => (
-        <FaRegCircle
-          key={index}
-          className="inline-block h-5 w-5 text-slate-600"
-        />
+        <IconComponent key={index} className="h-4 w-4 text-slate-700" />
       ));
   };
-
   const getForks = (grade) => {
     switch (grade) {
       case "service et cadre simple":
         return 1;
       case "cadre et service confort":
         return 2;
-      case "cadre luxe":
+      case "cadre grand confort":
         return 3;
+      case "cadre luxe":
+        return 4;
+      case "cadre grand luxe":
+        return 5;
       default:
         return 0;
     }
   };
 
-  const renderForks = (numForks) => {
-    return (
-      <>
-        {Array(numForks)
-          .fill(0)
-          .map((_, index) => (
-            <IoStarSharp
-              key={index}
-              className="inline-block h-4 w-4 text-slate-600"
-            />
-          ))}
-      </>
-    );
+  const renderForks = (numStars) => {
+    const iconColor = numStars > 4 ? "text-red-500" : "text-slate-700";
+
+    return Array(numStars)
+      .fill(0)
+      .map((_, index) => (
+        <BsHouseFill key={index} className={`h-3 w-3 ${iconColor}`} />
+      ));
   };
 
   const iconMapping = {
-    nouveau: <TbSquareLetterNFilled className="w-5 h-5 text-red-500 mx-4" />,
-    retiré: <TbHexagonLetterR className="w-5 h-5 text-gray-500  mx-4" />,
-    aucun: <TbCheckbox className="w-5 h-5 text-blue-500 mx-4" />,
+    nouveau: <TbSquareLetterNFilled className="w-5 h-5 text-red-500 " />,
+    retiré: <TbHexagonLetterR className="w-5 h-5 text-gray-500 " />,
+    aucun: <TbCheckbox className="w-5 h-5 text-blue-500 " />,
   };
 
   return (
@@ -231,17 +243,23 @@ const Dashboard = () => {
                       {item.category}
                     </span>
                   </td>
-                  <td className="text-left py-2 px-2">
-                    <span className="px-2 py-1 text-xs">
-                      {iconMapping[item.status] || null}
-                      {/* {item.status} */}
-                    </span>
+                  <td className=" py-2 px-2">
+                    <div className="flex items-center justify-center">
+                      <span className="text-xs">
+                        {iconMapping[item.status] || null}
+                        {/* {item.status} */}
+                      </span>
+                    </div>
+                  </td>
+                  <td className="text-left py-2 px-2  items-center">
+                    <div className="flex">
+                      {renderForks(getForks(item.table_service))}
+                    </div>
                   </td>
                   <td className="text-left py-2 px-2">
-                    {renderForks(getForks(item.table_service))}
-                  </td>
-                  <td className="text-left py-2 px-2">
-                    {renderStars(getStars(item.table_grade))}
+                    <div className="flex">
+                      {renderStars(getStars(item.table_grade))}
+                    </div>
                   </td>
                   <td className="text-left py-2 px-2">
                     {item.text_review && item.text_review.length > 0 ? (

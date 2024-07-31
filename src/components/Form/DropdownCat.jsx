@@ -13,6 +13,8 @@ const displayCategories = [
   "FROMAGER",
   "BOUCHER",
   "TRAITEUR",
+  "PRODUIT",
+  "TABLE ETRANGERE",
   "AUTRE",
 ];
 
@@ -29,6 +31,8 @@ const categoryMap = {
   FROMAGER: "FROMAGER",
   BOUCHER: "BOUCHER",
   TRAITEUR: "TRAITEUR",
+  PRODUIT: "PRODUIT",
+  "TABLE ETRANGERE": "TABLE ETRANGERE",
   AUTRE: "AUTRE",
 };
 
