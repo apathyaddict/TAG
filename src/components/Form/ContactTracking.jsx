@@ -92,7 +92,7 @@ const ContactTracking = ({ restaurant, setRestaurant, id }) => {
   return (
     <div className="bg-white w-full mx-auto p-6 rounded-lg shadow-md">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="flex gap-4">
+        <div className="flex flex-col  sm:flex-row gap-4">
           <div className="w-full">
             <label
               htmlFor="contact-date"
@@ -108,7 +108,6 @@ const ContactTracking = ({ restaurant, setRestaurant, id }) => {
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
             />
           </div>
-
           <div className="w-full">
             <label
               htmlFor="contact-type"
@@ -127,7 +126,6 @@ const ContactTracking = ({ restaurant, setRestaurant, id }) => {
               <option value="Rendez-vous">Rendez-vous</option>
             </select>
           </div>
-
           <div className="w-full">
             <label
               htmlFor="notes"
@@ -140,29 +138,24 @@ const ContactTracking = ({ restaurant, setRestaurant, id }) => {
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               className="w-full px-3 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"></textarea>
+          </div>{" "}
+          <div className="flex justify-end h-[50px] mt-6">
+            <button
+              className="relative uppercase font-semibold rounded-lg bg-blue-400 text-white border border-blue-500 hover:bg-blue-500 px-4 py-2 text-sm"
+              type="submit"
+              disabled={loading}>
+              {loading ? <BiLoader className="animate-spin" /> : "Enregistrer"}
+            </button>
           </div>
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            className="relative uppercase font-semibold rounded-lg bg-blue-400 text-white border border-blue-500 hover:bg-blue-500 px-4 py-2 text-sm"
-            type="submit"
-            disabled={loading}>
-            {loading ? (
-              <BiLoader className="animate-spin" />
-            ) : (
-              "Enregistrer le contact"
-            )}
-          </button>
         </div>
       </form>
 
-      <div className="mt-6">
+      <div className="mt-6  overflow-x-auto">
         <h3 className="text-xl font-semibold mb-4">Journal des contacts</h3>
-        <table className="w-full border-collapse border border-gray-300 table-fixed">
+        <table className="w-full border-collapse border  border-gray-300 table-auto">
           <thead>
             <tr className="bg-gray-100 text-slate-700">
-              <th className="w-1/3 border border-gray-300 px-4 py-2 text-left">
+              <th className="w-1/3 border border-gray-300 px-4 py-2 text-left ">
                 Date
               </th>
               <th className="w-1/3 border border-gray-300 px-4 py-2 text-left">
@@ -178,17 +171,20 @@ const ContactTracking = ({ restaurant, setRestaurant, id }) => {
           </thead>
           <tbody>
             {contacts.map((contact, index) => (
-              <tr key={index}>
-                <td className="w-1/3 border border-gray-300 px-4 py-2">
+              <tr
+                key={index}
+                //className={index % 2 === 0 ? "" : "bg-amber-50"}
+              >
+                <td className="w-1/3 border border-gray-300 sm:px-4 px-2 py-2 text-xs sm:text-sm">
                   {new Date(contact.contact_date).toLocaleDateString("fr-FR")}
                 </td>
-                <td className="w-1/3 border border-gray-300 px-4 py-2">
+                <td className="w-1/3 border border-gray-300 sm:px-4 px-2  py-2 text-xs sm:text-sm">
                   {contact.contact_type}
                 </td>
-                <td className="w-1/3 border border-gray-300 px-4 py-2">
+                <td className="w-1/3 border border-gray-300 sm:px-4 px-2 py-2 text-xs sm:text-sm">
                   {contact.notes}
                 </td>
-                <td className="w-1/12 border border-gray-300 px-4 py-2 text-center ">
+                <td className="w-1/12 border border-gray-300 sm:px-4 px-2 py-2 text-center ">
                   <div className="bg-red-500  rounded-lg  hover:bg-red-800 flex items-center justify-center  ">
                     <button
                       onClick={() => handleDelete(index)}
