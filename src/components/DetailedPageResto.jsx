@@ -14,7 +14,7 @@ import { format } from "date-fns";
 import UploadImage from "./Form/UploadImage";
 import { FaRegCircle } from "react-icons/fa";
 import { IoStarSharp } from "react-icons/io5";
-import { PiClover } from "react-icons/pi";
+import { PiClover, PiForkKnifeFill } from "react-icons/pi";
 import Chaudron from "./icons/Chaudron";
 import {
   TbSquareLetterNFilled,
@@ -154,16 +154,32 @@ const RestaurantDetails = ({ editFunc }) => {
         return 2;
       case "Table d'exception":
         return 3;
+      case "Simple":
+        return 4;
+      case "Bon confort":
+        return 5;
+      case "Trés confortable":
+        return 6;
       default:
         return 0;
     }
   };
-
   const renderStars = (numStars) => {
-    return Array(numStars)
+    let renderCount;
+    let IconComponent;
+
+    if (numStars <= 3) {
+      renderCount = numStars;
+      IconComponent = FaRegCircle;
+    } else {
+      renderCount = numStars - 3;
+      IconComponent = PiForkKnifeFill;
+    }
+
+    return Array(renderCount)
       .fill(0)
       .map((_, index) => (
-        <FaRegCircle key={index} className="h-6 w-6 text-blue-500" />
+        <IconComponent key={index} className="h-6 w-6 text-blue-500" />
       ));
   };
 
