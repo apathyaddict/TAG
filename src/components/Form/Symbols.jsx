@@ -84,6 +84,7 @@ const Symbols = ({ table_grade, handleTableGradeChange }) => {
           <label
             htmlFor="table_grade5"
             className="text-slate-700 text-sm font-medium flex items-center">
+            <PiForkKnifeFill className="h-4 w-4 mr-2  text-blue-500" />
             <PiForkKnifeFill className="h-4 w-4 mr-2  text-blue-500" /> Bon
             confort
           </label>
@@ -100,8 +101,10 @@ const Symbols = ({ table_grade, handleTableGradeChange }) => {
           <label
             htmlFor="table_grade6"
             className="text-slate-700 text-sm font-medium flex items-center">
-            <PiForkKnifeFill className="h-4 w-4 mr-2  text-blue-500" /> Trés
-            confortable
+            <PiForkKnifeFill className="h-4 w-4 mr-2  text-blue-500" />
+            <PiForkKnifeFill className="h-4 w-4 mr-2  text-blue-500" />
+            <PiForkKnifeFill className="h-4 w-4 mr-2  text-blue-500" />
+            Trés confortable
           </label>
         </li>
       </ul>
