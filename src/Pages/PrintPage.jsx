@@ -169,7 +169,7 @@ const PrintPage = () => {
                 ) : null}
               </div>
 
-              <div className="text-black text-sm relative mt-8 mb-10">
+              <div className="text-black text-sm relative mt-8 ">
                 <div className="text-lg font-bold mb-4">
                   {" "}
                   {fiche.text_title}
@@ -182,6 +182,23 @@ const PrintPage = () => {
                   />
                 )}
                 {fiche.text_review}
+              </div>
+
+              <div className="flex flex-row gap-6 mb-10">
+                <div className="flex flex-row gap-3 items-center">
+                  <h3 className="font-bold text-black">Entrée:</h3>
+                  <span>{fiche.entrée}</span>
+                </div>
+
+                <div className="flex flex-row gap-3 items-center">
+                  <h3 className="font-bold text-black">Plat:</h3>
+                  <span>{fiche.plat}</span>
+                </div>
+
+                <div className="flex flex-row gap-3 items-center">
+                  <h3 className="font-bold text-black">Dessert:</h3>
+                  <span>{fiche.dessert}</span>
+                </div>
               </div>
 
               {fiche.imagesUrl && fiche.imagesUrl[1] && (

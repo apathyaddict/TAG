@@ -110,10 +110,12 @@ const PdfDocument = ({ items }) => (
             <Text style={styles.itemTitle}>{item.text_title}</Text>
             <Text style={styles.itemText}>{item.text_review}</Text>
 
+            <Text style={styles.itemText}>Entrée: {item.entrée}</Text>
+            <Text style={styles.itemText}>Plat: {item.plat}</Text>
+            <Text style={styles.itemText}>Dessert: {item.dessert}</Text>
             <View style={styles.starForkContainer}>
               <Text style={styles.itemText}>Table: {item.table_service} </Text>
             </View>
-
             <View style={styles.starForkContainer}>
               <Text style={styles.itemText}>Service: {item.table_grade} </Text>
             </View>

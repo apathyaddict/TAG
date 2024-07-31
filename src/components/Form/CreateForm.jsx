@@ -350,35 +350,84 @@ const CreateForm = ({
           handleDetailsTableChange={handleDetailsTableChange}
         />
 
-        <div className="border-gray-200 border space-y-2 my-16"></div>
-        <div className="mb-4">
-          <label
-            htmlFor="text_title"
-            className="block text-sm font-medium text-gray-500">
-            Titre du Text
-          </label>
-          <input
-            type="text"
-            id="text_title"
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
-            onChange={handleInputChange}
-            value={restaurantData.text_title}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="text_review"
-            className="block text-sm font-medium text-gray-500">
-            Texte
-          </label>
-          <textarea
-            type="text"
-            id="text_review"
-            rows={10}
-            className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
-            onChange={handleInputChange}
-            value={restaurantData.text_review}
-          />
+        <div className="border-gray-200  space-y-2 my-16">
+          <div className="mb-4">
+            <label
+              htmlFor="text_title"
+              className="block text-sm font-medium text-gray-500">
+              Titre du Text
+            </label>
+            <input
+              type="text"
+              id="text_title"
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
+              onChange={handleInputChange}
+              value={restaurantData.text_title}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="text_review"
+              className="block text-sm font-medium text-gray-500">
+              Texte
+            </label>
+            <textarea
+              type="text"
+              id="text_review"
+              rows={10}
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
+              onChange={handleInputChange}
+              value={restaurantData.text_review}
+            />
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:gap-4 w-full ">
+            <div className="mb-4 w-full">
+              <label
+                htmlFor="entrée"
+                className="block text-sm font-medium text-gray-500">
+                Entrée
+              </label>
+              <textarea
+                type="text"
+                id="entrée"
+                rows={3}
+                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
+                onChange={handleInputChange}
+                value={restaurantData.entrée}
+              />
+            </div>
+            <div className="mb-4  w-full">
+              <label
+                htmlFor="plat"
+                className="block text-sm font-medium text-gray-500">
+                Plat
+              </label>
+              <textarea
+                type="text"
+                id="plat"
+                rows={3}
+                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
+                onChange={handleInputChange}
+                value={restaurantData.plat}
+              />
+            </div>
+            <div className="mb-4  w-full">
+              <label
+                htmlFor="dessert"
+                className="block text-sm font-medium text-gray-500">
+                Dessert
+              </label>
+              <textarea
+                type="text"
+                id="dessert"
+                rows={3}
+                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md  resize-y focus:outline-none focus:border-blue-500"
+                onChange={handleInputChange}
+                value={restaurantData.dessert}
+              />
+            </div>
+          </div>
         </div>
 
         <div className="flex justify-start gap-2 px-4">

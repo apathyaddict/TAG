@@ -42,6 +42,9 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
     carte: "",
     chef_name: "",
     fermeture: "",
+    entrée: "",
+    plat: "",
+    dessert: "",
   });
   const navigate = useNavigate();
 
@@ -70,6 +73,9 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         carte: restaurantInfo.carte || "",
         chef_name: restaurantInfo.chef_name || "",
         fermeture: restaurantInfo.fermeture || "",
+        entrée: restaurantInfo.entrée || "",
+        plat: restaurantInfo.plat || "",
+        dessert: restaurantInfo.dessert || "",
       });
     }
   }, [restaurantInfo]);
@@ -223,6 +229,9 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
       carte: "",
       chef_name: "",
       fermeture: "",
+      entrée: "",
+      plat: "",
+      dessert: "",
     });
   };
 

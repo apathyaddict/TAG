@@ -102,6 +102,9 @@ const RestaurantDetails = ({ editFunc }) => {
     carte,
     chef_name,
     fermeture,
+    entrée,
+    plat,
+    dessert,
   } = restaurant;
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
@@ -446,6 +449,37 @@ const RestaurantDetails = ({ editFunc }) => {
           <div className="w-[150px] text-slate-400 mb-2">Texte:</div>
           <div className="flex-1 text-slate-800 text-sm font-normal">
             {text_review}
+          </div>
+          <div className="flex flex-col sm:flex-row sm:gap-4 w-full mt-10 justify-between items center">
+            <div className="w-full border rounded-lg p-2 gap-3 ">
+              <div className="w-[150px] text-slate-400 text-sm mb-2">
+                {" "}
+                Entrée:
+              </div>
+              <div className="flex-1 text-slate-800 text-sm font-normal">
+                {capitalizeFirstLetterOnly(entrée)}
+              </div>
+            </div>
+
+            <div className="w-full border rounded-lg p-2 gap-3 ">
+              <div className="w-[150px] text-slate-400 text-sm mb-2">
+                {" "}
+                Plat:
+              </div>
+              <div className="flex-1 text-slate-800 text-sm font-normal">
+                {capitalizeFirstLetterOnly(plat)}
+              </div>
+            </div>
+
+            <div className="w-full border rounded-lg p-2 gap-3 ">
+              <div className="w-[150px] text-slate-400 mb-2 text-sm ">
+                {" "}
+                Dessert:
+              </div>
+              <div className="flex-1 text-slate-800 text-sm font-normal">
+                {capitalizeFirstLetterOnly(dessert)}
+              </div>
+            </div>
           </div>
         </div>
       </div>
