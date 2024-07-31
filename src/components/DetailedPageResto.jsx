@@ -43,6 +43,11 @@ const RestaurantDetails = ({ editFunc }) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
+  function capitalizeFirstLetterOnly(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   useEffect(() => {
     const fetchRestaurant = async () => {
       try {
@@ -95,6 +100,8 @@ const RestaurantDetails = ({ editFunc }) => {
     status,
     menu,
     carte,
+    chef_name,
+    fermeture,
   } = restaurant;
 
   if (!restaurant || Object.keys(restaurant).length === 0) {
@@ -265,20 +272,6 @@ const RestaurantDetails = ({ editFunc }) => {
           </li>
 
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[350px]  px-4 text-slate-400 ">Menu</div>
-            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-              <p className=""> {menu}</p>
-            </div>
-          </li>
-
-          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
-            <div className=" w-[350px]  px-4 text-slate-400 ">Carte</div>
-            <div className=" w-full flex justify-start gap-2 text-slate-800 ">
-              <p className=""> {carte}</p>
-            </div>
-          </li>
-
-          <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
             <div className=" w-[350px]  px-4 text-slate-400 ">Mail</div>
             <div className=" w-full flex justify-start gap-2 text-slate-800 ">
               <a
@@ -301,6 +294,7 @@ const RestaurantDetails = ({ editFunc }) => {
               </a>
             </div>
           </li>
+
           <li className="flex gap-5 border-b pb-4 border-gray-300 font-normal text-md  py-2">
             <div className=" w-[350px]  px-4 text-slate-400 ">
               Nom du gérant
@@ -318,6 +312,38 @@ const RestaurantDetails = ({ editFunc }) => {
             </div>
           </li>
         </ul>
+      </div>
+
+      <div className="bg-white w-full mx-auto p-4 rounded-lg shadow-md flex flex-col gap-5 justify-between mb-5 ">
+        <li className="flex gap-5 border-b pb-4 border-gray-200 font-normal text-md  py-2">
+          <div className=" w-[350px]  px-4 text-slate-400 ">Nom du chef</div>
+          <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+            <p className=""> {capitalizeFirstLetter(chef_name)}</p>
+          </div>
+        </li>
+        <li className="flex gap-5 border-b pb-4 border-gray-200 font-normal text-md  py-2">
+          <div className=" w-[350px]  px-4 text-slate-400 ">Menu</div>
+          <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+            <p className=""> {menu}</p>
+          </div>
+        </li>
+
+        <li className="flex gap-5 border-b pb-4 border-gray-200 font-normal text-md  py-2">
+          <div className=" w-[350px]  px-4 text-slate-400 ">Carte</div>
+          <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+            <p className=""> {carte}</p>
+          </div>
+        </li>
+
+        <li
+          className="flex gap-5  pb-4
+         border-gray-200 
+         font-normal text-md  py-2">
+          <div className=" w-[350px]  px-4 text-slate-400 ">Fermeture</div>
+          <div className=" w-full flex justify-start gap-2 text-slate-800 ">
+            <p className=""> {capitalizeFirstLetterOnly(fermeture)}</p>
+          </div>
+        </li>
       </div>
 
       <div className="bg-white w-full mx-auto p-8 rounded-lg shadow-md flex gap-10 justify-start ">
@@ -342,7 +368,9 @@ const RestaurantDetails = ({ editFunc }) => {
             <div className="flex items-center gap-1 w-[150px]">
               {iconMapping[status] || null}
             </div>
-            <p className="text-sm font-normal">{status}</p>
+            <p className="text-sm font-normal">
+              {capitalizeFirstLetterOnly(status)}
+            </p>
           </div>
 
           <div className="w-full flex justify-start gap-2 text-slate-800 ">
@@ -411,7 +439,7 @@ const RestaurantDetails = ({ editFunc }) => {
         <div className="flex items-center gap-4">
           <div className="w-[150px] text-slate-400">Titre du Texte:</div>
           <div className="flex-1 text-slate-800 text-sm font-normal">
-            {text_title}
+            {capitalizeFirstLetterOnly(text_title)}
           </div>
         </div>
         <div>

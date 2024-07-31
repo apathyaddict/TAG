@@ -86,7 +86,7 @@ const CreateForm = ({
   };
 
   return (
-    <section className="container w-full">
+    <section className="flex  w-full">
       <div className=" max-w-5xl mx-auto my-4 p-8 ">
         {!isEditing ? (
           <h1 className="my-5 text-2xl font-extrabold leading-[1.15] text-slate-700 sm:text-4xl ">
@@ -195,38 +195,7 @@ const CreateForm = ({
           />
         </div>
 
-        <div className="flex gap-3 justify-start">
-          <div className="mb-8 w-full ">
-            <label
-              htmlFor="carte"
-              className="block text-sm font-medium text-gray-500">
-              Carte
-            </label>
-            <input
-              type="carte"
-              id="carte"
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              onChange={handleInputChange}
-              value={restaurantData.carte}
-            />
-          </div>
-          <div className="mb-8 w-full">
-            <label
-              htmlFor="menu"
-              className="block text-sm font-medium text-gray-500">
-              Menu
-            </label>
-            <input
-              type="menu"
-              id="menu"
-              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-              onChange={handleInputChange}
-              value={restaurantData.menu}
-            />
-          </div>
-        </div>
-
-        <div className="mb-8">
+        <div className="mb-4">
           <label
             htmlFor="email"
             className="block text-sm font-medium text-gray-500">
@@ -240,6 +209,7 @@ const CreateForm = ({
             value={restaurantData.email}
           />
         </div>
+
         <div className="mb-4">
           <label
             htmlFor="manager_name"
@@ -269,7 +239,74 @@ const CreateForm = ({
           />
         </div>
 
-        <div className="border-gray-200 border space-y-2 my-16"></div>
+        <div className="my-10">
+          <p className="block text-md font-bold text-gray-700 mb-4">
+            Details Cuisine
+          </p>
+
+          <div className="mb-4">
+            <label
+              htmlFor="chef_name"
+              className="block text-sm font-medium text-gray-500">
+              Nom du chef
+            </label>
+            <input
+              type="text"
+              id="chef_name"
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              onChange={handleInputChange}
+              value={restaurantData.chef_name}
+            />
+          </div>
+
+          <div className="flex gap-3 justify-start">
+            <div className="mb-8 w-full ">
+              <label
+                htmlFor="carte"
+                className="block text-sm font-medium text-gray-500">
+                Carte
+              </label>
+              <input
+                type="carte"
+                id="carte"
+                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                onChange={handleInputChange}
+                value={restaurantData.carte}
+              />
+            </div>
+            <div className="mb-8 w-full">
+              <label
+                htmlFor="menu"
+                className="block text-sm font-medium text-gray-500">
+                Menu
+              </label>
+              <input
+                type="menu"
+                id="menu"
+                className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                onChange={handleInputChange}
+                value={restaurantData.menu}
+              />
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <label
+              htmlFor="fermeture"
+              className="block text-sm font-medium text-gray-500">
+              Fermeture
+            </label>
+            <input
+              type="text"
+              id="fermeture"
+              className="w-full px-4 py-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+              onChange={handleInputChange}
+              value={restaurantData.fermeture}
+            />
+          </div>
+        </div>
+
+        <div className="border-gray-200 border space-y-2 my-8"></div>
 
         <div className="mb-4">
           <p
