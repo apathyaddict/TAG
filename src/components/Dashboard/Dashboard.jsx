@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
+import { format } from "date-fns";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import { BsHouseFill } from "react-icons/bs";
 import {
   FaArrowRight,
   FaCheck,
+  FaRegCircle,
   FaSortAmountDown,
   FaSortAmountUp,
 } from "react-icons/fa";
 import { HiXCircle } from "react-icons/hi";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "../../firebase";
-import { useNavigate } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { format } from "date-fns";
-import { FaRegCircle } from "react-icons/fa";
 import { PiForkKnifeFill } from "react-icons/pi";
-import Pagination from "./Pagination";
 import {
   TbCheckbox,
   TbHexagonLetterR,
   TbSquareLetterNFilled,
 } from "react-icons/tb";
-import { BsHouseFill } from "react-icons/bs";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import { useNavigate } from "react-router-dom";
+import { db } from "../../firebase";
+import Pagination from "./Pagination";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -188,11 +188,18 @@ const Dashboard = () => {
                     Nom{getSortIcon("name")}
                   </button>
                 </th>
-                <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+                <th className="text-left py-2  uppercase font-semibold text-xs">
                   <button
                     className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
                     onClick={() => toggleSort("category")}>
                     Catégorie {getSortIcon("category")}
+                  </button>
+                </th>
+                <th className="text-left py-2  uppercase font-semibold text-xs">
+                  <button
+                    className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
+                    onClick={() => toggleSort("ville")}>
+                    Ville {getSortIcon("ville")}
                   </button>
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
@@ -241,6 +248,11 @@ const Dashboard = () => {
                   <td className="text-left py-2 px-2">
                     <span className="px-2 py-1 text-xs rounded-full bg-slate-200">
                       {item.category}
+                    </span>
+                  </td>
+                  <td className="text-left py-2 px-2">
+                    <span className="px-2 py-1 text-xs text-blue-500 rounded-lg font-semibold bg-blue-100">
+                      {item.ville}
                     </span>
                   </td>
                   <td className=" py-2 px-2">

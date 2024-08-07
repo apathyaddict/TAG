@@ -1,5 +1,3 @@
-import React, { useEffect, useState, useCallback } from "react";
-import RestaurantList from "../components/RestaurantList.jsx";
 import {
   collection,
   getDocs,
@@ -9,12 +7,14 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
-import { db } from "../firebase.js";
-import SidebarSearch from "../components/SidebarSearch.jsx";
-import EmptyState from "../components/EmptyState.jsx";
-import useDebounce from "../hooks/useDebounce.jsx";
+import React, { useCallback, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import EmptyState from "../components/EmptyState.jsx";
+import RestaurantList from "../components/RestaurantList.jsx";
+import SidebarSearch from "../components/SidebarSearch.jsx";
+import { db } from "../firebase.js";
+import useDebounce from "../hooks/useDebounce.jsx";
 
 const RESTAURANTS_PER_PAGE = 9;
 
@@ -28,6 +28,10 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [managerSearchTerm, setManagerSearchTerm] = useState("");
   const [categorySearch, setCategorySearch] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [lastVisibleCategory, setLastVisibleCategory] = useState(null);
+  const [hasMoreCategory, setHasMoreCategory] = useState(true);
+  const [lastVisibleCity, setLastVisibleCity] = useState(null);
+  const [hasMoreCity, setHasMoreCity] = useState(true);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const debouncedCitySearchTerm = useDebounce(citySearchTerm, 500);
@@ -85,7 +89,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   useEffect(() => {
     if (debouncedCitySearchTerm) {
-      performSearch("ville", debouncedCitySearchTerm);
+      performCitySearch(debouncedCitySearchTerm, true);
     } else {
       setSearchResults([]);
     }
@@ -101,7 +105,7 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
 
   useEffect(() => {
     if (categorySearch.length > 0) {
-      performCategorySearch(categorySearch);
+      performCategorySearch(categorySearch, true);
     } else {
       setSearchResults([]);
     }
@@ -141,29 +145,85 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
     }
   };
 
-  const performCategorySearch = async (categories) => {
-    setLoading(true);
+  const performCategorySearch = useCallback(
+    async (categories, isInitial = false) => {
+      setLoading(true);
 
-    try {
-      const queries = categories.map((category) =>
-        query(collection(db, "fiches"), where("category", "==", category))
-      );
+      try {
+        const queries = categories.map((category) =>
+          query(
+            collection(db, "fiches"),
+            where("category", "==", category),
+            orderBy("date_added", "desc"),
+            isInitial
+              ? limit(RESTAURANTS_PER_PAGE)
+              : startAfter(lastVisibleCategory),
+            limit(RESTAURANTS_PER_PAGE)
+          )
+        );
 
-      const querySnapshots = await Promise.all(queries.map(getDocs));
-      const results = querySnapshots.flatMap((snapshot) =>
-        snapshot.docs.map((doc) => ({
+        const querySnapshots = await Promise.all(queries.map(getDocs));
+        const results = querySnapshots.flatMap((snapshot) =>
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+
+        const lastVisibleDoc =
+          querySnapshots[0].docs[querySnapshots[0].docs.length - 1];
+        setLastVisibleCategory(lastVisibleDoc || null);
+        setHasMoreCategory(
+          querySnapshots[0].docs.length === RESTAURANTS_PER_PAGE
+        );
+
+        setSearchResults((prev) =>
+          isInitial ? results : [...prev, ...results]
+        );
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error searching for categories: ", error);
+      }
+    },
+    [lastVisibleCategory, loading, hasMoreCategory]
+  );
+
+  const performCitySearch = useCallback(
+    async (city, isInitial = false) => {
+      setLoading(true);
+
+      try {
+        const cityQuery = query(
+          collection(db, "fiches"),
+          where("ville", "==", city),
+          orderBy("date_added", "desc"),
+          isInitial ? limit(RESTAURANTS_PER_PAGE) : startAfter(lastVisibleCity),
+          limit(RESTAURANTS_PER_PAGE)
+        );
+
+        const querySnapshot = await getDocs(cityQuery);
+        const lastVisibleDoc =
+          querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLastVisibleCity(lastVisibleDoc || null);
+        setHasMoreCity(querySnapshot.docs.length === RESTAURANTS_PER_PAGE);
+
+        const results = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-        }))
-      );
+        }));
 
-      setSearchResults(results);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error searching for categories: ", error);
-    }
-  };
+        setSearchResults((prev) =>
+          isInitial ? results : [...prev, ...results]
+        );
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.error("Error searching for city: ", error);
+      }
+    },
+    [lastVisibleCity, loading, hasMoreCity]
+  );
 
   return (
     <div className="mx-auto flex flex-col sm:flex-row justify-normal">
@@ -217,12 +277,18 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
                   {...{ setIsEditing, setIsnew, editFunc }}
                 />
               )}
-              {hasMore && (
+              {(hasMore || hasMoreCategory || hasMoreCity) && (
                 <div className="text-center my-10 uppercase">
                   <button
                     onClick={(e) => {
                       e.preventDefault();
-                      fetchRestaurants(false);
+                      if (citySearchTerm) {
+                        performCitySearch(citySearchTerm, false);
+                      } else if (categorySearch.length > 0) {
+                        performCategorySearch(categorySearch, false);
+                      } else {
+                        fetchRestaurants(false);
+                      }
                     }}
                     type="button"
                     className="px-10 py-2 hover:bg-white text-slate-600 transition-all border-slate-200 
