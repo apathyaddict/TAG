@@ -1,5 +1,12 @@
 import { format } from "date-fns";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { BsHouseFill } from "react-icons/bs";
 import {
@@ -28,26 +35,66 @@ const Dashboard = () => {
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const [cursors, setCursors] = useState([null]);
 
   useEffect(() => {
     fetchData();
   }, [sortBy, currentPage]);
 
+  const itemsPerPage = 100;
+
   const fetchData = async () => {
     setLoading(true);
+
     try {
       const orderDirection = sortBy.startsWith("-") ? "desc" : "asc";
       const sortField = sortBy.startsWith("-") ? sortBy.slice(1) : sortBy;
-      const restaurantsQuery = query(
+
+      const startCursor = cursors[currentPage - 1]; // cursor for current page
+
+      let restaurantsQuery = query(
         collection(db, "fiches"),
-        orderBy(sortField, orderDirection)
+        orderBy(sortField, orderDirection),
+        limit(itemsPerPage)
       );
+
+      if (startCursor) {
+        restaurantsQuery = query(
+          collection(db, "fiches"),
+          orderBy(sortField, orderDirection),
+          startAfter(startCursor),
+          limit(itemsPerPage)
+        );
+      }
+
       const documentSnapshots = await getDocs(restaurantsQuery);
+
       const results = documentSnapshots.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
+
+      // Add this block here to fix numeric sort for postal code:
+      if (sortField === "code_postal") {
+        results.sort((a, b) => {
+          const codeA = Number(a.code_postal) || 0;
+          const codeB = Number(b.code_postal) || 0;
+          if (orderDirection === "asc") return codeA - codeB;
+          else return codeB - codeA;
+        });
+      }
+
       setData(results);
+
+      // Save the cursor for next page
+      const lastVisibleDoc =
+        documentSnapshots.docs[documentSnapshots.docs.length - 1];
+      setCursors((prev) => {
+        const newCursors = [...prev];
+        newCursors[currentPage] = lastVisibleDoc;
+        return newCursors;
+      });
+
       setLoading(false);
     } catch (error) {
       console.error("Error fetching documents: ", error);
@@ -88,11 +135,11 @@ const Dashboard = () => {
   };
 
   // Calculate current items based on currentPage
-  const itemsPerPage = 20; // Number of items to display per page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(data.length / itemsPerPage);
+  // Number of items to display per page
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  // const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const getStars = (grade) => {
     switch (grade) {
@@ -178,7 +225,7 @@ const Dashboard = () => {
 
       <div className="py-4">
         <div className="shadow overflow-hidden rounded-lg border-b border-slate-200 ">
-          <table className="min-w-full bg-white ">
+          <table className="min-w-full bg-white table-fixed">
             <thead className="bg-zinc-500 text-white ">
               <tr>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
@@ -200,6 +247,13 @@ const Dashboard = () => {
                     className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left hover:bg-slate-800  bg-slate-800/40  px-2"
                     onClick={() => toggleSort("ville")}>
                     Ville {getSortIcon("ville")}
+                  </button>
+                </th>
+                <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+                  <button
+                    className="text-white uppercase text-md font-semibold py-2 rounded-lg shadow-sm flex items-left px-2 hover:bg-slate-800  bg-slate-800/40 "
+                    onClick={() => toggleSort("code_postal")}>
+                    Code{getSortIcon("code_postal")}
                   </button>
                 </th>
                 <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
@@ -236,7 +290,7 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody className="text-slate-700">
-              {currentItems.map((item, index) => (
+              {data.map((item, index) => (
                 <tr
                   key={item.id}
                   className={`${
@@ -253,6 +307,11 @@ const Dashboard = () => {
                   <td className="text-left py-2 px-2">
                     <span className="px-2 py-1 text-xs text-blue-500 rounded-lg font-semibold bg-blue-100">
                       {item.ville}
+                    </span>
+                  </td>
+                  <td className="text-left py-2 px-2">
+                    <span className="px-2 py-1 text-xs text-blue-900 rounded-lg font-semibold bg-blue-100">
+                      {item.code_postal}
                     </span>
                   </td>
                   <td className=" py-2 px-2">
@@ -303,7 +362,13 @@ const Dashboard = () => {
           </table>
         </div>
 
-        <Pagination {...{ onPageChange, totalPages, currentPage }} />
+        <Pagination
+          onPageChange={onPageChange}
+          currentPage={currentPage}
+          totalPages={null} // or just remove this prop if your Pagination handles it
+          hasNextPage={data.length === itemsPerPage} // optional if your Pagination supports this
+        />
+        {/* <Pagination {...{ onPageChange, totalPages, currentPage }} /> */}
         {/* <div>
           <p className="slate-700 text-xs my-8">
             Nombre de fiches: {data.length}
