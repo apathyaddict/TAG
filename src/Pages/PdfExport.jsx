@@ -1,27 +1,22 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { db } from "../firebase";
-import { FaDownload, FaInfoCircle } from "react-icons/fa";
 import {
   Document,
-  Page,
-  Text,
-  View,
   Image,
   Link,
-  StyleSheet,
-  PDFDownloadLink,
-  Svg,
+  Page,
   Path,
+  PDFDownloadLink,
+  StyleSheet,
+  Svg,
+  Text,
+  View,
 } from "@react-pdf/renderer";
-import { redirect, useNavigate } from "react-router-dom";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import React, { useCallback, useEffect, useState } from "react";
+import { FaDownload, FaInfoCircle } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import { redirect, useNavigate } from "react-router-dom";
 import Pagination from "../components/Dashboard/Pagination";
-
-const capitalizeFirstLetter = (str) => {
-  if (!str) return ""; // Handle cases where str is undefined or null
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
+import { db } from "../firebase";
 
 // Define styles for the PDF document
 const styles = StyleSheet.create({
@@ -159,32 +154,41 @@ const PdfExport = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
+  const [sortField, setSortField] = useState("");
 
   useEffect(() => {
     fetchData();
-    // console.log(data);
+    console.log(data);
   }, []);
+  const fetchData = useCallback(
+    async (selectedCity = "", selectedPostalCode = "") => {
+      setLoading(true);
+      try {
+        let constraints = [orderBy("ville", "asc"), orderBy("category", "asc")];
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const q = query(
-        collection(db, "fiches"),
-        orderBy("ville", "asc"),
-        orderBy("category", "asc")
-      );
-      const documentSnapshots = await getDocs(q);
-      const results = documentSnapshots.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setData(results);
-    } catch (error) {
-      console.error("Error fetching documents: ", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+        if (selectedCity) {
+          constraints.unshift(where("ville", "==", selectedCity.toLowerCase()));
+        }
+
+        if (selectedPostalCode) {
+          constraints.unshift(where("code_postal", "==", selectedPostalCode));
+        }
+
+        const q = query(collection(db, "fiches"), ...constraints);
+        const documentSnapshots = await getDocs(q);
+        const results = documentSnapshots.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setData(results);
+      } catch (error) {
+        console.error("Error fetching documents: ", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
   const handleCheckboxChange = (id) => {
     const selectedItem = data.find((item) => item.id === id);
@@ -230,7 +234,12 @@ const PdfExport = () => {
     setCurrentPage(page);
   };
 
-  const paginatedData = data.slice(
+  const sortedData = [...data].sort((a, b) => {
+    if (!sortField) return 0;
+    return (a[sortField] || "").localeCompare(b[sortField] || "");
+  });
+
+  const paginatedData = sortedData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -249,7 +258,14 @@ const PdfExport = () => {
 
       <div className=" flex justify-end items-right p-2  gap-4 my-5 ">
         <PDFDownloadLink
-          document={<PdfDocument items={selectedItems} />}
+          document={
+            <PdfDocument
+              items={paginatedData.filter((item) =>
+                selectedItems.some((sel) => sel.id === item.id)
+              )}
+            />
+          }
+          // document={<PdfDocument items={selectedItems} />}
           fileName="fiches_imprimer.pdf">
           {({ blob, url, loading, error }) => (
             <button
@@ -275,25 +291,38 @@ const PdfExport = () => {
             cliquer sur imprimer, puis selectionner "sauvergarder en pdf"
           </span>
         </div>
+        <div className="pt-2">
+          {" "}
+          <select
+            onChange={(e) => setSortField(e.target.value)}
+            className="border p-2 rounded">
+            <option value="">Trier par</option>
+            <option value="ville">Ville</option>
+            <option value="code_postal">Code Postal</option>
+          </select>
+        </div>
       </div>
       <div className="shadow overflow-hidden rounded-lg border-b border-gray-200">
-        <table className="min-w-full bg-white">
+        <table className="min-w-full bg-white table-fixed border-collapse">
           <thead className="bg-gray-800 text-white">
             <tr>
-              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+              <th className="w-[8%] text-left py-2 px-2 uppercase font-semibold text-xs">
                 Sélectionner
               </th>
-              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+              <th className="w-[30%] text-left py-2 px-2 uppercase font-semibold text-xs">
                 Nom
               </th>
-              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+              <th className="w-[25%] text-left py-2 px-2 uppercase font-semibold text-xs">
                 Catégorie
               </th>
-              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
+              <th className="w-[20%] text-left py-2 px-2 uppercase font-semibold text-xs">
                 Ville
               </th>
-              <th className="text-left py-2 px-2 uppercase font-semibold text-xs">
-                détails
+              <th className="w-[10%] text-left py-2 px-2 uppercase font-semibold text-xs">
+                Code Postal
+              </th>
+              <th className="w-[5%] text-left py-2 px-2 uppercase font-semibold text-xs">
+                Détails
               </th>
             </tr>
           </thead>
@@ -324,6 +353,12 @@ const PdfExport = () => {
                 <td className="text-left py-2 px-2">
                   {capitalizeFirstLetter(item.ville)}
                 </td>
+                <td className="text-left py-2 px-2 ">
+                  <div className="bg-cyan-600 text-white rounded-lg px-2 py-1 font-semibold text-sm flex justify-center">
+                    {item.code_postal}
+                  </div>
+                </td>
+
                 <td className="text-left py-2 px-2">
                   <button
                     onClick={() => handleEdit(item.id)}
