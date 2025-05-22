@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
-  Route,
-  Routes,
   Navigate,
   redirect,
+  Route,
+  Routes,
 } from "react-router-dom";
+import DetailedPageResto from "./components/DetailedPageResto";
 import Navbar from "./components/NavBar";
 import CreatePage from "./Pages/CreatePage";
-import ListPage from "./Pages/ListPage";
-import DetailedPageResto from "./components/DetailedPageResto";
+import ListPage from "./Pages/SearchPage";
 
-import HomePage from "./Pages/HomePage";
-import RegisterComp from "./components/Auth/RegisterComp";
-import ProfilePage from "./Pages/ProfilePage";
-import Loginpage from "./Pages/Loginpage";
+import { doc, getDoc } from "firebase/firestore";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RegisterComp from "./components/Auth/RegisterComp";
 import { auth, db } from "./firebase";
-import { doc, getDoc } from "firebase/firestore";
 import EditForm from "./Pages/EditForm";
+import HomePage from "./Pages/HomePage";
+import Loginpage from "./Pages/Loginpage";
+import ProfilePage from "./Pages/ProfilePage";
 
-import Symbols from "./components/Form/Symbols";
 import Dashboard from "./components/Dashboard/Dashboard";
+import Symbols from "./components/Form/Symbols";
 import PdfExport from "./Pages/PdfExport";
 import PrintPage from "./Pages/PrintPage";
+import SearchPage from "./Pages/SearchPage";
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -93,8 +94,8 @@ function App() {
           <>
             <Route path="/new" element={<CreatePage />} />
             <Route
-              path="/list"
-              element={<ListPage {...{ setIsEditing, setIsnew, editFunc }} />}
+              path="/recherche"
+              element={<SearchPage {...{ setIsEditing, setIsnew, editFunc }} />}
             />
             <Route
               path="/restaurants/:id"

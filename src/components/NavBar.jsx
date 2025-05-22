@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { BiPlus } from "react-icons/bi";
+import { BsFiletypePdf } from "react-icons/bs";
 import { FaSearch, FaUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { MdDashboard } from "react-icons/md";
-import { BsFiletypePdf } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const Navbar = ({ handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false); // State for dropdown menu
@@ -42,7 +42,7 @@ const Navbar = ({ handleLogout }) => {
             </button>
           </Link>
 
-          <Link to="/list">
+          <Link to="/recherche">
             <button
               type="button"
               className="flex items-center justify-center h-12 w-12 rounded-2xl border border-solid  cursor-pointer pointer-events-auto  border-stone-200  ">
@@ -88,9 +88,9 @@ const Navbar = ({ handleLogout }) => {
                 </div>
                 <div className=" hover:bg-gray-100">
                   <a
-                    href="list"
+                    href="recherche"
                     className="block px-4 py-2 text-sm text-gray-700">
-                    Fiches et listes
+                    Recherche
                   </a>
                 </div>
                 <div className=" hover:bg-gray-100">

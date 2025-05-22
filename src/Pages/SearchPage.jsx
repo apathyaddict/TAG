@@ -18,7 +18,7 @@ import useDebounce from "../hooks/useDebounce.jsx";
 
 const RESTAURANTS_PER_PAGE = 9;
 
-const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
+const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [allRestaurants, setAllRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lastVisible, setLastVisible] = useState(null);
@@ -196,13 +196,14 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
       try {
         const cityQuery = query(
           collection(db, "fiches"),
-          where("ville", "==", city),
+          where("ville", "==", city.toLowerCase()),
           orderBy("date_added", "desc"),
           isInitial ? limit(RESTAURANTS_PER_PAGE) : startAfter(lastVisibleCity),
           limit(RESTAURANTS_PER_PAGE)
         );
 
         const querySnapshot = await getDocs(cityQuery);
+
         const lastVisibleDoc =
           querySnapshot.docs[querySnapshot.docs.length - 1];
         setLastVisibleCity(lastVisibleDoc || null);
@@ -306,4 +307,4 @@ const ListPage = ({ setIsEditing, setIsnew, editFunc }) => {
   );
 };
 
-export default ListPage;
+export default SearchPage;
