@@ -10,6 +10,8 @@ const SidebarSearch = ({
   setManagerSearchTerm,
   setCategorySearch,
   categorySearch,
+  postalCodeSearchTerm,
+  setPostalCodeSearchTerm,
 }) => {
   const categories = [
     "RESTAURANT",
@@ -94,6 +96,22 @@ const SidebarSearch = ({
           className="w-full p-2 text-slate-700 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={citySearchTerm}
           onChange={(e) => setcitySearchTerm(e.target.value)}
+        />
+      </div>
+
+      {/* Filter by Postal Code */}
+      <div className="hidden sm:block mb-4">
+        <label
+          className="block text-sm font-medium mb-2 text-blue-400"
+          htmlFor="city">
+          Filtrer par Code Postal:
+        </label>
+        <input
+          id="city"
+          type="text"
+          className="w-full p-2 text-slate-700 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={postalCodeSearchTerm}
+          onChange={(e) => setPostalCodeSearchTerm(e.target.value)}
         />
       </div>
 

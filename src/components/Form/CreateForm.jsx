@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import DropdownCat from "./DropdownCat";
+import React, { useEffect, useState } from "react";
 import { FaRegCircle } from "react-icons/fa";
-import Symbols from "./Symbols";
-import ServiceTable from "./ServiceTable";
-import DetailsTableForm from "./DetailsTableForm";
 import { FaCircleInfo } from "react-icons/fa6";
+import DetailsTableForm from "./DetailsTableForm";
+import DropdownCat from "./DropdownCat";
 import NewOldStatus from "./NewOldStatus";
+import ServiceTable from "./ServiceTable";
+import Symbols from "./Symbols";
 
 const CreateForm = ({
   handleSave,
@@ -432,7 +432,7 @@ const CreateForm = ({
 
         <div className="flex justify-start gap-2 px-4">
           <FaCircleInfo className="text-slate-700 h-5 w-5" />
-          <p classname="text-slate-600 text-sm">
+          <p className="text-slate-600 text-sm">
             Pour modifier ou ajouter des images, allez à la page individuelle.
           </p>
         </div>

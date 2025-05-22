@@ -32,10 +32,14 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const [hasMoreCategory, setHasMoreCategory] = useState(true);
   const [lastVisibleCity, setLastVisibleCity] = useState(null);
   const [hasMoreCity, setHasMoreCity] = useState(true);
+  const [postalCodeSearchTerm, setPostalCodeSearchTerm] = useState("");
+  const [lastVisiblePostalCode, setLastVisiblePostalCode] = useState(null);
+  const [hasMorePostalCode, setHasMorePostalCode] = useState(true);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 1000);
   const debouncedCitySearchTerm = useDebounce(citySearchTerm, 500);
   const debouncedManagerSearchTerm = useDebounce(managerSearchTerm, 1000);
+  const debouncedPostalCodeSearchTerm = useDebounce(postalCodeSearchTerm, 500);
 
   const fetchRestaurants = useCallback(
     async (isInitial = false) => {
@@ -102,6 +106,14 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
       setSearchResults([]);
     }
   }, [debouncedManagerSearchTerm]);
+
+  useEffect(() => {
+    if (debouncedPostalCodeSearchTerm) {
+      performPostalCodeSearch(debouncedPostalCodeSearchTerm, true);
+    } else {
+      setSearchResults([]);
+    }
+  }, [debouncedPostalCodeSearchTerm]);
 
   useEffect(() => {
     if (categorySearch.length > 0) {
@@ -226,6 +238,51 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
     [lastVisibleCity, loading, hasMoreCity]
   );
 
+  const performPostalCodeSearch = useCallback(
+    async (postalCode, isInitial = false) => {
+      setLoading(true);
+
+      console.log("postalCode", postalCode);
+
+      try {
+        const postalQuery = query(
+          collection(db, "fiches"),
+          where("code_postal", "==", String(postalCode)),
+          orderBy("date_added", "desc"),
+          isInitial
+            ? limit(RESTAURANTS_PER_PAGE)
+            : startAfter(lastVisiblePostalCode),
+          limit(RESTAURANTS_PER_PAGE)
+        );
+
+        const querySnapshot = await getDocs(postalQuery);
+
+        const lastVisibleDoc =
+          querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLastVisiblePostalCode(lastVisibleDoc || null);
+        setHasMorePostalCode(
+          querySnapshot.docs.length === RESTAURANTS_PER_PAGE
+        );
+
+        const results = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        console.log("results", results);
+
+        setSearchResults((prev) =>
+          isInitial ? results : [...prev, ...results]
+        );
+      } catch (error) {
+        console.error("Error searching by postal code: ", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [lastVisiblePostalCode, loading, hasMorePostalCode]
+  );
+
   return (
     <div className="mx-auto flex flex-col sm:flex-row justify-normal">
       <div className="w-full sm:w-64 sm:flex-shrink-0">
@@ -239,6 +296,8 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
             setManagerSearchTerm,
             setCategorySearch,
             categorySearch,
+            setPostalCodeSearchTerm,
+            postalCodeSearchTerm,
           }}
         />
       </div>
@@ -260,6 +319,7 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
               {searchTerm ||
               citySearchTerm ||
               managerSearchTerm ||
+              postalCodeSearchTerm ||
               categorySearch.length > 0 ? (
                 searchResults.length > 0 ? (
                   <RestaurantList
