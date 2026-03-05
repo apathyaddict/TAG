@@ -1,8 +1,10 @@
+import { Navigate } from "react-router-dom";
+
 const ProtectedRoute = ({ children, user }) => {
   if (!user) {
-    return redirect("/login");
+    return <Navigate to="/login" replace />;
   }
-  return null;
+  return children;
 };
 
 export default ProtectedRoute;

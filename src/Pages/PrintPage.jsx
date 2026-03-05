@@ -1,9 +1,6 @@
-import React from "react";
-import { FaRegStar, FaUmbrellaBeach, FaWineBottle } from "react-icons/fa";
-import { IoStarSharp } from "react-icons/io5";
-import { IoStorefrontSharp } from "react-icons/io5";
+import { FaUmbrellaBeach, FaWineBottle } from "react-icons/fa";
 import { FaRegCircle } from "react-icons/fa";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Chaudron from "../components/icons/Chaudron";
 import { PiClover, PiForkKnifeFill } from "react-icons/pi";
 import { TbHexagonLetterLFilled } from "react-icons/tb";
@@ -11,7 +8,7 @@ import { BsHouseFill } from "react-icons/bs";
 
 const PrintPage = () => {
   const location = useLocation();
-  const data = location.state;
+  const selectedItems = location.state?.selectedItems ?? [];
 
   const capitalizeFirstLetter = (str) => {
     return str.replace(/\b\w/g, (char) => char.toUpperCase());
@@ -107,8 +104,21 @@ const PrintPage = () => {
 
   // Group items into pairs for two columns per page
   const groupedItems = [];
-  for (let i = 0; i < data.selectedItems.length; i += 2) {
-    groupedItems.push(data.selectedItems.slice(i, i + 2));
+  for (let i = 0; i < selectedItems.length; i += 2) {
+    groupedItems.push(selectedItems.slice(i, i + 2));
+  }
+
+  if (selectedItems.length === 0) {
+    return (
+      <section className="flex flex-col items-center justify-center my-12 gap-4">
+        <p className="text-slate-700">
+          Aucune fiche selectionnee pour l&apos;impression.
+        </p>
+        <Link to="/pdf" className="text-blue-600 hover:underline">
+          Retour a l&apos;export PDF
+        </Link>
+      </section>
+    );
   }
 
   return (
@@ -148,26 +158,26 @@ const PrintPage = () => {
                   {renderForks(getForks(fiche.table_service))}
                 </div>
                 <div className="text-blue-900">
-                  {fiche.detailsData.cave ? (
+                  {fiche.detailsData?.cave ? (
                     <FaWineBottle className="h-5 w-5" />
                   ) : null}
                 </div>
-                {fiche.detailsData.decorRemarquable ? (
+                {fiche.detailsData?.decorRemarquable ? (
                   <div className="text-blue-900">
                     <TbHexagonLetterLFilled className="h-5 w-5" />
                   </div>
                 ) : null}
-                {fiche.detailsData.terrasse ? (
+                {fiche.detailsData?.terrasse ? (
                   <div className="text-blue-900">
                     <FaUmbrellaBeach className="h-5 w-5" />
                   </div>
                 ) : null}
-                {fiche.detailsData.qualite_prix ? (
+                {fiche.detailsData?.qualite_prix ? (
                   <div className="text-blue-900">
                     <Chaudron className="h-5 w-5" />
                   </div>
                 ) : null}
-                {fiche.detailsData.hotel_calme ? (
+                {fiche.detailsData?.hotel_calme ? (
                   <div className="text-blue-900">
                     <PiClover className="h-5 w-5" />
                   </div>
@@ -226,8 +236,10 @@ const PrintPage = () => {
                 <div className="text-xs">{fiche.website}</div>
               </div>
 
-              {fiche.imagesUrl.map((url) => (
-                <div className="text-xs truncate gap-1 flex justify-center items-center max-w-[100px] ">
+              {(fiche.imagesUrl || []).map((url) => (
+                <div
+                  key={url}
+                  className="text-xs truncate gap-1 flex justify-center items-center max-w-[100px] ">
                   <a href={url} target="_blank" alt="lien image">
                     {url}
                   </a>

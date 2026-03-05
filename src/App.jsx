@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter,
-  Navigate,
-  redirect,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import DetailedPageResto from "./components/DetailedPageResto";
 import Navbar from "./components/NavBar";
 import CreatePage from "./Pages/CreatePage";
-import ListPage from "./Pages/SearchPage";
 
 import { doc, getDoc } from "firebase/firestore";
 import { ToastContainer } from "react-toastify";
@@ -22,7 +15,6 @@ import Loginpage from "./Pages/Loginpage";
 import ProfilePage from "./Pages/ProfilePage";
 
 import Dashboard from "./components/Dashboard/Dashboard";
-import Symbols from "./components/Form/Symbols";
 import PdfExport from "./Pages/PdfExport";
 import PrintPage from "./Pages/PrintPage";
 import SearchPage from "./Pages/SearchPage";
@@ -31,12 +23,11 @@ function App() {
   const [userDetails, setUserDetails] = useState(null);
   const [isNew, setIsnew] = useState("");
   const [loading, setLoading] = useState(true);
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [, setIsEditing] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      auth.onAuthStateChanged(async (user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      try {
         if (user) {
           const docRef = doc(db, "Users", user.uid);
           const docSnap = await getDoc(docRef);
@@ -49,11 +40,15 @@ function App() {
         } else {
           setUserDetails(null); // No user logged in
         }
+      } catch (error) {
+        console.error("Error loading user data:", error);
+        setUserDetails(null);
+      } finally {
         setLoading(false);
-      });
-    };
+      }
+    });
 
-    fetchUserData();
+    return () => unsubscribe();
   }, []);
 
   if (loading) {
@@ -69,21 +64,13 @@ function App() {
   async function handleLogout() {
     try {
       await auth.signOut();
-      redirect("/login");
-      console.log("Logout successful");
     } catch (error) {
       console.error("Error logging out:", error);
     }
   }
 
-  const shouldDisplayNavbar = () => {
-    // Check if current path matches the PrintPage route
-    return !location.pathname.startsWith("/to-print");
-  };
-
   return (
     <BrowserRouter>
-      {/* {shouldDisplayNavbar() && <Navbar {...{ handleLogout }} />} */}
       <Navbar {...{ handleLogout }} />
       <Routes>
         <Route path="/to-print/" element={<PrintPage />} />
@@ -105,9 +92,7 @@ function App() {
             />
             <Route
               path="/edit-restaurant/:id"
-              element={
-                <EditForm {...{ selectedRestaurant, isNew, setIsEditing }} />
-              }
+              element={<EditForm {...{ isNew, setIsEditing }} />}
             />
             <Route
               path="/profile"

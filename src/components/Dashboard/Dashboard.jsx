@@ -7,7 +7,7 @@ import {
   query,
   startAfter,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BsHouseFill } from "react-icons/bs";
 import {
   FaArrowRight,
@@ -35,22 +35,18 @@ const Dashboard = () => {
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const [cursors, setCursors] = useState([null]);
-
-  useEffect(() => {
-    fetchData();
-  }, [sortBy, currentPage]);
+  const cursorsRef = useRef([null]);
 
   const itemsPerPage = 100;
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
 
     try {
       const orderDirection = sortBy.startsWith("-") ? "desc" : "asc";
       const sortField = sortBy.startsWith("-") ? sortBy.slice(1) : sortBy;
 
-      const startCursor = cursors[currentPage - 1]; // cursor for current page
+      const startCursor = cursorsRef.current[currentPage - 1]; // cursor for current page
 
       let restaurantsQuery = query(
         collection(db, "fiches"),
@@ -89,20 +85,23 @@ const Dashboard = () => {
       // Save the cursor for next page
       const lastVisibleDoc =
         documentSnapshots.docs[documentSnapshots.docs.length - 1];
-      setCursors((prev) => {
-        const newCursors = [...prev];
-        newCursors[currentPage] = lastVisibleDoc;
-        return newCursors;
-      });
+      cursorsRef.current[currentPage] = lastVisibleDoc || null;
 
       setLoading(false);
     } catch (error) {
       console.error("Error fetching documents: ", error);
       setLoading(false);
     }
-  };
+  }, [currentPage, itemsPerPage, sortBy]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const toggleSort = (field) => {
+    setCurrentPage(1);
+    cursorsRef.current = [null];
+
     if (sortBy === field) {
       setSortBy(`-${field}`);
     } else if (sortBy === `-${field}`) {
@@ -365,8 +364,9 @@ const Dashboard = () => {
         <Pagination
           onPageChange={onPageChange}
           currentPage={currentPage}
-          totalPages={null} // or just remove this prop if your Pagination handles it
-          hasNextPage={data.length === itemsPerPage} // optional if your Pagination supports this
+          hasNextPage={data.length === itemsPerPage}
+          itemsPerPage={itemsPerPage}
+          currentCount={data.length}
         />
         {/* <Pagination {...{ onPageChange, totalPages, currentPage }} /> */}
         {/* <div>

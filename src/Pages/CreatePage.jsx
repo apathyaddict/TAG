@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import CreateForm from "../components/Form/CreateForm";
 import {
   addDoc,
@@ -7,7 +7,6 @@ import {
   doc,
   getDocs,
   query,
-  setDoc,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -70,7 +69,7 @@ const CreatePage = ({ restaurantInfo, isEditing, isNew, setIsEditing, id }) => {
         table_service: restaurantInfo.table_service || "",
         detailsData: restaurantInfo.detailsData || [],
         text_title: restaurantInfo.text_title || "",
-        handleStatus: restaurantInfo.status || "",
+        status: restaurantInfo.status || "",
         menu: restaurantInfo.menu || "",
         carte: restaurantInfo.carte || "",
         chef_name: restaurantInfo.chef_name || "",

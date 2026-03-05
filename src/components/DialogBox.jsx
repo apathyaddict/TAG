@@ -1,5 +1,5 @@
 // src/components/DialogBox.js
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogBackdrop,
@@ -12,9 +12,21 @@ export default function DialogBox({ open, onClose, onConfirm }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (open) {
+      setPassword("");
+      setError("");
+    }
+  }, [open]);
+
   const handleConfirm = () => {
-    console.log(import.meta.env.VITE_APP_DELETE_PASSWORD);
-    if (password === import.meta.env.VITE_APP_DELETE_PASSWORD) {
+    const expectedPassword = String(import.meta.env.VITE_APP_DELETE_PASSWORD || "");
+    if (!expectedPassword.trim()) {
+      setError("Suppression indisponible: mot de passe non configuré.");
+      return;
+    }
+
+    if (password.trim() === expectedPassword.trim()) {
       onConfirm();
     } else {
       setError("Mot de passe incorrect.");

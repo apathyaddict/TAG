@@ -1,13 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-import {
-  FaRegStar,
-  FaWineBottle,
-  FaUtensils,
-  FaUmbrellaBeach,
-} from "react-icons/fa";
-import { IoStorefrontSharp } from "react-icons/io5";
+import { FaWineBottle, FaUtensils, FaUmbrellaBeach } from "react-icons/fa";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase";
 import { deleteDoc, doc, getDoc } from "firebase/firestore";
@@ -18,12 +12,9 @@ import { format } from "date-fns";
 
 import UploadImage from "./Form/UploadImage";
 import { FaRegCircle } from "react-icons/fa";
-import { IoStarSharp } from "react-icons/io5";
 import { PiClover, PiForkKnifeFill } from "react-icons/pi";
 import Chaudron from "./icons/Chaudron";
 import {
-  TbSquareLetterNFilled,
-  TbHexagonLetterR,
   TbCheckbox,
   TbSquareRoundedLetterNFilled,
   TbHexagonLetterRFilled,
@@ -81,6 +72,17 @@ const RestaurantDetails = ({ editFunc }) => {
       </div>
     );
   }
+
+  if (!restaurant || Object.keys(restaurant).length === 0) {
+    return (
+      <div className="flex mt-16 flex-col items-center gap-2">
+        <FaUtensils className="h-8 w-8 text-zinc-800" />
+        <h3 className="font-semibold text-xl">C&apos;est calme ici.</h3>
+        <p>Aucune fiche de restaurant trouvée.</p>
+      </div>
+    );
+  }
+
   const {
     name,
     rue,
@@ -110,16 +112,6 @@ const RestaurantDetails = ({ editFunc }) => {
     dessert,
   } = restaurant;
 
-  if (!restaurant || Object.keys(restaurant).length === 0) {
-    return (
-      <div className="flex mt-16 flex-col items-center gap-2">
-        <FaUtensils className="h-8 w-8 text-zinc-800" />
-        <h3 className="font-semibold text-xl">C'est calme ici.</h3>
-        <p>Aucune fiche de restaurant trouvée.</p>
-      </div>
-    );
-  }
-
   const handleEdit = (restaurant) => {
     editFunc(restaurant);
   };
@@ -140,7 +132,7 @@ const RestaurantDetails = ({ editFunc }) => {
       const docRef = doc(db, "fiches", id);
       await deleteDoc(docRef);
       console.log("Restaurant successfully deleted");
-      navigate("/list");
+      navigate("/recherche");
     } catch (error) {
       console.error("Error deleting restaurant:", error);
     }

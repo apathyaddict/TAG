@@ -1,20 +1,17 @@
 import {
   Document,
-  Image,
   Link,
   Page,
-  Path,
   PDFDownloadLink,
   StyleSheet,
-  Svg,
   Text,
   View,
 } from "@react-pdf/renderer";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import React, { useCallback, useEffect, useState } from "react";
+import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
+import { useCallback, useEffect, useState } from "react";
 import { FaDownload, FaInfoCircle } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Pagination from "../components/Dashboard/Pagination";
 import { db } from "../firebase";
 
@@ -156,10 +153,6 @@ const PdfExport = () => {
   const itemsPerPage = 20;
   const [sortField, setSortField] = useState("");
 
-  useEffect(() => {
-    fetchData();
-    console.log(data);
-  }, []);
   const fetchData = useCallback(
     async (selectedCity = "", selectedPostalCode = "") => {
       setLoading(true);
@@ -189,6 +182,10 @@ const PdfExport = () => {
     },
     []
   );
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const handleCheckboxChange = (id) => {
     const selectedItem = data.find((item) => item.id === id);
@@ -267,11 +264,13 @@ const PdfExport = () => {
           }
           // document={<PdfDocument items={selectedItems} />}
           fileName="fiches_imprimer.pdf">
-          {({ blob, url, loading, error }) => (
+          {({ loading: isDownloading }) => (
             <button
               type="button"
               className="flex items-center justify-right  rounded-xl border border-solid text-sm cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 ">
-              Telecharger le PDF (simplifié)
+              {isDownloading
+                ? "Préparation du PDF..."
+                : "Telecharger le PDF (simplifié)"}
               <FaDownload className="h-6 w-6 ml-4 text-slate-700" />
             </button>
           )}
@@ -279,7 +278,6 @@ const PdfExport = () => {
 
         <button
           type="button"
-          targer="_blank"
           className="flex items-center justify-right  rounded-xl border border-solid  text-sm cursor-pointer pointer-events-auto uppercase border-stone-200 bg-white hover:bg-blue-200 py-4 px-4 "
           onClick={handlePrintButtonClick}>
           PDF(stylisé)
@@ -288,7 +286,7 @@ const PdfExport = () => {
         <div className="flex justify-center items-center mt-4 tooltip-container">
           <FaInfoCircle className="text-2xl  text-slate-700/50 hover:text-slate-700" />
           <span className="tooltip-text">
-            cliquer sur imprimer, puis selectionner "sauvergarder en pdf"
+            Cliquer sur imprimer puis choisir Sauvegarder en PDF.
           </span>
         </div>
         <div className="pt-2">
@@ -375,6 +373,7 @@ const PdfExport = () => {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
+        itemsPerPage={itemsPerPage}
       />
     </div>
   );
