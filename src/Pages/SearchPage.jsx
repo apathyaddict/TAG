@@ -7,7 +7,7 @@ import {
   startAfter,
   where,
 } from "firebase/firestore";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import EmptyState from "../components/EmptyState.jsx";
@@ -40,6 +40,23 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const debouncedCitySearchTerm = useDebounce(citySearchTerm, 500);
   const debouncedManagerSearchTerm = useDebounce(managerSearchTerm, 1000);
   const debouncedPostalCodeSearchTerm = useDebounce(postalCodeSearchTerm, 500);
+
+  const hasAnyRawSearchInput =
+    searchTerm.trim() ||
+    citySearchTerm.trim() ||
+    managerSearchTerm.trim() ||
+    postalCodeSearchTerm.trim() ||
+    categorySearch.length > 0;
+
+  const hasAnyDebouncedSearchInput =
+    debouncedSearchTerm.trim() ||
+    debouncedCitySearchTerm.trim() ||
+    debouncedManagerSearchTerm.trim() ||
+    debouncedPostalCodeSearchTerm.trim() ||
+    categorySearch.length > 0;
+
+  const isSearchPending = hasAnyRawSearchInput && !hasAnyDebouncedSearchInput;
+  const isSearching = loading || isSearchPending;
 
   const fetchRestaurants = useCallback(
     async (isInitial = false) => {
@@ -86,63 +103,56 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
   useEffect(() => {
     if (debouncedSearchTerm) {
       performSearch("nameSubstrings", debouncedSearchTerm);
-    } else {
+    } else if (!hasAnyRawSearchInput) {
       setSearchResults([]);
     }
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, hasAnyRawSearchInput]);
 
   useEffect(() => {
     if (debouncedCitySearchTerm) {
       performCitySearch(debouncedCitySearchTerm, true);
-    } else {
+    } else if (!hasAnyRawSearchInput) {
       setSearchResults([]);
     }
-  }, [debouncedCitySearchTerm]);
+  }, [debouncedCitySearchTerm, hasAnyRawSearchInput]);
 
   useEffect(() => {
     if (debouncedManagerSearchTerm) {
       performSearch("manager_name", debouncedManagerSearchTerm);
-    } else {
+    } else if (!hasAnyRawSearchInput) {
       setSearchResults([]);
     }
-  }, [debouncedManagerSearchTerm]);
+  }, [debouncedManagerSearchTerm, hasAnyRawSearchInput]);
 
   useEffect(() => {
     if (debouncedPostalCodeSearchTerm) {
       performPostalCodeSearch(debouncedPostalCodeSearchTerm, true);
-    } else {
+    } else if (!hasAnyRawSearchInput) {
       setSearchResults([]);
     }
-  }, [debouncedPostalCodeSearchTerm]);
+  }, [debouncedPostalCodeSearchTerm, hasAnyRawSearchInput]);
 
   useEffect(() => {
     if (categorySearch.length > 0) {
       performCategorySearch(categorySearch, true);
-    } else {
+    } else if (!hasAnyRawSearchInput) {
       setSearchResults([]);
     }
-  }, [categorySearch]);
+  }, [categorySearch, hasAnyRawSearchInput]);
 
   const performSearch = async (field, value) => {
     setLoading(true);
     try {
-      let querySnapshot;
-
-      if (field === "nameSubstrings") {
-        const lowercaseSearchTerm = value.toLowerCase();
-        const qSubstrings = query(
-          collection(db, "fiches"),
-          where(field, "array-contains", lowercaseSearchTerm)
-        );
-        querySnapshot = await getDocs(qSubstrings);
-      } else {
-        const qField = query(
-          collection(db, "fiches"),
-          where(field, "==", value),
-          where(field, "<=", value + "\uf8ff")
-        );
-        querySnapshot = await getDocs(qField);
-      }
+      const normalizedValue = value.toLowerCase().trim();
+      const searchField = field === "nameSubstrings" ? "name" : field;
+      const qField = query(
+        collection(db, "fiches"),
+        where(searchField, ">=", normalizedValue),
+        where(searchField, "<=", normalizedValue + "\uf8ff"),
+        orderBy(searchField),
+        limit(RESTAURANTS_PER_PAGE)
+      );
+      const querySnapshot = await getDocs(qField);
 
       const results = querySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -204,12 +214,14 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const performCitySearch = useCallback(
     async (city, isInitial = false) => {
       setLoading(true);
+      const normalizedCity = city.toLowerCase().trim();
 
       try {
         const cityQuery = query(
           collection(db, "fiches"),
-          where("ville", "==", city.toLowerCase()),
-          orderBy("date_added", "desc"),
+          where("ville", ">=", normalizedCity),
+          where("ville", "<=", normalizedCity + "\uf8ff"),
+          orderBy("ville"),
           isInitial ? limit(RESTAURANTS_PER_PAGE) : startAfter(lastVisibleCity),
           limit(RESTAURANTS_PER_PAGE)
         );
@@ -241,14 +253,14 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
   const performPostalCodeSearch = useCallback(
     async (postalCode, isInitial = false) => {
       setLoading(true);
-
-      console.log("postalCode", postalCode);
+      const normalizedPostalCode = String(postalCode).trim();
 
       try {
         const postalQuery = query(
           collection(db, "fiches"),
-          where("code_postal", "==", String(postalCode)),
-          orderBy("date_added", "desc"),
+          where("code_postal", ">=", normalizedPostalCode),
+          where("code_postal", "<=", normalizedPostalCode + "\uf8ff"),
+          orderBy("code_postal"),
           isInitial
             ? limit(RESTAURANTS_PER_PAGE)
             : startAfter(lastVisiblePostalCode),
@@ -268,8 +280,6 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
           id: doc.id,
           ...doc.data(),
         }));
-
-        console.log("results", results);
 
         setSearchResults((prev) =>
           isInitial ? results : [...prev, ...results]
@@ -308,36 +318,37 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
             Banque de données
           </h1>
 
-          {loading && allRestaurants.length === 0 ? (
-            <div className="max-w-full mr-10 p-10">
-              <Skeleton height={20} className="my-2 w-[200px]" count={3} />{" "}
-              <Skeleton height={20} className="my-2 w-[300px]" count={3} />
-              <Skeleton height={20} className="my-2" count={3} />
-            </div>
-          ) : (
-            <div className="w-full pl-6 pr-2">
-              {searchTerm ||
-              citySearchTerm ||
-              managerSearchTerm ||
-              postalCodeSearchTerm ||
-              categorySearch.length > 0 ? (
-                searchResults.length > 0 ? (
-                  <RestaurantList
-                    restaurants={searchResults}
-                    {...{ setIsEditing, setIsnew, editFunc }}
-                  />
-                ) : (
-                  <EmptyState
-                    title="Erreur. Essayez d'autres critères de recherche"
-                    search={true}
-                  />
-                )
+          <div className="w-full pl-6 pr-2">
+            {!hasAnyRawSearchInput ? (
+              loading && allRestaurants.length === 0 ? (
+                <div className="max-w-full mr-10 p-10">
+                  <Skeleton height={20} className="my-2 w-[200px]" count={3} />{" "}
+                  <Skeleton height={20} className="my-2 w-[300px]" count={3} />
+                  <Skeleton height={20} className="my-2" count={3} />
+                </div>
               ) : (
                 <RestaurantList
                   restaurants={allRestaurants}
                   {...{ setIsEditing, setIsnew, editFunc }}
                 />
-              )}
+              )
+            ) : isSearching ? (
+              <div className="max-w-full mr-10 p-10">
+                <Skeleton height={20} className="my-2 w-[200px]" count={3} />{" "}
+                <Skeleton height={20} className="my-2 w-[300px]" count={3} />
+                <Skeleton height={20} className="my-2" count={3} />
+              </div>
+            ) : searchResults.length > 0 ? (
+              <RestaurantList
+                restaurants={searchResults}
+                {...{ setIsEditing, setIsnew, editFunc }}
+              />
+            ) : (
+              <EmptyState
+                title="Erreur. Essayez d'autres critères de recherche"
+                search={true}
+              />
+            )}
               {(hasMore || hasMoreCategory || hasMoreCity) && (
                 <div className="text-center my-10 uppercase">
                   <button
@@ -359,8 +370,7 @@ const SearchPage = ({ setIsEditing, setIsnew, editFunc }) => {
                   </button>
                 </div>
               )}
-            </div>
-          )}
+          </div>
         </div>
       </section>
     </div>
